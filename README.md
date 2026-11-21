@@ -45,6 +45,13 @@ Page 7: shadows at the edge of the trees
 Page 9: out in the dark (light to the right / water / climb a tree / run)
 Page 10: the longest night (keep watch / sing / sleep / spell SOS)
                                                 │
+Chapter 9: everyone finds a thumbnail-sized key with a star that shines in the moonlight (dollhouse key / fairy key / evidence / cheeseburger wish)
+                                                │
+Chapter 10: a tiny door under the tree trunk (the star key fits it)
+   ├── Try the key / Kick it open ─► Chapter 10½: the fairy's favor
+   │                                                          (way out / find friends / a spell / stay)
+   └── "Just a decoration" / "Absolutely not" ─► rescued right away
+                                                ▼
 Page 11: the flashlight. Rescue team. "What happened out there?"
                                                 │
                                              Result
@@ -54,7 +61,9 @@ Page 11: the flashlight. Rescue team. "What happened out there?"
 
 The rescue scene is put together from your whole path (see `STORY_EXTRAS` in `script.js`):
 
-- **Headed right toward the light:** you find the ranger station yourself.
+- **Opened the tiny door:** the fairy gets you to the station, and you find a note in your pocket: "Thanks for the key, it's not an actual spell."
+- **Didn't open it:** as you leave, the fairy waves sadly from his doorway. He could have walked you out hours ago.
+- **Headed right toward the light:** the ranger says you were headed straight for the station.
 - **Wandered somewhere else:** the ranger shows you the station was 40 feet from your shelter, and that heading right would have gotten you there.
 - **Stayed in your shelter:** you still get rescued, and the ranger says staying put was the right call.
 - **Ate the mushrooms:** the shadows were just trees.
@@ -64,36 +73,62 @@ The rescue scene is put together from your whole path (see `STORY_EXTRAS` in `sc
 
 ## The 10 personality types
 
-Each type is matched to an MBTI / 16 Personalities type, an Enneagram type and a Big Five lean, shown on the results page.
+Each type's results page shows a real photo (no AI images), its strengths and watch-outs, and a "What makes you tick" section. That section borrows ideas from MBTI, the Enneagram and the Big Five, but describes them in plain words instead of showing test labels, since a story quiz can't really measure things like introversion vs. extraversion.
 
-| Type | Core idea | MBTI | Enneagram |
-|---|---|---|---|
-| **The Eagle Scout** | organized planner | ESTJ | 3, Achiever |
-| **The Survivalist** | prepared for the worst | ISTJ | 6, Loyalist |
-| **The Night Watch** | observant, on guard | INFJ | 5, Investigator |
-| **The Trailblazer** | bold leader | ENTJ | 8, Challenger |
-| **The Lone Wolf** | self-reliant, looks out for number one | ISTP | 5, Investigator |
-| **The Campfire Bard** | creative storyteller | ENFP | 4, Individualist |
-| **The Mushroom Mystic** | adventurous, overconfident | ESTP | 7, Enthusiast |
-| **The Field Medic** | loyal caretaker | ISFJ | 2, Helper |
-| **The Tattletale** | rule-follower, keeps the record straight | ESFJ | 1, Reformer |
-| **The Happy Camper** | easygoing, unbothered | ISFP | 9, Peacemaker |
+| Type | Core idea | Photo |
+|---|---|---|
+| **The Eagle Scout** | organized planner | bald eagle chicks |
+| **The Survivalist** | prepared for the worst | chipmunk with stuffed cheeks |
+| **The Night Watch** | observant, on guard | barred owl |
+| **The Trailblazer** | bold leader | mountain goat kid |
+| **The Lone Wolf** | self-reliant, looks out for number one | howling wolf pup |
+| **The Campfire Bard** | creative storyteller | grasshopper (sings all summer instead of working) |
+| **The Mushroom Mystic** | adventurous, overconfident | snail on tiny mushrooms |
+| **The Field Medic** | loyal caretaker | Saint Bernard puppy |
+| **The Tattletale** | rule-follower, keeps the record straight | meerkat on sentry duty |
+| **The Happy Camper** | easygoing, unbothered | lounging capybara |
 
 **Result = the type with the most points.** The second-highest is shown as your "streak." If two types tie, the one your most recent answers pointed to wins.
+
+### How you answer counts too
+
+- **Slow answers:** spending more than 1 min 30 sec on a question (time with the tab in the background doesn't count) adds +0.5 to The Night Watch (overthinking) and +0.5 to The Happy Camper (putting off decisions). At most 3 slow questions count, so timing can nudge your result but never outweigh your answers.
+- **Going back:** pressing "back" on more than 3 different questions adds +0.5 to The Survivalist (anxious, extra careful) and +0.5 to The Night Watch (overthinking). Going back on the same question several times only counts once.
+- The result page has a "How you took the quiz" box that explains any of these nudges. Share links carry them too (`&slow=N&back=N`), so friends see the same result.
+
+Each result has 6 strengths and 6 watch-outs. The watch-outs are written to be blunt on purpose.
 
 ## Files
 
 - `index.html`: every page of the quiz
 - `style.css`: the forest theme, button sizes and phone layout
-- `script.js`: answer data, story text, scoring and results
+- `script.js`: answer data, story text, scoring, results and sharing
+- `personalities.html`: every personality side by side (built from `RESULTS` in `script.js`)
+- `images/`: one photo per personality type (credits below)
 
 ## Adding a chapter
 
 1. Copy a `<section>` in `index.html`, give it a new `id` and new `data-choice` keys.
-2. Add those keys to `ANSWERS` in `script.js` with `text`, `trait`, `points`, `outcome` and `next`.
+2. Add those keys to `ANSWERS` in `script.js` with `text`, `points`, `outcome` and `next`.
 3. Point an earlier answer's `next` at the new page.
 
 ## Ideas for next steps
 
-- Add a "share your result" button
 - Save past results with `localStorage`
+
+## Photo credits
+
+All photos are real photographs from [Wikimedia Commons](https://commons.wikimedia.org/), saved in `images/`.
+
+| File | Photographer | License | Source |
+|---|---|---|---|
+| `scout.jpg` | Dave Menke, U.S. Fish & Wildlife Service | Public domain | [link](https://commons.wikimedia.org/wiki/File:Bald_eagle_chicks_-_DPLA_-_3b7711bbef7b06dc32fc138bf95e138a.jpg) |
+| `survivalist.jpg` | Ashley Lee | CC BY 4.0 | [link](https://commons.wikimedia.org/wiki/File:Chipmunk_with_Full_Cheeks.jpg) |
+| `nightwatch.jpg` | Dick Daniels | CC BY-SA 3.0 | [link](https://commons.wikimedia.org/wiki/File:Barred_Owl_(Strix_varia)_RWD.jpg) |
+| `trailblazer.jpg` | Charles J. Sharp | CC BY-SA 4.0 | [link](https://commons.wikimedia.org/wiki/File:Mountain_goat_(Oreamnos_americanus)_kid_Radium.jpg) |
+| `lonewolf.jpg` | U.S. Fish & Wildlife Service | Public domain | [link](https://commons.wikimedia.org/wiki/File:Mexican_wolf_pup_(6411046205).jpg) |
+| `bard.jpg` | Colette Gemmell | CC BY 4.0 | [link](https://commons.wikimedia.org/wiki/File:Grasshopper_in_Clover.jpg) |
+| `mystic.jpg` | Chainfoto | CC0 | [link](https://commons.wikimedia.org/wiki/File:Snail_and_mushroom.jpg) |
+| `medic.jpg` | dbking | CC BY 2.0 | [link](https://commons.wikimedia.org/wiki/File:St._Bernard_puppy.jpg) |
+| `tattletale.jpg` | Mathias Appel | CC0 | [link](https://commons.wikimedia.org/wiki/File:Meerkat_Standing.jpg) |
+| `camper.jpg` | Wilfredor | CC0 | [link](https://commons.wikimedia.org/wiki/File:Hydrochoeris_hydrochaeris_in_Brazil_in_Petr%C3%B3polis,_Rio_de_Janeiro,_Brazil_09.jpg) |

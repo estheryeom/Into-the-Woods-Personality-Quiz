@@ -18,9 +18,70 @@
   box-sizing: border-box;
 }
 
+/* Magic wand cursor: a brown twig tilted down to the right, with a star
+   on top wrapped in a soft, angel-like halo (glow + faint ring + light rays).
+   The click point (10 10) is the star's center, so you "tap" things with it. */
+html,
+html * {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><defs><radialGradient id='g'><stop offset='0' stop-color='%23ffffff' stop-opacity='0.95'/><stop offset='0.35' stop-color='%23fff4c4' stop-opacity='0.7'/><stop offset='0.7' stop-color='%23ffe9a0' stop-opacity='0.25'/><stop offset='1' stop-color='%23ffe9a0' stop-opacity='0'/></radialGradient><linearGradient id='b' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%239a6a3a'/><stop offset='1' stop-color='%235e3b1e'/></linearGradient></defs><path d='M13.8 12.2 L29.6 27.4 Q29.9 29.9 27.4 29.6 L12.2 13.8 Z' fill='url(%23b)' stroke='%233a2412' stroke-width='0.8' stroke-linejoin='round'/><line x1='14.6' y1='13.4' x2='28.4' y2='26.8' stroke='%23c0915c' stroke-width='0.5' stroke-linecap='round' opacity='0.8'/><path d='M22.6 22.4 L25.4 20.6' stroke='%235e3b1e' stroke-width='1.1' stroke-linecap='round'/><ellipse cx='19.4' cy='19.6' rx='0.9' ry='0.6' transform='rotate(45 19.4 19.6)' fill='%233a2412'/><ellipse cx='25.8' cy='26' rx='0.6' ry='0.4' transform='rotate(45 25.8 26)' fill='%233a2412'/><circle cx='10' cy='10' r='10' fill='url(%23g)'/><circle cx='10' cy='10' r='8.2' fill='none' stroke='%23fffbe6' stroke-width='0.5' opacity='0.55'/><path d='M10 0.4 V3 M10 17 V19.6 M0.4 10 H3 M17 10 H19.6' stroke='%23ffffff' stroke-width='0.7' stroke-linecap='round' opacity='0.7'/><polygon points='10,3.5 11.6,7.8 16.2,8 12.6,10.8 13.8,15.3 10,12.7 6.2,15.3 7.4,10.8 3.8,8 8.4,7.8' fill='%23ffe066' stroke='%23c9971c' stroke-width='0.7' stroke-linejoin='round'/><circle cx='9' cy='8.4' r='1' fill='white'/></svg>") 10 10, auto !important;
+}
+
+/* Sparkle dust left behind by the wand (see sparkle.js). Fades fast. */
+.wand-dust {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  border-radius: 50%;
+  background: #fff8d6;
+  box-shadow: 0 0 4px 1px rgba(255, 230, 140, 0.8);
+  pointer-events: none;
+  z-index: 9999;
+  animation: wand-dust 380ms ease-out forwards;
+}
+
+@keyframes wand-dust {
+  from { opacity: 0.9; transform: translate(0, 0) scale(1); }
+  to   { opacity: 0;   transform: translate(var(--dx), var(--dy)) scale(0.2); }
+}
+
+/* Tap sparkle burst on touch screens (see sparkle.js). Gone in ~250ms. */
+.tap-spark,
+.tap-flash {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.tap-spark {
+  background: #fff8d6;
+  box-shadow: 0 0 5px 2px rgba(255, 230, 140, 1);
+  animation: tap-spark 260ms ease-out forwards;
+}
+
+.tap-flash {
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+  background: radial-gradient(circle, #ffffff 0%, rgba(255, 240, 170, 0.85) 50%, rgba(255, 230, 140, 0) 100%);
+  animation: tap-flash 180ms ease-out forwards;
+}
+
+@keyframes tap-spark {
+  from { opacity: 1; transform: translate(0, 0) scale(1); }
+  to   { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.3); }
+}
+
+@keyframes tap-flash {
+  from { opacity: 1; transform: scale(0.6); }
+  to   { opacity: 0; transform: scale(1.8); }
+}
+
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100dvh;          /* phones: ignore the browser's toolbar */
   font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
   color: var(--cream);
   background: radial-gradient(circle at 50% 20%, var(--forest) 0%, var(--forest-dark) 70%);
@@ -28,11 +89,20 @@ body {
 
 main {
   min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Phones: no grey flash on tap, and no double-tap zoom delay on buttons */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 /* Every page fills the screen. JavaScript shows one at a time. */
 .page {
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 2rem 1.25rem;
   animation: fade-in 0.5s ease;
 }
@@ -62,9 +132,22 @@ main {
 }
 
 .title {
-  font-size: clamp(2.2rem, 7vw, 4rem);
+  font-family: "Henny Penny", "Papyrus", fantasy, cursive;
+  font-weight: 400;
+  font-size: clamp(2.6rem, 8vw, 4.6rem);
   margin: 0 0 0.25rem;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 18px rgba(255, 236, 170, 0.35);
+}
+
+/* "How you took the quiz": the timing / back-button notes */
+.habits {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.habits li + li {
+  margin-top: 0.5rem;
 }
 
 .subtitle {
@@ -73,8 +156,8 @@ main {
 }
 
 .start-btn {
-  font-family: inherit;
-  font-weight: 600;
+  font-family: inherit;        /* same font as the questions */
+  font-weight: 700;            /* questions are bold <h2>s */
   border: none;
   border-radius: 999px;
   cursor: pointer;
@@ -83,9 +166,12 @@ main {
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.start-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+/* Hover effects only on devices with a mouse, so they don't "stick" after a tap on a phone */
+@media (hover: hover) {
+  .start-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  }
 }
 
 /* Big, middle: the straightforward, direct person */
@@ -149,8 +235,10 @@ main {
 
 /* The medium button already uses transform to center itself,
    so its hover effect has to include that too. */
-.start-medium:hover {
-  transform: translateX(-50%) scale(1.05);
+@media (hover: hover) {
+  .start-medium:hover {
+    transform: translateX(-50%) scale(1.05);
+  }
 }
 
 /* ---------------------------------------------------------
@@ -198,29 +286,91 @@ main {
 .answers {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 2rem 2.25rem;         /* extra room so neighboring laces never touch */
   width: 100%;
-  max-width: 720px;
+  max-width: 760px;
+  padding: 14px;             /* the lace pokes out past each button */
 }
 
 .answer-btn {
+  position: relative;        /* the lace (drawn by lace.js) is placed around this */
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.4;
   min-height: 110px;
   padding: 1.25rem;
   border: 2px solid var(--moss);
-  border-radius: var(--radius);
+  border-radius: 22px;       /* rounded corners; the lace follows the curve */
   background: rgba(255, 255, 255, 0.05);
   color: var(--cream);
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 }
 
-.answer-btn:hover {
+/* Small green scalloped lace around every answer button. lace.js
+   draws it as an SVG (double outline, scallops with little fan
+   triangles) that follows the rounded corners. */
+.answer-btn .lace {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;      /* clicks go straight to the button */
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+}
+
+@media (hover: hover) {
+  .answer-btn:hover {
+    background: rgba(143, 191, 106, 0.18);
+    border-color: var(--leaf);
+    transform: translateY(-3px);
+  }
+}
+
+/* Touch screens: a quick press-down effect instead of hover */
+.answer-btn:active {
   background: rgba(143, 191, 106, 0.18);
   border-color: var(--leaf);
-  transform: translateY(-3px);
+}
+
+/* Name page */
+.name-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.name-input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 0.9rem 1.25rem;
+  border: 2px solid var(--moss);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--cream);
+}
+
+.name-input::placeholder {
+  color: var(--text-soft);
+}
+
+.name-input:focus {
+  outline: 3px solid var(--sun);
+  outline-offset: 3px;
+  border-color: var(--leaf);
+}
+
+/* Hidden on screen but still read by screen readers */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 /* Keyboard users can see which button is focused */
@@ -261,30 +411,70 @@ main {
   font-size: 0.95rem;
 }
 
-/* MBTI / Enneagram / Big Five list */
-.matches {
-  margin: 0;
+/* The cute photo for your type */
+.result-photo {
+  margin: 0 auto 1.75rem;
+  max-width: 380px;
 }
 
-.matches dt {
+.result-photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center 40%;
+  border-radius: var(--radius);
+  border: 3px solid rgba(143, 191, 106, 0.45);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.result-photo figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.72rem;
+  color: var(--text-soft);
+}
+
+/* What makes you tick: trait "chips", then a few plain-language details */
+.traits {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+  padding: 0;
+}
+
+.result-box .traits {
+  padding-left: 0;
+}
+
+.traits li {
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(143, 191, 106, 0.15);
+  border: 1px solid rgba(143, 191, 106, 0.45);
   font-weight: 600;
-  color: var(--sun);
-  margin-top: 0.6rem;
+  font-size: 0.92rem;
 }
 
-.matches dt:first-child {
-  margin-top: 0;
-}
-
-.matches dd {
-  margin: 0.15rem 0 0;
+.tick-line {
+  margin: 0 0 1rem;
   line-height: 1.5;
 }
 
-.fine-print {
-  margin: 1rem 0 0;
-  font-size: 0.8rem;
-  color: var(--text-soft);
+.tick {
+  margin: 0;
+}
+
+.tick dt {
+  font-weight: 600;
+  color: var(--sun);
+  margin-top: 0.75rem;
+}
+
+.tick dd {
+  margin: 0.15rem 0 0;
+  line-height: 1.5;
 }
 
 .result-description {
@@ -352,12 +542,62 @@ main {
   background: var(--sun);
 }
 
-.trail li {
-  margin-bottom: 0.4rem;
+/* Strengths / watch-outs: a bold title with a fun detail underneath */
+.result-grid li {
+  margin-bottom: 0.9rem;
 }
 
-.trail .trait {
-  color: var(--sun);
+.result-grid li:last-child {
+  margin-bottom: 0;
+}
+
+.result-grid .detail {
+  display: block;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+/* Friends (left) & foes (right): stays two columns even on phones */
+.kin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.kin-card {
+  margin-bottom: 1.1rem;
+}
+
+.kin-card:last-child {
+  margin-bottom: 0;
+}
+
+.kin-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center 40%;
+  border-radius: var(--radius);
+  margin-bottom: 0.5rem;
+}
+
+.kin-card strong {
+  display: block;
+}
+
+.kin-card .detail {
+  display: block;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  opacity: 0.85;
+}
+
+@media (max-width: 600px) {
+  .kin-grid .result-box {
+    padding: 1rem;
+  }
 }
 
 .restart-btn {
@@ -378,6 +618,34 @@ main {
 }
 
 /* ---------------------------------------------------------
+   BACK BUTTON: small, pinned to the bottom-left corner
+   --------------------------------------------------------- */
+.back-btn {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid var(--moss);
+  border-radius: 999px;
+  background: rgba(20, 36, 27, 0.85);
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.back-btn:hover {
+  border-color: var(--leaf);
+  color: var(--cream);
+}
+
+.back-btn:focus-visible {
+  outline: 3px solid var(--sun);
+  outline-offset: 3px;
+}
+
+/* ---------------------------------------------------------
    PHONES: stack everything in one column
    --------------------------------------------------------- */
 @media (max-width: 600px) {
@@ -390,8 +658,248 @@ main {
     min-height: 80px;
   }
 
+  /* START PAGE on phones: same layout as on a computer (big button in the
+     exact center, tiny one to its left, small top-right, medium bottom-center),
+     just scaled down so everything fits on a narrow screen. */
   .start-big {
-    font-size: 1.6rem;
-    padding: 1.1rem 2.8rem;
+    font-size: clamp(1rem, 5vw, 1.6rem);
+    padding: 0.8em 1.15em;
   }
+
+  .start-tiny {
+    right: calc(100% + 0.6rem);   /* smaller gap than on a computer */
+    font-size: 0.6rem;
+    padding: 0.3rem 0.55rem;
+  }
+
+  .start-small {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .start-medium {
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    white-space: nowrap;
+  }
+
+  .title {
+    font-size: clamp(2rem, 10vw, 2.8rem);
+  }
+
+  .subtitle {
+    margin-bottom: 1.75rem;
+  }
+
+  /* Story pages: a little tighter, with room at the bottom so the
+     fixed back button never covers the last answer */
+  .page-story {
+    padding-top: 2.5rem;
+    padding-bottom: 5rem;
+  }
+
+  .question {
+    margin-bottom: 1.5rem;
+  }
+
+  .story {
+    font-size: 1rem;
+  }
+
+  .answers {
+    gap: 1.6rem;
+    padding: 12px;
+  }
+
+  .answer-btn {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .page-result {
+    padding-top: 2rem;
+  }
+
+  .result-box {
+    padding: 1rem 1.1rem;
+  }
+
+  .kin-grid {
+    gap: 0.6rem;
+  }
+
+  .back-btn {
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Phones turned sideways (short screens): shrink the title so it stays on screen */
+@media (max-height: 500px) and (orientation: landscape) {
+  .title {
+    font-size: 2.2rem;
+  }
+
+  .subtitle {
+    margin-bottom: 1rem;
+  }
+}
+
+/* ---------------------------------------------------------
+   RESULT PAGE: share + "all personalities" buttons
+   --------------------------------------------------------- */
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+/* Links styled as buttons */
+a.restart-btn {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.result-actions .restart-btn {
+  margin-top: 0;
+}
+
+/* Outlined version, so "Take the quiz again" stays the main button */
+.secondary-btn {
+  background: transparent;
+  color: var(--cream);
+  border: 2px solid var(--leaf);
+}
+
+.secondary-btn:hover {
+  background: rgba(143, 191, 106, 0.18);
+}
+
+.secondary-btn:focus-visible,
+a.restart-btn:focus-visible,
+.back-link:focus-visible {
+  outline: 3px solid var(--sun);
+  outline-offset: 3px;
+}
+
+.share-status {
+  min-height: 1.4em;
+  margin: 0.75rem 0 0;
+  color: var(--leaf);
+  font-size: 0.95rem;
+  word-break: break-all;
+}
+
+.result-shared-note {
+  margin: 0 auto 1.5rem;
+  max-width: 520px;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  background: rgba(242, 184, 75, 0.12);
+  border: 1px solid rgba(242, 184, 75, 0.5);
+  color: var(--cream);
+}
+
+/* ---------------------------------------------------------
+   ALL PERSONALITIES PAGE (personalities.html)
+   --------------------------------------------------------- */
+.page-all {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 2.5rem;
+  padding-bottom: 3rem;
+}
+
+.back-link {
+  color: var(--text-soft);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.back-link:hover {
+  color: var(--cream);
+}
+
+.all-header {
+  text-align: center;
+  margin: 1.5rem 0 2rem;
+}
+
+.type-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+  gap: 1.25rem;
+}
+
+.type-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(143, 191, 106, 0.3);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.type-card-you {
+  border: 2px solid var(--sun);
+  box-shadow: 0 0 0 4px rgba(242, 184, 75, 0.15);
+}
+
+.type-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center 40%;
+}
+
+.type-card-body {
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+.type-card h2 {
+  margin: 0;
+  color: var(--sun);
+  font-size: 1.4rem;
+}
+
+.type-card .result-tagline {
+  margin: 0.3rem 0 0.9rem;
+}
+
+.type-card-description {
+  line-height: 1.55;
+  margin: 0;
+}
+
+.type-card-credit {
+  margin: 0.9rem 0 0;
+  font-size: 0.72rem;
+  color: var(--text-soft);
+}
+
+.you-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  background: var(--sun);
+  color: var(--forest-dark);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.all-footer {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+/* The whimsical title font, reused on the all-personalities page */
+.title-font {
+  font-family: "Henny Penny", "Papyrus", fantasy, cursive;
+  font-size: 1.4rem;
+  letter-spacing: 0.03em;
+  text-transform: none;
 }
