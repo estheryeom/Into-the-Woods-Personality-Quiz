@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Into the Woods — A Personality Quiz</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+
+    <!-- =====================================================
+         HOW EVERY STORY PAGE WORKS
+         - <div class="story"> is empty here. script.js fills it with
+           "what happened" after your last answer (the transition).
+         - <h2 class="question"> is the scene + question.
+         - Each button's data-choice matches a key in ANSWERS (script.js).
+         ===================================================== -->
+
+    <!-- PAGE 1 — Four "Let's start" buttons. Which one you click is the first question! -->
+    <section id="page1" class="page page-start">
+      <div class="start-center">
+        <!-- The tiny button is pinned to the left of the big one, and the
+             heading floats above it (see .start-tiny / .start-heading in style.css).
+             Only the big button takes up space, so it sits at the exact page center. -->
+        <div class="start-row">
+          <div class="start-heading">
+            <h1 class="title">Into the Woods</h1>
+            <p class="subtitle">A personality quiz told as a short story.</p>
+          </div>
+          <button class="start-btn start-tiny" data-choice="reliant">Let's start</button>
+          <button class="start-btn start-big" data-choice="direct">Let's start</button>
+        </div>
+      </div>
+
+      <button class="start-btn start-small" data-choice="quirky">Let's start</button>
+      <button class="start-btn start-medium" data-choice="carefree">Let's start</button>
+    </section>
+
+    <!-- PAGE 2 — The bear -->
+    <section id="page2" class="page page-story" hidden>
+      <p class="chapter">Chapter 1</p>
+      <div class="story"></div>
+      <h2 class="question" tabindex="-1">
+        Something big and brown moves out of the corner of your eye. It's a bear, maybe thirty feet off the trail, and it's looking right at you. What do you do?
+      </h2>
+      <div class="answers">
+        <button class="answer-btn" data-choice="run">I run away, leaving my friends behind.</button>
+        <button class="answer-btn" data-choice="small">I make myself small. Maybe the bear won't see me.</button>
+        <button class="answer-btn" data-choice="bark">I bark, and get my friends to bark at the bear too.</button>
+        <button class="answer-btn" data-choice="snacks">Maybe handing over my snacks will work. The bear isn't <em>that</em> big anyway.</button>
+      </div>
+    </section>
+
+    <!-- PAGE 2.5 — Only for people who barked or offered snacks -->
+    <section id="page2-5" class="page page-story" hidden>
+      <p class="chapter">Chapter 1½</p>
+      <div class="story"></div>
+      <h2 class="question" tabindex="-1">
+        The bear's claws catch your arm. You grab the bear spray your friend packed in your bag, and you run. Which way do you go?
+      </h2>
+      <div class="answers">
+        <button class="answer-btn" data-choice="straight">Straight ahead, no looking back.</button>
+        <button class="answer-btn" data-choice="left">Turn left.</button>
+        <button class="answer-btn" data-choice="right">Turn right.</button>
+        <button class="answer-btn" data-choice="help">Turn around to help my friends.</button>
+      </div>
+    </section>
+
+    <!-- PAGE 3 — Lost in the woods -->
+    <section id="page3" class="page page-story" hidden>
+      <p class="chapter">Chapter 2</p>
+      <div class="story"></div>
+      <h2 class="question" tabindex="-1">
+        The bear is gone, and so are your friends. You're lost in the woods, and your phone is about to die. What do you do?
+      </h2>
+      <div class="answers answers-two">
+        <button class="answer-btn" data-choice="phone">I still have to use my phone to get out of here.</button>
+        <button class="answer-btn" data-choice="friends">I know I can find my friends.</button>
+      </div>
+    </section>
+
+    <!-- PAGE 4 — Only for people who kept using their phone -->
+    <section id="page4" class="page page-story" hidden>
+      <p class="chapter">Chapter 3</p>
+      <div class="story"></div>
+      <h2 class="question" tabindex="-1">
+        Your phone dies as soon as you try to turn it on... What do you do?
+      </h2>
+      <div class="answers">
+        <button class="answer-btn" data-choice="throw">I'm so fucked, and I throw my phone at the ground.</button>
+        <button class="answer-btn" data-choice="shelter">It's getting dark... I should find shelter.</button>
+        <button class="answer-btn" data-choice="retrace">I'm gonna retrace my steps. I have a great sense of direction.</button>
+        <button class="answer-btn" data-choice="stay">I'm gonna stay right here. I can't get lost again.</button>
+      </div>
+    </section>
+
+    <!-- PAGE 5 — The fallen tree (everyone ends up here) -->
+    <section id="page5" class="page page-story" hidden>
+      <p class="chapter">Chapter 4</p>
+      <div class="story"></div>
+      <h2 class="question" tabindex="-1">
+        The sun is setting, and it's getting a bit cold. There's a big fallen tree, and it seems like a great shelter for now.
+      </h2>
+      <div class="answers">
+        <button class="answer-btn" data-choice="leaves">I shed a single tear and start collecting dry leaves to use as a cushion beside the tree trunk.</button>
+        <button class="answer-btn" data-choice="fire">I've watched survival shows. I know how to start a fire.</button>
+        <button class="answer-btn" data-choice="paws">Sure, it looks like a great windblock for now, but I see paw prints around it.</button>
+        <button class="answer-btn" data-choice="birdcall">My friends and I have weird bird calls for this reason! "BAKAAAH BAKAAAH"</button>
+      </div>
+    </section>
+
+    <!-- PAGE 6 — Hungry and thirsty -->
+    <section id="page6" class="page page-story" hidden>
+      <p class="chapter">Chapter 5</p>
+      <div class="story"></div>
+      <h2 class="question" tabindex="-1">
+        The sun is gone. Your stomach growls, and your throat is so dry it hurts. What do you do?
+      </h2>
+      <div class="answers">
+        <button class="answer-btn" data-choice="ration">I packed a granola bar and half a bottle of water. I split them into thirds. I always pack extra.</button>
+        <button class="answer-btn" data-choice="forage">Those berries look edible. So do those mushrooms. I saw a reel about this.</button>
+        <button class="answer-btn" data-choice="gum">I chew the last piece of gum in my pocket and call it dinner.</button>
+        <button class="answer-btn" data-choice="hoard">I have trail mix. If my friends show up, I never had trail mix.</button>
+      </div>
+    </section>
+
+    <!-- PAGE 6.5 — Only for people who ate the berries and mushrooms -->
+    <section id="page6-5" class="page page-story" hidden>
+      <p class="chapter">Chapter 5½</p>
+      <div class="story"></div>
+      <h2 class="question" tabindex="-1">
+        About twenty minutes later, the bark on the tree starts to breathe. The stars leave little trails when you move your head. Your hands look like they belong to someone else. What now?
+      </h2>
+      <div class="answers">
+        <button class="answer-btn" data-choice="listen">The trees are trying to tell me something. I should listen.</button>
+        <button class="answer-btn" data-choice="purge">Finger down the throat. That was a horrible idea.</button>
+        <button class="answer-btn" data-choice="carve">I carve a message into the bark: "If I don't make it, blame the influencer."</button>
+        <button class="answer-btn" data-choice="more">Eat a few more. For science.</button>
+      </div>
+    </section>
+
+    <!-- PAGE 7 — Shadows at the edge of the trees -->
+    <section id="page7" class="page page-story" hidden>
+      <p class="chapter">Chapter 6</p>
+      <div class="story"></div>
+      <h2 class="question" tabindex="-1">
+        Something moves at the edge of the trees. A dark shape. Then another. They're tall, and they're standing very, very still. They're watching you.
+      </h2>
+      <div class="answers">
+        <button class="answer-btn" data-choice="callout">"Guys?? Is that you?"</button>
+        <button class="answer-btn" data-choice="freeze">I go perfectly still and grip the bear spray.</button>
+        <button class="answer-btn" data-choice="stick">I grab the biggest stick I can find and walk straight toward them.</button>
+        <button class="answer-btn" data-choice="pretend">I close my eyes and pretend to be asleep. If I can't see them, they can't see me.</button>
+      </div>
+    </section>
+
+    <!-- PAGE 8 — The voice (the mimic) -->
+    <section id="page8" class="page page-story" hidden>
+      <p class="chapter">Chapter 7</p>
+      <div class="story"></div>
+      <h2 class="question" tabindex="-1">
+        Then a voice drifts out of the dark. It sounds exactly like your friend. "Hey... come here. Come away from there. We found the way out." But your friend has never said your name like that. Flat, like it's being read off a card.
+      </h2>
+      <div class="answers">
+        <button class="answer-btn" data-choice="follow">It's them! I follow the voice.</button>
+        <button class="answer-btn" data-choice="question">I ask something only my real friend would know.</button>
+        <button class="answer-btn" data-choice="nicetry">"Nice try." I stay right where I am.</button>
+        <button class="answer-btn" data-choice="telling">"I'M TELLING THE PARK RANGER ON YOU!"</button>
+      </div>
+    </section>
+
+    <!-- PAGE 9 — Out in the dark (for people who left their shelter) -->
+    <section id="page9" class="page page-story" hidden>
+      <p class="chapter">Chapter 8</p>
+      <div class="story"></div>
+      <h2 class="question" tabindex="-1">
+        You're out in the open now. It's pitch black, the cold bites through your jacket, and you have no idea which way your shelter is. Which way do you go?
+      </h2>
+      <div class="answers">
+        <button class="answer-btn" data-choice="lightright">To the right. I think I see a faint light through the trees.</button>
+        <button class="answer-btn" data-choice="water">Downhill, toward the sound of running water.</button>
+        <button class="answer-btn" data-choice="climb">I climb a tree to get a look around.</button>
+        <button class="answer-btn" data-choice="bolt">I just run. Anywhere is better than here.</button>
+      </div>
+    </section>
+
+    <!-- PAGE 10 — The longest night (for people who stayed in their shelter) -->
+    <section id="page10" class="page page-story" hidden>
+      <p class="chapter">Chapter 8</p>
+      <div class="story"></div>
+      <h2 class="question" tabindex="-1">
+        The woods go quiet. Sunrise is hours away, and the cold is settling into your bones. How do you get through the night?
+      </h2>
+      <div class="answers">
+        <button class="answer-btn" data-choice="watch">I stay up on watch until sunrise. Nothing is sneaking up on me.</button>
+        <button class="answer-btn" data-choice="sing">I sing every song I know, loudly, so whatever's out there knows I'm not easy prey.</button>
+        <button class="answer-btn" data-choice="sleep">I curl up against the trunk and sleep. Future me can deal with this.</button>
+        <button class="answer-btn" data-choice="sos">I spell out SOS in the clearing with sticks and rocks.</button>
+      </div>
+    </section>
+
+    <!-- PAGE 11 — The flashlight (everyone ends up here) -->
+    <section id="page11" class="page page-story" hidden>
+      <p class="chapter">Chapter 9</p>
+      <div class="story"></div>
+      <h2 class="question" tabindex="-1">
+        A ranger wraps a crinkly foil blanket around your shoulders and hands you a cup of hot chocolate. "So," she says. "What happened out there?" What's the first thing you say?
+      </h2>
+      <div class="answers">
+        <button class="answer-btn" data-choice="blame">"Honestly? This whole hike was my friend's idea."</button>
+        <button class="answer-btn" data-choice="askfriends">"Are my friends okay? Did everyone make it out?"</button>
+        <button class="answer-btn" data-choice="handled">"I had it handled. I would've gotten out by morning."</button>
+        <button class="answer-btn" data-choice="food">"...Is there any food?"</button>
+      </div>
+    </section>
+
+    <!-- RESULT PAGE — filled in by script.js -->
+    <section id="result" class="page page-result" hidden>
+      <p class="chapter">You made it out. You are…</p>
+      <h2 id="result-name" class="result-name" tabindex="-1"></h2>
+      <p id="result-tagline" class="result-tagline"></p>
+      <p id="result-runnerup" class="result-runnerup"></p>
+      <p id="result-description" class="result-description"></p>
+
+      <div class="result-grid">
+        <div class="result-box">
+          <h3>Strengths</h3>
+          <ul id="result-strengths"></ul>
+        </div>
+        <div class="result-box">
+          <h3>Watch out for</h3>
+          <ul id="result-watchouts"></ul>
+        </div>
+      </div>
+
+      <div class="result-box">
+        <h3>Your personality test matches</h3>
+        <dl id="result-matches" class="matches"></dl>
+        <p class="fine-print">Just for fun. These are the types your answers lean toward, not an official test result.</p>
+      </div>
+
+      <div class="result-box">
+        <h3>Your personality mix</h3>
+        <div id="result-meters" class="meters"></div>
+      </div>
+
+      <div class="result-box">
+        <h3>Your trail through the woods</h3>
+        <ol id="result-trail" class="trail"></ol>
+      </div>
+
+      <button id="restart-btn" class="restart-btn">Take the quiz again</button>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
