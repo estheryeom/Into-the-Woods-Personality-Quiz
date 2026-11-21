@@ -7,7 +7,7 @@
   <!-- Whimsical storybook font for the "Into the Woods" title -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Almendra:ital,wght@0,400;0,700;1,400&family=Henny+Penny&family=Macondo&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Almendra:ital,wght@0,400;0,700;1,400&family=Henny+Penny&family=Jua&family=Macondo&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,6 +23,12 @@
 
     <!-- PAGE 1 — Four "Let's start" buttons. Which one you click is the first question! -->
     <section id="page1" class="page page-start">
+      <!-- Language: EN / KR. Clicking one saves it and restarts the page (see ko.js) -->
+      <div class="lang-toggle" role="group" aria-label="Language / 언어">
+        <button type="button" class="lang-btn" data-lang="en" lang="en">EN</button>
+        <button type="button" class="lang-btn" data-lang="ko" lang="ko">KR</button>
+      </div>
+
       <div class="start-center">
         <!-- The tiny button is pinned to the left of the big one, and the
              heading floats above it (see .start-tiny / .start-heading in style.css).
@@ -382,6 +388,8 @@
   <!-- Back button: shown on every question after the first (see script.js) -->
   <button id="back-btn" class="back-btn" hidden>back</button>
 
+  <!-- ko.js first: it swaps in the Korean text before lace.js draws around the buttons -->
+  <script src="ko.js"></script>
   <script src="lace.js"></script>
   <script src="sparkle.js"></script>
   <script src="script.js"></script>

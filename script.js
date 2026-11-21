@@ -446,12 +446,12 @@ const ANSWERS = {
 // ---------------------------------------------------------
 const STORY_EXTRAS = {
   page6: () => [
-    picked("snacks") && "You miss your gummy worms. Worth it? Unclear.",
+    picked("snacks") && t("extra.snacks", "You miss your gummy worms. Worth it? Unclear."),
   ],
 
   page8: () => [
-    picked("birdcall") && "Somewhere in the dark, something does your bird call. Perfectly. A little too perfectly.",
-    ateMushrooms() && "The trees are breathing slower now, like they're listening too.",
+    picked("birdcall") && t("extra.birdcall", "Somewhere in the dark, something does your bird call. Perfectly. A little too perfectly."),
+    ateMushrooms() && t("extra.treesListening", "The trees are breathing slower now, like they're listening too."),
   ],
 
   page11: () => {
@@ -461,44 +461,44 @@ const STORY_EXTRAS = {
 
     // Where was the ranger station?
     if (openedDoor) {
-      lines.push("\"You were forty feet from our station all night,\" the ranger says. You don't mention the fairy.");
+      lines.push(t("extra.station.door", "\"You were forty feet from our station all night,\" the ranger says. You don't mention the fairy."));
     } else if (picked("lightright")) {
-      lines.push("The ranger points at a porch light through the trees: the ranger station, forty feet away. \"You were headed right for it.\"");
+      lines.push(t("extra.station.light", "The ranger points at a porch light through the trees: the ranger station, forty feet away. \"You were headed right for it.\""));
     } else if (visited("page9")) {
-      lines.push("Right behind your fallen tree, through the branches, is the ranger station's porch light. Forty feet away. If only you'd gone right.");
+      lines.push(t("extra.station.wandered", "Right behind your fallen tree, through the branches, is the ranger station's porch light. Forty feet away. If only you'd gone right."));
     } else {
-      lines.push("Past your fallen tree, a porch light glows: the ranger station, forty feet away. \"Staying put was the right call,\" the ranger says.");
+      lines.push(t("extra.station.stayed", "Past your fallen tree, a porch light glows: the ranger station, forty feet away. \"Staying put was the right call,\" the ranger says."));
     }
 
     // How did they find you?
-    if (picked("sing")) lines.push("\"We heard you singing from the parking lot. All of it.\"");
-    if (picked("sos")) lines.push("\"Nice SOS. Who drew the smiley face?\"");
+    if (picked("sing")) lines.push(t("extra.sing", "\"We heard you singing from the parking lot. All of it.\""));
+    if (picked("sos")) lines.push(t("extra.sos", "\"Nice SOS. Who drew the smiley face?\""));
 
     // What were the shadows?
     if (ateMushrooms()) {
-      lines.push("She eyes the purple stains on your fingers. \"Did you eat the mushrooms? Okay. Medic's coming.\" The shapes in the trees? \"Buddy, those are trees.\"");
+      lines.push(t("extra.shapes.mushrooms", "She eyes the purple stains on your fingers. \"Did you eat the mushrooms? Okay. Medic's coming.\" The shapes in the trees? \"Buddy, those are trees.\""));
     } else if (visited("page8")) {
-      lines.push("\"Your friends found the station hours ago.\" You ask who was calling your name out there. She stops smiling. \"Nobody from our team.\"");
+      lines.push(t("extra.shapes.voice", "\"Your friends found the station hours ago.\" You ask who was calling your name out there. She stops smiling. \"Nobody from our team.\""));
     } else {
-      lines.push("The tall shapes in the trees? \"Probably deer,\" the ranger says. She doesn't sound sure.");
+      lines.push(t("extra.shapes.deer", "The tall shapes in the trees? \"Probably deer,\" the ranger says. She doesn't sound sure."));
     }
 
     // Little callbacks
-    if (picked("fire")) lines.push("\"Also, please never start a fire out here again.\"");
-    if (picked("ration")) lines.push("You offer the ranger your last third of granola bar. She declines.");
-    if (picked("hoard")) lines.push("Your secret trail mix crinkles in your pocket. You say nothing.");
+    if (picked("fire")) lines.push(t("extra.fire", "\"Also, please never start a fire out here again.\""));
+    if (picked("ration")) lines.push(t("extra.ration", "You offer the ranger your last third of granola bar. She declines."));
+    if (picked("hoard")) lines.push(t("extra.hoard", "Your secret trail mix crinkles in your pocket. You say nothing."));
 
     // The tiny door: a little surprise, or a little regret
     if (openedDoor) {
-      if (ateMushrooms()) lines.push("You tell the ranger about the fairy. She looks at your purple fingers. \"Sure, bud.\"");
+      if (ateMushrooms()) lines.push(t("extra.fairyTold", "You tell the ranger about the fairy. She looks at your purple fingers. \"Sure, bud.\""));
       if (picked("pick")) {
-        lines.push("In your pocket, where the key was, there's a note smaller than a stamp: \"Thanks for the key. You owe me a door. — F.\"");
+        lines.push(t("extra.note.kicked", "In your pocket, where the key was, there's a note smaller than a stamp: \"Thanks for the key. You owe me a door. — F.\""));
       } else {
-        lines.push("In your pocket, where the key was, there's a note smaller than a stamp: \"Thanks for the key. I haven't seen a human dance in a while. — F.\"");
+        lines.push(t("extra.note.thanks", "In your pocket, where the key was, there's a note smaller than a stamp: \"Thanks for the key. I haven't seen a human dance in a while. — F.\""));
       }
     } else {
-      lines.push("As you leave, the tiny door opens a crack. A fairy with a lantern gives you a small, disappointed wave. He could have walked you out hours ago.");
-      lines.push("You reach for the key in your pocket. It's gone.");
+      lines.push(t("extra.door.wave", "As you leave, the tiny door opens a crack. A fairy with a lantern gives you a small, disappointed wave. He could have walked you out hours ago."));
+      lines.push(t("extra.door.keyGone", "You reach for the key in your pocket. It's gone."));
     }
 
     return lines;
@@ -937,12 +937,13 @@ function fillStory(pageId) {
 const QUESTION_VARIANTS = {
   "page-fairy": () =>
     picked("pick") &&
-    "A tiny fairy stands in the splintered doorway, in an acorn cap and a maple-leaf cardigan, holding what's left of his hinge. \"That was my DOOR.\" Then he spots the star key in your pocket, and his glare wobbles. \"...You found my key. Thank you, I suppose.\" He crosses his arms. \"Rules are rules. I still owe you one favor. Don't be weird about it.\" What do you ask for?",
+    t("question.fairyKicked", "A tiny fairy stands in the splintered doorway, in an acorn cap and a maple-leaf cardigan, holding what's left of his hinge. \"That was my DOOR.\" Then he spots the star key in your pocket, and his glare wobbles. \"...You found my key. Thank you, I suppose.\" He crosses his arms. \"Rules are rules. I still owe you one favor. Don't be weird about it.\" What do you ask for?"),
 };
 
 function fillQuestion(pageId) {
   const heading = document.querySelector(`#${CSS.escape(pageId)} .question`);
-  if (!heading) return;
+  // Only pages with a variant get rewritten (so page 8 keeps its name <span>)
+  if (!heading || !QUESTION_VARIANTS[pageId]) return;
   if (heading.dataset.default === undefined) heading.dataset.default = heading.textContent.trim();
   const variant = QUESTION_VARIANTS[pageId] && QUESTION_VARIANTS[pageId]();
   heading.textContent = variant || heading.dataset.default;
@@ -1153,13 +1154,13 @@ function showResult() {
 
   document.getElementById("result-name").textContent = result.name;
   document.getElementById("result-tagline").textContent = result.tagline;
-  document.getElementById("result-runnerup").textContent = `with a streak of ${TYPES[ranking[1]]}`;
+  document.getElementById("result-runnerup").textContent = t("runnerUp", (name) => `with a streak of ${name}`, TYPES[ranking[1]]);
   document.getElementById("result-description").textContent = result.description;
 
   const photo = document.getElementById("result-photo");
   photo.src = result.image.src;
   photo.alt = result.image.alt;
-  document.getElementById("result-photo-credit").textContent = `Photo: ${result.image.credit}`;
+  document.getElementById("result-photo-credit").textContent = t("photoCredit", (credit) => `Photo: ${credit}`, result.image.credit);
 
   fillList("result-strengths", result.strengths);
   fillList("result-watchouts", result.watchouts);
@@ -1202,7 +1203,7 @@ function showResult() {
 
   // The "all personalities" page gets your path too, so it can mark your
   // type and send you back to this exact result.
-  document.getElementById("all-types-link").href = `personalities.html?${resultQuery()}`;
+  document.getElementById("all-types-link").href = `personalities.html?${resultQuery()}${langParam()}`;
   document.getElementById("share-status").textContent = "";
   document.getElementById("share-options").hidden = true;
 
@@ -1245,18 +1246,22 @@ function fillHabits() {
   const slow = habits.slow.size;
   if (slow) {
     notes.push(
-      `You spent more than a minute and a half on ${slow} question${slow === 1 ? "" : "s"}. ` +
-      "When there's no obvious right answer, you stall: weighing, re-reading, waiting to feel sure. " +
-      "That nudged your Night Watch (overthinking) and Happy Camper (putting off decisions) scores up a little."
+      t("habitsSlow", (n) =>
+        `You spent more than a minute and a half on ${n} question${n === 1 ? "" : "s"}. ` +
+        "When there's no obvious right answer, you stall: weighing, re-reading, waiting to feel sure. " +
+        "That nudged your Night Watch (overthinking) and Happy Camper (putting off decisions) scores up a little.",
+      slow)
     );
   }
   const back = habits.back.size;
   if (back) {
-    const note = `You went back and reconsidered ${back} question${back === 1 ? "" : "s"}.`;
     notes.push(
-      isSecondGuesser()
-        ? `${note} Second-guessing yourself that often usually comes from being afraid of getting it wrong. That nudged your Survivalist (anxious, extra careful) and Night Watch (overthinking) scores up a little.`
-        : `${note} Changing your mind a few times is just being thoughtful, so it didn't affect your result.`
+      t("habitsBack", (n, secondGuesser) => {
+        const note = `You went back and reconsidered ${n} question${n === 1 ? "" : "s"}.`;
+        return secondGuesser
+          ? `${note} Second-guessing yourself that often usually comes from being afraid of getting it wrong. That nudged your Survivalist (anxious, extra careful) and Night Watch (overthinking) scores up a little.`
+          : `${note} Changing your mind a few times is just being thoughtful, so it didn't affect your result.`;
+      }, back, isSecondGuesser())
     );
   }
 
@@ -1270,7 +1275,7 @@ function fillHabits() {
 
 function shareLink() {
   const url = new URL(window.location.href);
-  url.search = `?${resultQuery()}`;
+  url.search = `?${resultQuery()}${langParam()}`;
   url.hash = "";
   return url.toString();
 }
@@ -1288,7 +1293,7 @@ function pathFromUrl() {
 
 function shareText() {
   const name = RESULTS[calculateResult().ranking[0]].name;
-  return `I got ${name} in the Into the Woods personality quiz! Which one are you?`;
+  return t("shareText", (type) => `I got ${type} in the Into the Woods personality quiz! Which one are you?`, name);
 }
 
 // Copy text to the clipboard. Falls back to the old trick for pages
@@ -1320,7 +1325,7 @@ async function copyShareLink(successMessage) {
   const status = document.getElementById("share-status");
   const url = shareLink();
   const ok = await copyText(`${shareText()} ${url}`);
-  status.textContent = ok ? successMessage : `Copy this link to share: ${url}`;
+  status.textContent = ok ? successMessage : t("copyFallback", (link) => `Copy this link to share: ${link}`, url);
 }
 
 const isPhone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -1343,7 +1348,7 @@ function fillShareOptions() {
 async function shareResult() {
   fillShareOptions();
   document.getElementById("share-options").hidden = false;
-  await copyShareLink("Link copied! Paste it anywhere, or pick an app below.");
+  await copyShareLink(t("share.copied", "Link copied! Paste it anywhere, or pick an app below."));
 }
 
 // Every option copies the link too, so it's ready to paste wherever it opens.
@@ -1359,14 +1364,14 @@ function onShareOption(event) {
     if (isPhone && navigator.share) {
       navigator
         .share({ text: shareText(), url: shareLink() })
-        .then(() => { status.textContent = "Shared!"; })
+        .then(() => { status.textContent = t("share.done", "Shared!"); })
         .catch((err) => {
           if (err && err.name === "AbortError") return; // they closed the sheet
-          copyShareLink("Link copied! Paste it into a KakaoTalk chat.");
+          copyShareLink(t("share.kakaotalk", "Link copied! Paste it into a KakaoTalk chat."));
         });
       return;
     }
-    copyShareLink("Link copied! Paste it into a KakaoTalk chat.").then(() => {
+    copyShareLink(t("share.kakaotalk", "Link copied! Paste it into a KakaoTalk chat.")).then(() => {
       if (isPhone) window.location.href = "kakaotalk://launch";
     });
     return;
@@ -1379,7 +1384,8 @@ function onShareOption(event) {
     messenger: "Link copied! Paste it into a Messenger chat.",
     instagram: "Link copied! Paste it into an Instagram DM.",
   };
-  copyShareLink(messages[event.currentTarget.dataset.share]);
+  const key = event.currentTarget.dataset.share;
+  copyShareLink(t(`share.${key}`, messages[key]));
 }
 
 // ---------------------------------------------------------
@@ -1393,8 +1399,8 @@ function showAllPersonalities(container) {
     habits = habitsFromUrl();
     yourType = calculateResult().ranking[0];
     const back = document.getElementById("back-to-result");
-    back.href = `index.html?${resultQuery()}&mine=1`;
-    back.textContent = "← Back to my result";
+    back.href = `index.html?${resultQuery()}&mine=1${langParam()}`;
+    back.textContent = t("backToResult", "← Back to my result");
   }
 
   for (const type in RESULTS) {
@@ -1414,7 +1420,7 @@ function showAllPersonalities(container) {
     if (type === yourType) {
       const badge = document.createElement("span");
       badge.className = "you-badge";
-      badge.textContent = "You";
+      badge.textContent = t("youBadge", "You");
       body.appendChild(badge);
     }
 
@@ -1438,7 +1444,7 @@ function showAllPersonalities(container) {
 
     const credit = document.createElement("p");
     credit.className = "type-card-credit";
-    credit.textContent = `Photo: ${result.image.credit}`;
+    credit.textContent = t("photoCredit", (text) => `Photo: ${text}`, result.image.credit);
 
     body.append(name, tagline, traits, description, credit);
     card.append(img, body);
@@ -1489,6 +1495,9 @@ function fillList(listId, items) {
 // so only wire up the quiz when we're on the quiz page.
 const allPersonalities = document.getElementById("all-personalities");
 
+// KR picked? Swap in the Korean story and results (see ko.js)
+applyKoreanData();
+
 if (allPersonalities) {
   showAllPersonalities(allPersonalities);
 } else {
@@ -1517,7 +1526,7 @@ if (allPersonalities) {
     }
     playerName = name;
     document.querySelectorAll(".player-name").forEach((el) => {
-      el.textContent = playerName;
+      el.textContent = LANG === "ko" ? koVocative(playerName) : playerName;
     });
     showPage("page2");
   });

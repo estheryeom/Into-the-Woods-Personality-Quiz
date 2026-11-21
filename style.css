@@ -253,6 +253,69 @@ a {
 }
 
 /* ---------------------------------------------------------
+   LANGUAGE TOGGLE: EN / KR, top-left of the start page
+   --------------------------------------------------------- */
+.lang-toggle {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  display: flex;
+  padding: 3px;
+  border: 1px solid var(--moss);
+  border-radius: 999px;
+  background: rgba(20, 36, 27, 0.85);
+  z-index: 1;
+}
+
+.lang-btn {
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.75rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.lang-btn:hover {
+  color: var(--cream);
+}
+
+.lang-btn.is-active {
+  background: var(--sun);
+  color: var(--forest-dark);
+}
+
+.lang-btn:focus-visible {
+  outline: 3px solid var(--sun);
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .lang-toggle {
+    top: 1rem;
+    left: 1rem;
+  }
+}
+
+/* KOREAN: the storybook fonts have no Hangul, so use Jua (round and
+   friendly) for titles, and don't break lines in the middle of a word. */
+html[lang="ko"] body {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+html[lang="ko"] .title,
+html[lang="ko"] .title-font {
+  font-family: "Jua", "Henny Penny", sans-serif;
+  letter-spacing: 0;
+}
+
+/* ---------------------------------------------------------
    STORY PAGES (every chapter)
    --------------------------------------------------------- */
 .page-story {
