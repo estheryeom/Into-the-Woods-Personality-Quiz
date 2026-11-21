@@ -5,20 +5,35 @@
    half a second. Kept sparse on purpose so it isn't distracting.
    ========================================================= */
 (function () {
-  // Skip for people who've asked their system for less motion.
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  // People who've asked their phone/computer for less motion still get
+  // the sparkle, just a calmer one that twinkles in place.
+  const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // Touch screens: no cursor to follow, so instead every tap
   // (anywhere, including answers and the back button) sets off a
-  // tiny firework of sparkle that's gone in about a quarter second.
-  document.addEventListener(
-    "pointerdown",
-    function (e) {
-      if (e.pointerType === "mouse") return;
-      tapBurst(e.clientX, e.clientY);
-    },
-    { capture: true, passive: true }
-  );
+  // little firework of sparkle. It's big enough to peek out from under
+  // a fingertip, and fades in about half a second.
+  // Pointer events cover modern browsers; older in-app browsers
+  // (KakaoTalk, Instagram, etc. on older phones) only have touch events.
+  if (window.PointerEvent) {
+    document.addEventListener(
+      "pointerdown",
+      function (e) {
+        if (e.pointerType === "mouse") return;
+        tapBurst(e.clientX, e.clientY);
+      },
+      { capture: true, passive: true }
+    );
+  } else {
+    document.addEventListener(
+      "touchstart",
+      function (e) {
+        const t = e.changedTouches && e.changedTouches[0];
+        if (t) tapBurst(t.clientX, t.clientY);
+      },
+      { capture: true, passive: true }
+    );
+  }
 
   function tapBurst(x, y) {
     const flash = document.createElement("span");
@@ -28,27 +43,33 @@
     flash.addEventListener("animationend", function () { flash.remove(); });
     document.body.appendChild(flash);
 
-    const COUNT = 8;
+    const COUNT = 12;
     const offset = Math.random() * Math.PI * 2;
     for (let i = 0; i < COUNT; i++) {
-      const angle = offset + (i / COUNT) * Math.PI * 2;
-      const dist = 16 + Math.random() * 10;
+      const angle = offset + (i / COUNT) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
+      // Alternate long and short rays so it reads as a firework, reaching
+      // well past the edge of a fingertip so it can actually be seen.
+      const dist = calm ? 22 + Math.random() * 8 : (i % 2 ? 32 : 50) + Math.random() * 14;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist;
       const spark = document.createElement("span");
-      spark.className = "tap-spark";
-      spark.style.left = x + "px";
-      spark.style.top = y + "px";
-      spark.style.setProperty("--dx", Math.cos(angle) * dist + "px");
-      spark.style.setProperty("--dy", Math.sin(angle) * dist + "px");
-      const size = 2.5 + Math.random() * 2;
+      spark.className = i % 3 === 0 ? "tap-spark tap-star" : "tap-spark";
+      // Calm mode: sparks appear around the tap and fade without flying
+      spark.style.left = x + (calm ? dx : 0) + "px";
+      spark.style.top = y + (calm ? dy : 0) + "px";
+      spark.style.setProperty("--dx", calm ? "0px" : dx + "px");
+      spark.style.setProperty("--dy", calm ? "0px" : dy + 6 + "px"); // slight droop, like real fireworks
+      const size = i % 3 === 0 ? 10 + Math.random() * 3 : 4 + Math.random() * 2.5;
       spark.style.width = spark.style.height = size + "px";
       spark.style.margin = -size / 2 + "px 0 0 " + -size / 2 + "px";
+      spark.style.animationDuration = 480 + Math.random() * 160 + "ms";
       spark.addEventListener("animationend", function () { spark.remove(); });
       document.body.appendChild(spark);
     }
   }
 
-  // The wand dust trail below is mouse-only.
-  if (window.matchMedia("(hover: none)").matches) return;
+  // The wand dust trail below is mouse-only, and skipped for reduced motion.
+  if (calm || window.matchMedia("(hover: none)").matches) return;
 
   const SPACING = 14; // pixels the mouse must travel before the next speck
   let lastX = null;

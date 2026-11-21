@@ -141,10 +141,20 @@
   }
 
   function init() {
+    const buttons = document.querySelectorAll(".answer-btn");
+    // Older in-app browsers have no ResizeObserver: redraw on resize and
+    // after each tap (that's when a new quiz page appears) instead.
+    if (!window.ResizeObserver) {
+      const drawAll = () => buttons.forEach(drawLace);
+      drawAll();
+      window.addEventListener("resize", drawAll);
+      document.addEventListener("click", () => setTimeout(drawAll, 0));
+      return;
+    }
     const observer = new ResizeObserver((entries) => {
       entries.forEach((entry) => drawLace(entry.target));
     });
-    document.querySelectorAll(".answer-btn").forEach((button) => observer.observe(button));
+    buttons.forEach((button) => observer.observe(button));
   }
 
   if (document.readyState === "loading") {

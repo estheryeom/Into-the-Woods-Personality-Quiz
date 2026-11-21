@@ -1281,7 +1281,7 @@ function pathFromUrl() {
   const raw = new URLSearchParams(window.location.search).get("path");
   if (!raw) return null;
   const keys = raw.split(".");
-  if (!keys.every((key) => Object.hasOwn(ANSWERS, key))) return null;
+  if (!keys.every((key) => Object.prototype.hasOwnProperty.call(ANSWERS, key))) return null;
   if (ANSWERS[keys[keys.length - 1]].next !== "result") return null;
   return keys;
 }
@@ -1349,6 +1349,29 @@ async function shareResult() {
 // Every option copies the link too, so it's ready to paste wherever it opens.
 // (Instagram has no way to pre-fill a message, so pasting is the only way.)
 function onShareOption(event) {
+  // KakaoTalk has no web link that pre-fills a message (that needs a Kakao
+  // developer app key). On phones, the system share sheet lists KakaoTalk
+  // and sends the message straight into a chat; otherwise we copy the link
+  // and open the KakaoTalk app (phone) or just copy it (computer).
+  if (event.currentTarget.dataset.share === "kakaotalk") {
+    event.preventDefault();
+    const status = document.getElementById("share-status");
+    if (isPhone && navigator.share) {
+      navigator
+        .share({ text: shareText(), url: shareLink() })
+        .then(() => { status.textContent = "Shared!"; })
+        .catch((err) => {
+          if (err && err.name === "AbortError") return; // they closed the sheet
+          copyShareLink("Link copied! Paste it into a KakaoTalk chat.");
+        });
+      return;
+    }
+    copyShareLink("Link copied! Paste it into a KakaoTalk chat.").then(() => {
+      if (isPhone) window.location.href = "kakaotalk://launch";
+    });
+    return;
+  }
+
   const messages = {
     copy: "Link copied! Paste it to your friends.",
     sms: "Link copied! Opening your messages…",
