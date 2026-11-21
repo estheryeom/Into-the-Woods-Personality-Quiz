@@ -1204,6 +1204,7 @@ function showResult() {
   // type and send you back to this exact result.
   document.getElementById("all-types-link").href = `personalities.html?${resultQuery()}`;
   document.getElementById("share-status").textContent = "";
+  document.getElementById("share-options").hidden = true;
 
   showPage("result");
 }
@@ -1285,29 +1286,77 @@ function pathFromUrl() {
   return keys;
 }
 
-async function shareResult() {
-  const status = document.getElementById("share-status");
+function shareText() {
   const name = RESULTS[calculateResult().ranking[0]].name;
-  const url = shareLink();
-  const text = `I got ${name} in the Into the Woods personality quiz! Which one are you?`;
+  return `I got ${name} in the Into the Woods personality quiz! Which one are you?`;
+}
 
-  // Phones (and some browsers) have a built-in share menu
-  if (navigator.share) {
-    try {
-      await navigator.share({ title: "Into the Woods", text, url });
-      return;
-    } catch (err) {
-      if (err.name === "AbortError") return; // they closed the share menu
-    }
-  }
-
-  // Otherwise copy the link so they can paste it anywhere
+// Copy text to the clipboard. Falls back to the old trick for pages
+// opened without https (where navigator.clipboard isn't allowed).
+async function copyText(value) {
   try {
-    await navigator.clipboard.writeText(`${text} ${url}`);
-    status.textContent = "Link copied! Paste it to your friends.";
+    await navigator.clipboard.writeText(value);
+    return true;
   } catch {
-    status.textContent = `Copy this link to share: ${url}`;
+    const box = document.createElement("textarea");
+    box.value = value;
+    box.setAttribute("readonly", "");
+    box.style.position = "fixed";
+    box.style.opacity = "0";
+    document.body.appendChild(box);
+    box.select();
+    let ok = false;
+    try {
+      ok = document.execCommand("copy");
+    } catch {
+      ok = false;
+    }
+    box.remove();
+    return ok;
   }
+}
+
+async function copyShareLink(successMessage) {
+  const status = document.getElementById("share-status");
+  const url = shareLink();
+  const ok = await copyText(`${shareText()} ${url}`);
+  status.textContent = ok ? successMessage : `Copy this link to share: ${url}`;
+}
+
+const isPhone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+// Point each share option at the current result
+function fillShareOptions() {
+  const message = encodeURIComponent(`${shareText()} ${shareLink()}`);
+  const link = encodeURIComponent(shareLink());
+  const options = document.getElementById("share-options");
+  options.querySelector('[data-share="sms"]').href = `sms:?&body=${message}`;
+  options.querySelector('[data-share="whatsapp"]').href = `https://wa.me/?text=${message}`;
+  // The Messenger app can take a link directly. On a computer we open
+  // messenger.com instead, and the link is already copied for pasting.
+  options.querySelector('[data-share="messenger"]').href = isPhone
+    ? `fb-messenger://share/?link=${link}`
+    : "https://www.messenger.com/new";
+}
+
+// "Share" button: copy the link right away, then show the options
+async function shareResult() {
+  fillShareOptions();
+  document.getElementById("share-options").hidden = false;
+  await copyShareLink("Link copied! Paste it anywhere, or pick an app below.");
+}
+
+// Every option copies the link too, so it's ready to paste wherever it opens.
+// (Instagram has no way to pre-fill a message, so pasting is the only way.)
+function onShareOption(event) {
+  const messages = {
+    copy: "Link copied! Paste it to your friends.",
+    sms: "Link copied! Opening your messages…",
+    whatsapp: "Link copied! Opening WhatsApp…",
+    messenger: "Link copied! Paste it into a Messenger chat.",
+    instagram: "Link copied! Paste it into an Instagram DM.",
+  };
+  copyShareLink(messages[event.currentTarget.dataset.share]);
 }
 
 // ---------------------------------------------------------
@@ -1460,6 +1509,9 @@ if (allPersonalities) {
   });
 
   document.getElementById("share-btn").addEventListener("click", shareResult);
+  document.querySelectorAll("[data-share]").forEach((option) => {
+    option.addEventListener("click", onShareOption);
+  });
 
   // Opened from a shared link (or "Back to my result")? Jump straight to that result.
   const sharedPath = pathFromUrl();
