@@ -98,6 +98,20 @@ body {
   background: radial-gradient(circle at 50% 20%, var(--forest) 0%, var(--forest-dark) 70%);
 }
 
+/* Sparkles and lace can poke a little past the screen edge on phones.
+   Clip them instead of letting the whole page wobble sideways. */
+html,
+body {
+  overflow-x: hidden;
+}
+
+@supports (overflow-x: clip) {
+  html,
+  body {
+    overflow-x: clip;
+  }
+}
+
 main {
   min-height: 100vh;
   min-height: 100dvh;
@@ -345,6 +359,8 @@ html[lang="ko"] .title-font {
 }
 
 .story p {
+  position: relative;
+  z-index: 0;                  /* the glowing star (.star-word) tucks under these words */
   margin: 0 0 0.75rem;
 }
 
@@ -551,9 +567,19 @@ html[lang="ko"] .title-font {
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.story-cover:hover {
-  transform: translate(-2px, -2px) rotate(-0.4deg);
-  box-shadow: 6px 6px 0 #111;
+/* Phones: keep the cover off the very edges of the screen */
+@media (max-width: 600px) {
+  .story-cover {
+    inset: -0.5rem -0.35rem;
+  }
+}
+
+/* Mouse only: on phones the hover look got stuck after a tap */
+@media (hover: hover) {
+  .story-cover:hover {
+    transform: translate(-2px, -2px) rotate(-0.4deg);
+    box-shadow: 6px 6px 0 #111;
+  }
 }
 
 .story-cover:focus-visible {
@@ -598,6 +624,11 @@ html[lang="ko"] .title-font {
 /* Doodle leaves that fall onto the question (after the leaf-pile answer) */
 .question {
   position: relative;          /* so the leaf pile can sit on top of it */
+}
+
+/* Makes room above the question so the leaves land on top of the words, not over them */
+.question.has-leaves {
+  padding-top: 1.9rem;
 }
 
 .leaf-pile {
@@ -738,7 +769,7 @@ html[lang="ko"] .title-font {
 
 .result-name {
   font-size: clamp(2rem, 6vw, 3.2rem);
-  margin: 0 auto;
+  margin: 0.6rem auto;          /* room for its sparkles, so they don't touch the lines around it */
   width: fit-content;           /* hug the name so its sparkles sit close */
   max-width: 100%;
   color: var(--sun);
@@ -1139,7 +1170,7 @@ a.restart-btn:focus-visible,
 /* Share options: a row of app buttons, each with its logo */
 .share-options {
   display: flex;
-  flex-wrap: nowrap;          /* keep all six options on one line */
+  flex-wrap: wrap;            /* one line on computers; phones use the grid below */
   justify-content: center;
   gap: 0.4rem;
   margin: 0.5rem 0;
@@ -1173,8 +1204,25 @@ a.restart-btn:focus-visible,
   transform: translateY(-2px);
 }
 
+/* Phones: seven options don't fit on one line, so use a 4-across grid */
+@media (max-width: 600px) {
+  .share-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+  }
+  .share-option {
+    padding: 0.55rem 0.15rem;
+  }
+}
+
 @media (max-width: 420px) {
   .share-option { font-size: 0.65rem; }
+}
+
+/* No hover lift on touch screens (it sticks after a tap) */
+@media (hover: none) {
+  .share-option:hover { transform: none; }
 }
 
 .share-option:focus-visible {
@@ -1200,9 +1248,111 @@ a.restart-btn:focus-visible,
 .share-icon-kakaotalk { background: #fee500; border-radius: 10px; }
 .share-icon-whatsapp { background: #25d366; }
 .share-icon-messenger { background: linear-gradient(45deg, #0099ff, #a033ff 60%, #ff5280 90%, #ff7061); }
+/* Instagram Story: round, with the colorful "new story" ring around it */
+.share-icon-igstory {
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+  box-shadow: 0 0 0 2px var(--forest-dark), 0 0 0 3.5px #d6249f;
+}
+
 .share-icon-instagram {
   border-radius: 10px;
   background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+}
+
+/* Instagram Story poster pop-up */
+.story-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  background: rgba(8, 16, 11, 0.82);
+  animation: fade-in 0.25s ease;
+}
+
+.story-modal-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 420px;
+  max-height: 100%;
+  padding: 1.25rem 1rem 1rem;
+  overflow-y: auto;
+  text-align: center;
+  background: var(--forest-dark);
+  border: 1px solid rgba(143, 191, 106, 0.45);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.story-modal-title {
+  margin: 0 2rem 0.75rem;
+  font-size: 1.05rem;
+  color: var(--leaf);
+}
+
+/* 9:16 preview, as tall as fits on the screen */
+.story-preview {
+  display: block;
+  width: auto;
+  height: min(56vh, 560px);
+  height: min(56dvh, 560px);
+  max-width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: contain;
+  border-radius: 12px;
+  background: var(--forest);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.story-modal-tip {
+  margin: 0.85rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--text-soft);
+}
+
+.story-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.85rem;
+}
+
+.story-modal-actions .restart-btn {
+  margin-top: 0;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.95rem;
+}
+
+.story-close-btn {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.5rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  font-size: 1.6rem;
+  line-height: 1;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-soft);
+  cursor: pointer;
+}
+
+.story-close-btn:hover {
+  color: var(--cream);
+}
+
+.story-close-btn:focus-visible {
+  outline: 3px solid var(--sun);
 }
 
 .result-shared-note {
@@ -1411,6 +1561,7 @@ a.restart-btn:focus-visible,
 /* A word sitting on a tiny campfire, smoke rising up through it */
 .campfire-word {
   position: relative;
+  z-index: -1;                 /* smoke drifts UNDER the words on the line above, not over them */
   display: inline-block;
   padding-bottom: 1.45em;      /* room for the fire underneath */
   white-space: nowrap;
@@ -1514,8 +1665,9 @@ a.restart-btn:focus-visible,
 /* A word with a gold star glowing softly behind it (the star key's gold) */
 .star-word {
   position: relative;
+  z-index: -1;                 /* the star's glow goes UNDER the words on the lines around it */
   display: inline-block;
-  isolation: isolate;          /* keeps the star behind the word, not the page */
+  isolation: isolate;          /* and behind its own word too */
   white-space: nowrap;
 }
 

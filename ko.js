@@ -175,6 +175,9 @@ const KO = {
     ".tick dt:nth-of-type(3)": `스트레스 받으면`,
     ".tick dt:nth-of-type(4)": `너한테 진짜 필요한 것`,
     "#share-btn": `친구들한테 결과 공유하기`,
+    "#story-modal-title": `인스타 스토리용 포스터`,
+    "#story-share-btn": `인스타에 공유하기`,
+    "#story-save-btn": `이미지 저장`,
     "#all-types-link": `모든 유형 구경하기`,
     "#restart-btn": `다시 하기`,
     "#back-btn": `뒤로`,
@@ -206,6 +209,7 @@ const KO = {
     whatsapp: `왓츠앱`,
     messenger: `메신저`,
     instagram: `인스타그램`,
+    igstory: `인스타 스토리`,
   },
 
   pageTitles: {
@@ -382,6 +386,14 @@ const KO = {
     "share.instagram": `링크 복사 완료! 인스타 DM에 붙여 넣어 줘.`,
     "share.kakaotalk": `링크 복사 완료! 카톡 채팅방에 붙여 넣어 줘.`,
     "share.done": `공유 완료!`,
+    "share.igstory": `포스터 완성! 링크 스티커용 링크도 복사해 놨어.`,
+
+    // Instagram Story poster
+    "story.cta": `너는 뭐 나올 것 같아? 직접 해 봐 ㅋㅋ`,
+    "story.making": `포스터 뚝딱뚝딱 만드는 중…`,
+    "story.tipShare": `링크 복사해 놨어! 공유 누르고 인스타 → 스토리 골라. 링크 스티커 붙이고 붙여 넣으면 친구들이 바로 테스트하러 올 수 있음.`,
+    "story.tipSave": `링크 복사해 놨어! 이미지 저장해서 인스타 스토리에 올리고, 링크 스티커에 붙여 넣어 줘.`,
+    "story.failed": `이 브라우저에선 포스터가 안 만들어지네 ㅠ 그냥 캡처해서 올려 줘!`,
   },
 
   // -------------------------------------------------------

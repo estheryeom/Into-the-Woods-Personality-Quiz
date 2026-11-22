@@ -1121,15 +1121,18 @@ function addSparkles(storyBox, COUNT = 18) {
   for (let i = 0; i < COUNT; i++) {
     const s = document.createElement("span");
     s.className = "story-sparkle";
-    // Spread them around the edges: top, right, bottom, left
+    // Spread them around the edges: top, right, bottom, left.
+    // Each one sits fully OUTSIDE the box, so it never covers a letter.
+    // Top/bottom ones are smaller: there's less room between lines.
     const side = i % 4;
-    const along = Math.random() * 100;
-    const out = -4 - Math.random() * 6; // just outside the text
-    if (side === 0) { s.style.left = `${along}%`; s.style.top = `${out}px`; }
-    if (side === 1) { s.style.top = `${along}%`; s.style.right = `${out}px`; }
-    if (side === 2) { s.style.left = `${along}%`; s.style.bottom = `${out}px`; }
-    if (side === 3) { s.style.top = `${along}%`; s.style.left = `${out}px`; }
-    const size = 8 + Math.random() * 10;
+    const size = side % 2 ? 8 + Math.random() * 8 : 6 + Math.random() * 5;
+    const out = -(size + 1 + Math.random() * 3);
+    // Keep them within the box's length (no hanging off the corners)
+    const along = `calc(${(Math.random() * 100).toFixed(1)}% - ${(size / 2).toFixed(1)}px)`;
+    if (side === 0) { s.style.left = along; s.style.top = `${out}px`; }
+    if (side === 1) { s.style.top = along; s.style.right = `${out}px`; }
+    if (side === 2) { s.style.left = along; s.style.bottom = `${out}px`; }
+    if (side === 3) { s.style.top = along; s.style.left = `${out}px`; }
     s.style.width = s.style.height = `${size}px`;
     s.style.animationDelay = `${(Math.random() * 1.6).toFixed(2)}s`;
     layer.appendChild(s);
@@ -1441,11 +1444,16 @@ function clearLeafPile() {
   leafTimers.forEach(clearTimeout);
   leafTimers = [];
   document.querySelectorAll(".leaf-pile").forEach((pile) => pile.remove());
+  document.querySelectorAll(".has-leaves").forEach((q) => q.classList.remove("has-leaves"));
 }
 
 function dropLeaves(pageId) {
   const heading = document.querySelector(`#${CSS.escape(pageId)} .question`);
   if (!heading) return;
+
+  // Make room above the question first, so the leaves sit on top of the
+  // words instead of covering them (matters most on small phone screens)
+  heading.classList.add("has-leaves");
 
   // Measure the first line of the question so leaves only land on words
   const range = document.createRange();
@@ -1479,7 +1487,7 @@ function dropLeaves(pageId) {
       leaf.style.setProperty("--leaf-color", LEAF_COLORS[Math.floor(Math.random() * LEAF_COLORS.length)]);
 
       const x = lineLeft + slot * spacing + (Math.random() - 0.5) * spacing * 0.3;
-      const y = lineTop - leafPx * 0.62;   // resting on top of the letters
+      const y = lineTop - leafPx * 0.92;   // resting just above the letters, not over them
       leaf.style.cssText += `left:${x}px;top:${y}px;width:${leafPx}px;height:${leafPx}px;`;
 
       // Leaves lie on their side when they land
@@ -2016,6 +2024,11 @@ function onShareOption(event) {
     return;
   }
 
+  if (event.currentTarget.dataset.share === "igstory") {
+    openStoryPoster(event.currentTarget);
+    return;
+  }
+
   const messages = {
     copy: "Link copied! Paste it to your friends.",
     sms: "Link copied! Opening your messages…",
@@ -2025,6 +2038,386 @@ function onShareOption(event) {
   };
   const key = event.currentTarget.dataset.share;
   copyShareLink(t(`share.${key}`, messages[key]));
+}
+
+// ---------------------------------------------------------
+// Instagram Story poster: your result drawn on a 1080x1920 picture
+// (the size of a story), with the quiz's web address printed on it.
+// Websites can't post to Instagram directly, so on phones we hand the
+// picture to the share sheet (pick Instagram -> Story), and the link is
+// copied so it can go on a Link sticker. On a computer you save it.
+// ---------------------------------------------------------
+const POSTER_W = 1080;
+const POSTER_H = 1920;
+let storyBlob = null;
+let storyBlobUrl = null;
+let storyOpener = null;
+
+// The quiz's home address, short enough to print (no https://, no ?path=)
+function siteAddress() {
+  const path = window.location.pathname.replace(/index\.html$/, "").replace(/\/$/, "");
+  return window.location.host + path;
+}
+
+// Split text into lines that fit `maxWidth`. Words that are too long on
+// their own get broken letter by letter.
+function wrapText(ctx, text, maxWidth) {
+  const lines = [];
+  let line = "";
+  text.split(/\s+/).filter(Boolean).forEach((word) => {
+    const test = line ? `${line} ${word}` : word;
+    if (ctx.measureText(test).width <= maxWidth) {
+      line = test;
+      return;
+    }
+    if (line) lines.push(line);
+    line = "";
+    for (const ch of word) {
+      if (ctx.measureText(line + ch).width > maxWidth && line) {
+        lines.push(line);
+        line = "";
+      }
+      line += ch;
+    }
+  });
+  if (line) lines.push(line);
+  return lines;
+}
+
+// Draw wrapped, centered text. Shrinks the font (down to `minSize`) so it
+// fits in `maxLines`. Returns the y just below the last line.
+function drawWrapped(ctx, text, { y, size, minSize = size, maxLines = 3, weight = "400", style = "normal", family, color, lineHeight = 1.25, maxWidth = 900 }) {
+  let lines;
+  for (;;) {
+    ctx.font = `${style} ${weight} ${size}px ${family}`;
+    lines = wrapText(ctx, text, maxWidth);
+    if (lines.length <= maxLines || size <= minSize) break;
+    size -= 4;
+  }
+  ctx.fillStyle = color;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  lines.slice(0, maxLines).forEach((line, i) => {
+    ctx.fillText(line, POSTER_W / 2, y + i * size * lineHeight);
+  });
+  return y + Math.min(lines.length, maxLines) * size * lineHeight;
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+// A four-point sparkle, like the ones on the result page
+function drawSparkle(ctx, x, y, r, color) {
+  ctx.beginPath();
+  ctx.moveTo(x, y - r);
+  ctx.quadraticCurveTo(x + r * 0.15, y - r * 0.15, x + r, y);
+  ctx.quadraticCurveTo(x + r * 0.15, y + r * 0.15, x, y + r);
+  ctx.quadraticCurveTo(x - r * 0.15, y + r * 0.15, x - r, y);
+  ctx.quadraticCurveTo(x - r * 0.15, y - r * 0.15, x, y - r);
+  ctx.fillStyle = color;
+  ctx.fill();
+}
+
+// A row of pine trees along the bottom edge
+function drawTrees(ctx) {
+  // Back row (lighter, shorter) then front row (darker, taller)
+  [["#183022", 0.75, 70], ["#0c1711", 1, 0]].forEach(([shade, scale, shift]) => {
+    ctx.fillStyle = shade;
+    for (let x = -30 + shift; x < POSTER_W + 80; x += 140) {
+      const h = (150 + ((x * 7 + shift) % 70)) * scale;
+      const w = h * 0.42;
+      const base = POSTER_H - 20;
+      ctx.fillRect(x - w * 0.08, base - 4, w * 0.16, 30); // trunk
+      // Three stacked tiers, like a doodled pine
+      for (let tier = 0; tier < 3; tier++) {
+        const top = base - h + tier * h * 0.26;
+        const tierW = w * (0.55 + tier * 0.25);
+        ctx.beginPath();
+        ctx.moveTo(x, top);
+        ctx.lineTo(x + tierW, top + h * 0.42);
+        ctx.lineTo(x - tierW, top + h * 0.42);
+        ctx.closePath();
+        ctx.fill();
+      }
+    }
+  });
+  ctx.fillRect(0, POSTER_H - 22, POSTER_W, 22); // ground
+}
+
+function loadImage(src) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+
+async function drawStoryPoster(photo) {
+  const { ranking } = calculateResult();
+  const topType = ranking[0];
+  const result = RESULTS[topType];
+  const ko = LANG === "ko";
+  const body = '"Segoe UI", system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif';
+  const display = ko ? '"Jua", sans-serif' : '"Henny Penny", fantasy, cursive';
+
+  // Wait for the storybook fonts, or the canvas falls back to plain ones
+  if (document.fonts && document.fonts.load) {
+    await Promise.all([
+      document.fonts.load(`80px ${display}`, ko ? "숲속으로" : "Into the Woods"),
+      ko ? document.fonts.load('80px "Jua"', result.name) : null,
+    ]).catch(() => {});
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = POSTER_W;
+  canvas.height = POSTER_H;
+  const ctx = canvas.getContext("2d");
+
+  // Same forest glow as the website
+  const bg = ctx.createRadialGradient(540, 420, 60, 540, 700, 1500);
+  bg.addColorStop(0, "#2a4a37");
+  bg.addColorStop(0.45, "#1f3a2b");
+  bg.addColorStop(1, "#0f1c15");
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, POSTER_W, POSTER_H);
+
+  // Doodles only in the margins, so they never sit on the words:
+  // little stars along the top edge and down both sides
+  const stars = [
+    [90, 70, 14], [230, 120, 8], [400, 60, 10], [700, 95, 9], [830, 150, 11], [1040, 190, 8],
+    [45, 380, 10], [1035, 460, 12], [40, 760, 8], [1040, 900, 9], [48, 1150, 12], [1030, 1300, 9],
+    [42, 1480, 9], [1036, 1620, 11],
+  ];
+  stars.forEach(([x, y, r]) => drawSparkle(ctx, x, y, r, "rgba(255, 236, 170, 0.75)"));
+  // Crescent moon in the top-right corner (a circle with a bite cut out)
+  const moon = document.createElement("canvas");
+  moon.width = moon.height = 120;
+  const m = moon.getContext("2d");
+  m.fillStyle = "rgba(255, 244, 205, 0.9)";
+  m.beginPath();
+  m.arc(60, 60, 44, 0, Math.PI * 2);
+  m.fill();
+  m.globalCompositeOperation = "destination-out";
+  m.beginPath();
+  m.arc(82, 46, 40, 0, Math.PI * 2);
+  m.fill();
+  ctx.drawImage(moon, 900, 40);
+  drawTrees(ctx);
+
+  const title = document.querySelector("#page1 .title").textContent.trim();
+  const chapter = document.querySelector("#result > .chapter").textContent.trim();
+
+  // Title, then "You made it out. You are…"
+  ctx.shadowColor = "rgba(255, 236, 170, 0.45)";
+  ctx.shadowBlur = 30;
+  let y = drawWrapped(ctx, title, { y: 210, size: 96, maxLines: 1, family: display, color: "#f4efe2" });
+  ctx.shadowBlur = 0;
+  y = drawWrapped(ctx, chapter.toUpperCase(), { y: y + 40, size: 34, maxLines: 2, weight: "600", family: body, color: "#8fbf6a" });
+
+  // Your type, big and gold
+  y = drawWrapped(ctx, result.name, { y: y + 24, size: 104, minSize: 72, maxLines: 2, weight: "700", family: ko ? display : body, color: "#f2b84b", lineHeight: 1.12 });
+  y = drawWrapped(ctx, result.tagline, { y: y + 22, size: 42, minSize: 34, maxLines: 3, style: "italic", family: body, color: "#c9d3c3", lineHeight: 1.3 });
+
+  // The photo, with a soft frame. A long name or tagline makes it a bit
+  // smaller, so the web address always stays clear of Instagram's reply bar.
+  const py = y + 44;
+  const ph = Math.round(Math.max(360, Math.min(540, 1280 - py)));
+  const pw = Math.round((ph * 4) / 3);
+  const px = (POSTER_W - pw) / 2;
+  if (photo) {
+    ctx.save();
+    ctx.shadowColor = "rgba(0, 0, 0, 0.45)";
+    ctx.shadowBlur = 40;
+    ctx.shadowOffsetY = 14;
+    roundRect(ctx, px, py, pw, ph, 36);
+    ctx.fillStyle = "#1f3a2b";
+    ctx.fill();
+    ctx.restore();
+    ctx.save();
+    roundRect(ctx, px, py, pw, ph, 36);
+    ctx.clip();
+    // object-fit: cover, focused a bit above center (like the site)
+    const scale = Math.max(pw / photo.naturalWidth, ph / photo.naturalHeight);
+    const dw = photo.naturalWidth * scale;
+    const dh = photo.naturalHeight * scale;
+    ctx.drawImage(photo, px + (pw - dw) / 2, py + (ph - dh) * 0.4, dw, dh);
+    ctx.restore();
+    roundRect(ctx, px, py, pw, ph, 36);
+    ctx.lineWidth = 7;
+    ctx.strokeStyle = "rgba(143, 191, 106, 0.6)";
+    ctx.stroke();
+    // Sparkles hugging the photo's corners (outside it, not on any text)
+    drawSparkle(ctx, px - 26, py + 30, 20, "#ffe066");
+    drawSparkle(ctx, px + pw + 24, py + ph - 40, 24, "#ffe066");
+    drawSparkle(ctx, px + pw + 10, py - 18, 12, "#fff4c4");
+    y = py + ph;
+  }
+
+  // "with a streak of ..." and the trait words
+  const runnerUp = document.getElementById("result-runnerup").textContent.trim();
+  y = drawWrapped(ctx, runnerUp, { y: y + 40, size: 38, maxLines: 1, minSize: 30, family: body, color: "#8fbf6a" });
+
+  const traits = (result.core && result.core[0]) || [];
+  if (traits.length) {
+    ctx.font = `600 32px ${body}`;
+    const padX = 26;
+    const chipH = 60;
+    const gap = 16;
+    const chips = traits.slice(0, 4).map((word) => ({ word, w: ctx.measureText(word).width + padX * 2 }));
+    // Fit as many as possible on one centered row
+    let row = chips;
+    while (row.length > 1 && row.reduce((s, c) => s + c.w, 0) + gap * (row.length - 1) > 940) row = row.slice(0, -1);
+    const rowW = row.reduce((s, c) => s + c.w, 0) + gap * (row.length - 1);
+    let cx = (POSTER_W - rowW) / 2;
+    const cy = y + 30;
+    row.forEach(({ word, w }) => {
+      roundRect(ctx, cx, cy, w, chipH, chipH / 2);
+      ctx.fillStyle = "rgba(143, 191, 106, 0.18)";
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "rgba(143, 191, 106, 0.6)";
+      ctx.stroke();
+      ctx.fillStyle = "#f4efe2";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(word, cx + w / 2, cy + chipH / 2 + 1);
+      cx += w + gap;
+    });
+    y = cy + chipH;
+  }
+
+  // Call to action + the web address, in a gold pill so it stands out.
+  // Kept above Instagram's reply bar at the bottom of the screen.
+  const ctaY = Math.max(y + 60, 1500);
+  const cta = t("story.cta", "Which one are you? Take the quiz:");
+  const ctaEnd = drawWrapped(ctx, cta, { y: ctaY, size: 40, maxLines: 2, minSize: 32, weight: "600", family: body, color: "#f4efe2" });
+  const address = siteAddress();
+  let size = 40;
+  ctx.font = `700 ${size}px ${body}`;
+  while (ctx.measureText(address).width > 860 && size > 22) {
+    size -= 2;
+    ctx.font = `700 ${size}px ${body}`;
+  }
+  const pillW = Math.min(980, ctx.measureText(address).width + 90);
+  const pillH = size + 52;
+  const pillX = (POSTER_W - pillW) / 2;
+  const pillY = ctaEnd + 22;
+  ctx.save();
+  ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
+  ctx.shadowBlur = 24;
+  ctx.shadowOffsetY = 8;
+  roundRect(ctx, pillX, pillY, pillW, pillH, pillH / 2);
+  ctx.fillStyle = "#f2b84b";
+  ctx.fill();
+  ctx.restore();
+  ctx.fillStyle = "#14241b";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(address, POSTER_W / 2, pillY + pillH / 2 + 1);
+
+  return canvas;
+}
+
+function canvasToBlob(canvas) {
+  return new Promise((resolve, reject) => {
+    try {
+      canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("no blob"))), "image/png");
+    } catch (err) {
+      reject(err); // e.g. opened as a file:// page, where photos "taint" the canvas
+    }
+  });
+}
+
+async function makeStoryPoster() {
+  const photo = await loadImage(RESULTS[calculateResult().ranking[0]].image.src);
+  try {
+    return await canvasToBlob(await drawStoryPoster(photo));
+  } catch {
+    return canvasToBlob(await drawStoryPoster(null)); // same poster, without the photo
+  }
+}
+
+function storyFile() {
+  return new File([storyBlob], "into-the-woods-story.png", { type: "image/png" });
+}
+
+function canShareImage() {
+  try {
+    return !!(navigator.canShare && navigator.canShare({ files: [storyFile()] }));
+  } catch {
+    return false;
+  }
+}
+
+async function openStoryPoster(opener) {
+  storyOpener = opener;
+  const modal = document.getElementById("story-modal");
+  const status = document.getElementById("share-status");
+  status.textContent = t("story.making", "Making your poster…");
+
+  // The link goes on Instagram's Link sticker, so copy it now
+  copyText(`${shareText()} ${shareLink()}`);
+
+  try {
+    storyBlob = await makeStoryPoster();
+  } catch {
+    status.textContent = t("story.failed", "Couldn't make the poster on this browser. Try a screenshot instead!");
+    return;
+  }
+  if (storyBlobUrl) URL.revokeObjectURL(storyBlobUrl);
+  storyBlobUrl = URL.createObjectURL(storyBlob);
+
+  document.getElementById("story-preview").src = storyBlobUrl;
+  document.getElementById("story-save-btn").href = storyBlobUrl;
+  const shareable = canShareImage();
+  document.getElementById("story-share-btn").hidden = !shareable;
+  document.getElementById("story-modal-tip").textContent = shareable
+    ? t("story.tipShare", "Your link is copied! Tap Share, pick Instagram, then Story. Add a Link sticker and paste the link so friends can tap straight to the quiz.")
+    : t("story.tipSave", "Your link is copied! Save the image, post it to your Instagram Story, then add a Link sticker and paste the link.");
+
+  status.textContent = t("share.igstory", "Poster ready! Link copied for your Link sticker.");
+  modal.hidden = false;
+  document.getElementById(shareable ? "story-share-btn" : "story-save-btn").focus();
+}
+
+function closeStoryPoster() {
+  const modal = document.getElementById("story-modal");
+  if (modal.hidden) return;
+  modal.hidden = true;
+  if (storyOpener) storyOpener.focus();
+}
+
+async function shareStoryPoster() {
+  const status = document.getElementById("share-status");
+  try {
+    // Image only: Instagram leaves itself out of the share sheet when text is added
+    await navigator.share({ files: [storyFile()] });
+    closeStoryPoster();
+    status.textContent = t("share.done", "Shared!");
+  } catch (err) {
+    if (err && err.name === "AbortError") return; // they closed the sheet
+    document.getElementById("story-save-btn").click(); // couldn't share: save it instead
+  }
+}
+
+function wireStoryPoster() {
+  const modal = document.getElementById("story-modal");
+  document.getElementById("story-share-btn").addEventListener("click", shareStoryPoster);
+  document.getElementById("story-close-btn").addEventListener("click", closeStoryPoster);
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) closeStoryPoster(); // tapped the dark background
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeStoryPoster();
+  });
 }
 
 // ---------------------------------------------------------
@@ -2216,6 +2609,7 @@ if (allPersonalities) {
   document.querySelectorAll("[data-share]").forEach((option) => {
     option.addEventListener("click", onShareOption);
   });
+  wireStoryPoster();
 
   // Opened from a shared link (or "Back to my result")? Jump straight to that result.
   const sharedPath = pathFromUrl();

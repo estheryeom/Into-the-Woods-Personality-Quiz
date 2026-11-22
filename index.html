@@ -426,6 +426,27 @@
           </span>
           Instagram
         </a>
+        <!-- Makes a story-sized poster of your result (see makeStoryPoster in script.js) -->
+        <button type="button" class="share-option" data-share="igstory">
+          <span class="share-icon share-icon-igstory" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><path d="M12 8.5v7M8.5 12h7"/></svg>
+          </span>
+          IG Story
+        </button>
+      </div>
+
+      <!-- Instagram Story poster: preview + share/save. Filled in by script.js -->
+      <div id="story-modal" class="story-modal" role="dialog" aria-modal="true" aria-labelledby="story-modal-title" hidden>
+        <div class="story-modal-card">
+          <h3 id="story-modal-title" class="story-modal-title">Your Instagram Story poster</h3>
+          <img id="story-preview" class="story-preview" alt="Your result as an Instagram Story poster">
+          <p id="story-modal-tip" class="story-modal-tip">Your link is copied. In Instagram, add a Link sticker and paste it so friends can tap straight to the quiz.</p>
+          <div class="story-modal-actions">
+            <button type="button" id="story-share-btn" class="restart-btn">Share to Instagram</button>
+            <a id="story-save-btn" class="restart-btn secondary-btn" download="into-the-woods-story.png" href="#">Save image</a>
+          </div>
+          <button type="button" id="story-close-btn" class="story-close-btn" aria-label="Close">×</button>
+        </div>
       </div>
 
       <button id="restart-btn" class="restart-btn">Take the quiz again</button>
