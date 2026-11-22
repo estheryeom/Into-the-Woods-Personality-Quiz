@@ -59,6 +59,7 @@ const KO = {
     "#page1 .title": `숲속으로`,
     "#page1 .subtitle": `짧은 이야기로 알아보는 내 성격 테스트.`,
     ".start-btn": `가보자고`,
+    ".start-btn[data-choice='reliant']": `가보자고!`,
 
     // Name page
     "#page-name .question": `이름이 뭐야?`,
