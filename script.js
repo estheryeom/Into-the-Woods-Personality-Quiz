@@ -926,8 +926,8 @@ const RESULTS = {
     tagline: "Brought a ring light. There's no outlet.",
     image: {
       src: "images/glamper.jpg",
-      alt: "A fluffy silver Persian kitten wearing a pink bell collar, gazing upward",
-      credit: "Volkan_83, CC BY 2.0",
+      alt: "A fluffy white Persian cat lounging like royalty on a black leather sofa",
+      credit: "Dorian Claeys, CC BY-SA 2.5",
     },
     description:
       "You came to the woods with a skincare routine, a throw blanket and strong opinions about the tent. You love beautiful things, good food and being comfortable, and you're not going to apologize for it. Under all the complaining is something softer: you make places feel nice because feeling cared for matters to you more than you admit. Things only get rough when life stops being comfortable, because that's the part you've had the least practice with.",
@@ -958,8 +958,8 @@ const RESULTS = {
     tagline: "Didn't bring snacks. Has everyone's snacks.",
     image: {
       src: "images/schemer.jpg",
-      alt: "A baby raccoon peeking over the edge of a flower bed, looking straight at the camera",
-      credit: "Ammulfinger, CC BY 4.0",
+      alt: "A fluffy baby red fox standing in the woods, glancing back at the camera",
+      credit: "Tognopop's grandfather (public domain)",
     },
     description:
       "You always have an angle. You read the room, work out what everyone wants, and somehow walk away with exactly what you came for, and people thank you for it. It isn't that you don't care about them. Somewhere along the way you learned that asking straight out gets you a no, so you stopped asking and started arranging. It works beautifully. The cost is that nobody, sometimes not even you, is sure when you're being real.",
