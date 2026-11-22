@@ -18,7 +18,7 @@
    ========================================================= */
 
 // ---------------------------------------------------------
-// The 10 personality types (short names for the meters)
+// The 12 personality types (short names for the meters)
 // ---------------------------------------------------------
 const TYPES = {
   scout:       "The Eagle Scout",
@@ -31,6 +31,8 @@ const TYPES = {
   medic:       "The Field Medic",
   tattletale:  "The Tattletale",
   camper:      "The Happy Camper",
+  glamper:     "The Glamper",
+  schemer:     "The Schemer",
 };
 
 // ---------------------------------------------------------
@@ -52,13 +54,13 @@ const ANSWERS = {
   },
   reliant: {
     text: "Found the tiny button next to the big one",
-    points: { tattletale: 2, medic: 1 },
+    points: { tattletale: 2, schemer: 1 },
     outcome: "Your friend planned everything, even the bear spray they tucked in your bag \"just in case.\" You follow the group into the pines.",
     next: "page-name",
   },
   carefree: {
     text: "Clicked the medium button at the bottom",
-    points: { camper: 2, mystic: 1 },
+    points: { camper: 2, mystic: 1, glamper: 1 },
     outcome: "Saturday morning. Bag packed in a hurry, hair still wet, you meet up with your friends at the trailhead. Whatever you forgot, you'll figure it out. Still, what a beautiful day.",
     next: "page-name",
   },
@@ -84,7 +86,7 @@ const ANSWERS = {
   },
   snacks: {
     text: "Offered the bear your snacks",
-    points: { camper: 2, medic: 1 },
+    points: { schemer: 2, camper: 1 },
     outcome: "The bear eats your gummy worms, bag and all. Then it looks at you like you're dessert.",
     next: "page2-5",
   },
@@ -118,7 +120,7 @@ const ANSWERS = {
   // ----- Page 3: lost in the woods -----
   phone: {
     text: "Kept using your dying phone to find a way out",
-    points: { lonewolf: 2, scout: 1 },
+    points: { lonewolf: 2, scout: 1, glamper: 1 },
     outcome: "The screen {{flickers}}, shows 1%, and goes black.",
     next: "page4",
   },
@@ -126,39 +128,65 @@ const ANSWERS = {
     text: "Trusted that you could find your friends",
     points: { medic: 2, trailblazer: 1 },
     outcome: "You call their names for an hour. Nobody answers.",
-    next: "page5",
+    next: "page-camp",
   },
 
   // ----- Page 4: the phone dies -----
   throw: {
     text: "Threw your dead phone at the ground",
-    points: { bard: 2, trailblazer: 1 },
+    points: { glamper: 2, bard: 1 },
     outcome: "The screen cracks. That felt great for two whole seconds.",
-    next: "page5",
+    next: "page-camp",
   },
   shelter: {
     text: "Decided to find shelter before dark",
     points: { survivalist: 2, scout: 1 },
     outcome: "You look for anything that could block the wind.",
-    next: "page5",
+    next: "page-camp",
   },
   retrace: {
     text: "Retraced your steps, trusting your sense of direction",
     points: { trailblazer: 2, mystic: 1 },
     outcome: "You're sure you came this way. Pretty sure.",
-    next: "page5",
+    next: "page-camp",
   },
   stay: {
     text: "Stayed right where you were so you couldn't get more lost",
     points: { scout: 2, tattletale: 1 },
     outcome: "You sit on a rock. Technically, this is what the experts say to do.",
+    next: "page-camp",
+  },
+
+  // ----- Page 4.5: the empty campsite -----
+  raid: {
+    text: "Took the campsite's snacks and headlamp",
+    points: { schemer: 2, survivalist: 1 },
+    outcome: "You stuff a sleeve of cookies and a headlamp into your jacket. The headlamp is dead. The cookies are not. You keep walking.",
+    next: "page5",
+  },
+  iou: {
+    text: "Borrowed one granola bar and left a signed IOU",
+    points: { tattletale: 2, medic: 1 },
+    outcome: "\"IOU: 1 granola bar (oat & honey).\" Signed, dated, time-stamped, tucked under a rock. You keep walking.",
+    next: "page5",
+  },
+  tentnap: {
+    text: "Crawled into the tent for the real pillow",
+    points: { glamper: 2, camper: 1 },
+    outcome: "You wake up an hour later with a pillow crease on your face. Still nobody. You take the pillow with you.",
+    next: "page5",
+  },
+  backstory: {
+    text: "Looked through their stuff to figure out who lives there",
+    points: { bard: 2, mystic: 1 },
+    outcome: "A crossword, three harmonicas and a photo of a goat in a sweater. You decide it belongs to a retired magician, and leave before he gets back.",
     next: "page5",
   },
 
   // ----- Page 5: the fallen tree -----
   leaves: {
     text: "Shed a single tear and gathered dry leaves for a cushion",
-    points: { camper: 2 },
+    points: { camper: 2, glamper: 1 },
     outcome: "Your leaf pile is cozy. Well, cozy-ish.",
     next: "page6",
   },
@@ -202,7 +230,7 @@ const ANSWERS = {
   },
   hoard: {
     text: "Secretly kept your trail mix to yourself",
-    points: { lonewolf: 2, survivalist: 1 },
+    points: { schemer: 2, survivalist: 1 },
     outcome: "You eat it one piece at a time so the bag doesn't crinkle. Nobody's here. Then you hear something.",
     next: "page7",
   },
@@ -254,7 +282,7 @@ const ANSWERS = {
   },
   pretend: {
     text: "Pretended to be asleep",
-    points: { camper: 2, bard: 1 },
+    points: { schemer: 2, camper: 1 },
     outcome: "You count to five hundred and peek. The shapes are gone. Or somewhere you can't see.",
     next: "page10",
   },
@@ -268,13 +296,13 @@ const ANSWERS = {
   },
   question: {
     text: "Tested the voice with a question only your friend would know",
-    points: { scout: 2, nightwatch: 1 },
+    points: { schemer: 2, nightwatch: 1 },
     outcome: "\"What's our group chat called?\" Silence. Then, right behind your ear: \"Come here.\" You run.",
     next: "page9",
   },
   nicetry: {
     text: "Told the voice \"Nice try\" and stayed put",
-    points: { survivalist: 2, lonewolf: 1 },
+    points: { survivalist: 2, lonewolf: 1, schemer: 1 },
     outcome: "It calls your name for an hour. Then it stops.",
     next: "page10",
   },
@@ -348,7 +376,7 @@ const ANSWERS = {
   fairywand: {
     text: "Knew it was a real fairy's key",
     points: { bard: 2, mystic: 1 },
-    outcome: "You hold it up, and the star shines brighter, like it's happy to be found. You knew it.",
+    outcome: "You hold it up, and the ((star)) shines brighter, like it's happy to be found. You knew it.",
     next: "page-door",
   },
   evidence: {
@@ -359,7 +387,7 @@ const ANSWERS = {
   },
   burger: {
     text: "Wished on the key's star for a cheeseburger",
-    points: { camper: 2, mystic: 1 },
+    points: { glamper: 2, camper: 1 },
     outcome: "\"One cheeseburger, please.\" Nothing. But the star flickers, like it's laughing at you.",
     next: "page-door",
   },
@@ -405,13 +433,13 @@ const ANSWERS = {
   },
   spell: {
     text: "Asked the fairy to teach you a spell",
-    points: { bard: 2, mystic: 1 },
+    points: { schemer: 2, bard: 1 },
     outcome: "He teaches you a spell for finding lost things. You spin three times, feeling ridiculous, and stop facing a porch light. \"HEY! We've got one!\"",
     next: "page11",
   },
   stayhere: {
     text: "Asked the fairy if you could stay",
-    points: { camper: 2, lonewolf: 1 },
+    points: { glamper: 2, camper: 1 },
     outcome: "\"Absolutely not. You'd track mud everywhere.\" He gives you a thimble of tea that warms you to your toes, then points past you. \"Your ride's here.\"",
     next: "page11",
   },
@@ -419,25 +447,55 @@ const ANSWERS = {
   // ----- Page 11: rescued -----
   blame: {
     text: "Told the ranger the hike was your friend's idea",
-    points: { tattletale: 3 },
-    next: "result",
+    points: { tattletale: 3, schemer: 1 },
+    outcome: "The ranger writes down your friend's name. Your friend, ten feet away, hears every word. You get a ride home and sleep for eleven hours.",
+    next: "page-chat",
   },
   askfriends: {
     text: "Asked if your friends were okay",
     points: { medic: 2 },
-    next: "result",
+    outcome: "\"They're fine. One of them cried a little.\" You get a ride home and sleep for eleven hours.",
+    next: "page-chat",
   },
   handled: {
     text: "Insisted you had it handled",
     points: { lonewolf: 2, trailblazer: 1 },
-    next: "result",
+    outcome: "\"Sure you did.\" She hands you a second foil blanket anyway. You get a ride home and sleep for eleven hours.",
+    next: "page-chat",
   },
   food: {
     text: "Asked if there was any food",
-    points: { camper: 1, survivalist: 1 },
+    points: { glamper: 2, camper: 1 },
+    outcome: "She finds you a granola bar. You eat it in two bites and ask about a second one. You get a ride home and sleep for eleven hours.",
+    next: "page-chat",
+  },
+
+  // ----- Page 12: the group chat, the next morning -----
+  carousel: {
+    text: "Posted a 10-photo carousel",
+    points: { glamper: 2, mystic: 1 },
+    next: "result",
+  },
+  saga: {
+    text: "Told the full story, with a bigger bear",
+    points: { bard: 2, schemer: 1 },
+    next: "result",
+  },
+  timeline: {
+    text: "Sent a timeline of who did what, with timestamps",
+    points: { tattletale: 2, survivalist: 1 },
+    next: "result",
+  },
+  nexttrip: {
+    text: "Started planning the next trip",
+    points: { mystic: 2, camper: 1 },
     next: "result",
   },
 };
+
+// Share links made before the group-chat page existed end on a
+// page-11 answer. They're still complete runs, so keep them working.
+const OLD_LAST_PAGE = "page-chat";
 
 // ---------------------------------------------------------
 // Extra story lines that depend on your WHOLE path, not just
@@ -488,6 +546,11 @@ const STORY_EXTRAS = {
     if (picked("ration")) lines.push(t("extra.ration", "You offer the ranger your last third of granola bar. She declines."));
     if (picked("hoard")) lines.push(t("extra.hoard", "Your secret trail mix crinkles in your pocket. You say nothing."));
 
+    // The empty campsite was the rangers' supply camp
+    if (picked("raid")) lines.push(t("extra.raid", "\"Also, someone cleaned out our supply camp up the trail. Cookies, a headlamp...\" You chew very, very quietly."));
+    if (picked("iou")) lines.push(t("extra.iou", "\"And whoever left an IOU at our supply camp: very thorough. Time-stamped and everything.\""));
+    if (picked("tentnap")) lines.push(t("extra.tentnap", "\"Weird thing. Somebody napped in our supply tent and took the pillow.\" The pillow is under your arm right now."));
+
     // The tiny door: a little surprise, or a little regret
     if (openedDoor) {
       if (ateMushrooms()) lines.push(t("extra.fairyTold", "You tell the ranger about the fairy. She looks at your purple fingers. \"Sure, bud.\""));
@@ -506,7 +569,7 @@ const STORY_EXTRAS = {
 };
 
 // ---------------------------------------------------------
-// The 10 results
+// The 12 results
 //
 //   image:     a real photo (no AI) from Wikimedia Commons, saved in /images
 //   strengths: [title, detail] x6. Sincere, with one playful line.
@@ -838,6 +901,70 @@ const RESULTS = {
     stress: "You check out: sleep, scroll, numb out, and pretend the problem isn't there until it's too big to ignore.",
     need: "To know that what you want matters. And a gentle push to act before \"later\" turns into \"too late.\"",
   },
+  glamper: {
+    name: "The Glamper",
+    tagline: "Brought a ring light. There's no outlet.",
+    image: {
+      src: "images/glamper.jpg",
+      alt: "A fluffy silver Persian kitten wearing a pink bell collar, gazing upward",
+      credit: "Volkan_83, CC BY 2.0",
+    },
+    description:
+      "You came to the woods with a skincare routine, a throw blanket and strong opinions about the tent. You love beautiful things, good food and being comfortable, and you're not going to apologize for it. Under all the complaining is something softer: you make places feel nice because feeling cared for matters to you more than you admit. Things only get rough when life stops being comfortable, because that's the part you've had the least practice with.",
+    strengths: [
+      ["Great taste", "You know what looks good, tastes good and feels good, and everyone's life is a little nicer for it."],
+      ["Makes anywhere cozy", "Give you ten minutes and the tent is a boutique hotel. Fairy lights included."],
+      ["Knows what you want", "You don't pretend to be fine with things you're not. People always know where you stand."],
+      ["Brings the good stuff", "Real coffee, decent snacks, the nice blanket. Everyone mocks your packing until they need something from it."],
+      ["Self-care pro", "You rest, you hydrate, you set boundaries. Most people could learn a thing or two from you."],
+      ["Fun once you're comfy", "Get you warm and fed, and you're the best company at the campsite."],
+    ],
+    watchouts: [
+      ["Complaining is your cardio", "The bugs, the dirt, the cold, the bugs again. Everyone else is cold too. They're just not narrating it."],
+      ["High maintenance", "You call it having standards. Your friends call it the 40-minute delay while you found a flattering angle."],
+      ["Pics or it didn't happen", "You spent the whole sunset filming the sunset. You were there. You just didn't see it."],
+      ["Bails when it gets hard", "The second things get ugly or uncomfortable, you want out. Most growth is uncomfortable, so you keep skipping it."],
+      ["Your comfort, their problem", "Someone always ends up carrying your extra bag or giving up the good sleeping spot. You rarely notice who."],
+      ["Your feed is happier than you are", "You'd rather look like you're having a great time than admit you're not. People can tell."],
+    ],
+    core: [["Refined", "Expressive", "Comfort-loving"], "You care how things look and feel, and you make the world a little prettier."],
+    drive: "Comfort and beauty. You want life to feel good and look good, and you secretly like being a little envied.",
+    wiring: "Very tuned in to your senses: textures, smells, sounds, vibes. Easily delighted, and just as easily annoyed.",
+    stress: "You get whiny and sulky, retreat to whatever comfort you can find, and make sure everyone knows how much you're suffering.",
+    need: "Proof that you can handle hard, unglamorous things and come out fine. And friends who like you with bed hair and no filter.",
+  },
+  schemer: {
+    name: "The Schemer",
+    tagline: "Didn't bring snacks. Has everyone's snacks.",
+    image: {
+      src: "images/schemer.jpg",
+      alt: "A baby raccoon peeking over the edge of a flower bed, looking straight at the camera",
+      credit: "Ammulfinger, CC BY 4.0",
+    },
+    description:
+      "You always have an angle. You read the room, work out what everyone wants, and somehow walk away with exactly what you came for, and people thank you for it. It isn't that you don't care about them. Somewhere along the way you learned that asking straight out gets you a no, so you stopped asking and started arranging. It works beautifully. The cost is that nobody, sometimes not even you, is sure when you're being real.",
+    strengths: [
+      ["Strategic", "You're three moves ahead while everyone else is still working out the first one."],
+      ["Charming", "You could talk a bear out of its lunch, then get it to carry the bag for you."],
+      ["Resourceful", "Whatever you need, you know who has it and exactly how to get it."],
+      ["Reads people fast", "Five minutes after meeting someone, you know what they want and what they're afraid of."],
+      ["Born negotiator", "Deals, trades, compromises. You find the version where everyone thinks they won."],
+      ["Gets things done through people", "You can't fix the car. But you know who can, and they'll do it for free."],
+    ],
+    watchouts: [
+      ["It's manipulation", "You call it networking, or persuasion, or \"just helping things along.\" It's manipulation, and more people have noticed than you think."],
+      ["Everything's a transaction", "You keep a quiet tally of favors. Your friends have started to wonder if they're friends or assets."],
+      ["Hard to trust", "You've told so many convenient versions of the truth that people don't know which one is real."],
+      ["Never your fault", "When the plan blows up, it was somehow someone else's idea. It was not someone else's idea."],
+      ["Allergic to asking directly", "You'll spend an hour setting up the perfect situation instead of saying one honest sentence: \"Can I have that?\""],
+      ["Nobody really knows you", "If you're always playing an angle, people only ever meet the angle. That gets lonely."],
+    ],
+    core: [["Clever", "Persuasive", "Resourceful"], "You see how things really work, and you use it to get what you want."],
+    drive: "Getting what you want without having to ask for it. Being outsmarted is your worst nightmare.",
+    wiring: "Sharp, social and strategic. You're always reading the room and quietly working out your next move.",
+    stress: "You scheme harder: more secrets, more spin, more playing people against each other, until the whole plan collapses on you.",
+    need: "To find out that just asking often works. And people you can be completely honest with, who stay anyway.",
+  },
 };
 
 // ---------------------------------------------------------
@@ -922,7 +1049,8 @@ function fillStory(pageId) {
     const p = document.createElement("p");
     // Words wrapped in {{double braces}} get the red flicker effect.
     // Words wrapped in [[double brackets]] sit on a little smoking campfire.
-    line.split(/(\{\{.+?\}\}|\[\[.+?\]\])/).forEach((part) => {
+    // Words wrapped in ((double parens)) get a glowing star behind them.
+    line.split(/(\{\{.+?\}\}|\[\[.+?\]\]|\(\(.+?\)\))/).forEach((part) => {
       if (part.startsWith("{{")) {
         const span = document.createElement("span");
         span.className = "flicker-word";
@@ -930,6 +1058,8 @@ function fillStory(pageId) {
         p.appendChild(span);
       } else if (part.startsWith("[[")) {
         p.appendChild(makeCampfireWord(part.slice(2, -2)));
+      } else if (part.startsWith("((")) {
+        p.appendChild(makeStarWord(part.slice(2, -2)));
       } else if (part) {
         p.append(part);
       }
@@ -1014,6 +1144,28 @@ function makeCampfireWord(text) {
       <path class="campfire-spark" d="M8 8l2 2M32 8l-2 2"/>
     </svg>`;
   span.appendChild(fire);
+  return span;
+}
+
+// A word with a soft gold star glowing behind it (same gold as the star key)
+function makeStarWord(text) {
+  const span = document.createElement("span");
+  span.className = "star-word";
+
+  const star = document.createElement("span");
+  star.className = "star-behind";
+  star.setAttribute("aria-hidden", "true");
+  star.innerHTML = `
+    <svg viewBox="0 0 40 40">
+      <path class="star-rays" d="M20 0v4M20 36v4M0 20h4M36 20h4"/>
+      <path class="star-shape" d="M20 6l4.1 8.6 9.4 1.2-6.9 6.5 1.8 9.3L20 27l-8.4 4.6 1.8-9.3-6.9-6.5 9.4-1.2z"/>
+    </svg>`;
+  span.appendChild(star);
+
+  const word = document.createElement("span");
+  word.className = "star-text";
+  word.textContent = text;
+  span.appendChild(word);
   return span;
 }
 
@@ -1158,15 +1310,21 @@ const DOODLE_MUSHROOMS = `
 
 const DOODLE_CINNAMON_rolls = `
   <svg viewBox="0 0 60 60" aria-hidden="true">
-    <path class="doodle-steam steam-1" d="M22 17c-3-2 3-4 0-6s3-4 0-6"/>
-    <path class="doodle-steam steam-2" d="M30 15c-3-2 3-4 0-6s3-4 0-6"/>
-    <path class="doodle-steam steam-3" d="M38 17c-3-2 3-4 0-6s3-4 0-6"/>
-    <circle class="doodle-bun" cx="30" cy="38" r="17"/>
-    <path class="doodle-swirl" d="M30 38a2 2 0 0 1 4 0a4 4 0 0 1-8 0a6 6 0 0 1 12 0a8 8 0 0 1-16 0a10 10 0 0 1 20 0a12 12 0 0 1-24 0"/>
-    <path class="doodle-icing" d="M15 33c4-3 7 1 11-1s7-3 11 0 7 1 8-1M21 32v5M33 31v6M41 32v3"/>
-    <circle class="doodle-drip" cx="21" cy="38" r="1.4"/>
-    <circle class="doodle-drip" cx="33" cy="38" r="1.4"/>
-    <circle class="doodle-drip" cx="41" cy="36" r="1.2"/>
+    <path class="doodle-steam steam-1" d="M22 14c-3-2 3-4 0-6s3-4 0-6"/>
+    <path class="doodle-steam steam-2" d="M30 12c-3-2 3-4 0-6s3-4 0-6"/>
+    <path class="doodle-steam steam-3" d="M38 14c-3-2 3-4 0-6s3-4 0-6"/>
+    <!-- side of the roll, a little darker (more baked) -->
+    <path class="doodle-bun doodle-bun-side" d="M7 28v9c0 8 10 14 23 14s23-6 23-14v-9"/>
+    <path class="doodle-layer" d="M11 41c3 4 8 6 12 7"/>
+    <!-- top of the roll, seen at an angle, with a bold 2½-turn swirl -->
+    <ellipse class="doodle-bun" cx="30" cy="28" rx="23" ry="12"/>
+    <path class="doodle-swirl" d="M30 28a3.5 1.75 0 0 1 7 0a7 3.5 0 0 1-14 0a10.5 5.25 0 0 1 21 0a14 7 0 0 1-28 0a17.5 8.75 0 0 1 35 0"/>
+    <!-- thick icing draped over the front edge, dripping down the side -->
+    <path class="doodle-icing" d="M12 31c2 4 7 7 13 8v7a2 2 0 0 0 4 0v-6.5c3 0 6 0 9-.5v10a2 2 0 0 0 4 0v-11c3-1 6-3 8-6-3 1-5-1-8 0s-6 3-10 2-6-3-10-2-6 2-10 0z"/>
+    <!-- powdered sugar -->
+    <circle class="doodle-sugar" cx="47" cy="44" r="1"/>
+    <circle class="doodle-sugar" cx="16" cy="46" r="1"/>
+    <circle class="doodle-sugar" cx="34" cy="49" r="1"/>
   </svg>`;
 
 // Answer you just picked -> [left doodle, right doodle] around its outcome line
@@ -1405,7 +1563,7 @@ function choose(choiceKey) {
 }
 
 // ---------------------------------------------------------
-// Friends & foes: who each type gets along with (and who drives
+// Friends & foes (3 each): who each type gets along with (and who drives
 // them up a tree), based on their core traits.
 //   [type, why] — the type's photo comes from RESULTS
 // ---------------------------------------------------------
@@ -1414,100 +1572,144 @@ const RELATIONS = {
     friends: [
       ["survivalist", "Finally, someone else who packed the backup batteries."],
       ["medic", "You run the plan, they keep everyone in one piece. Dream team."],
+      ["tattletale", "Someone else who actually reads the trail rules sign."],
     ],
     foes: [
       ["mystic", "Every plan you make, they snack their way off of it."],
       ["lonewolf", "Your group itinerary is, to them, a suggestion for other people."],
+      ["glamper", "Packed three outfits and zero first-aid supplies."],
     ],
   },
   survivalist: {
     friends: [
       ["scout", "You both trust preparation over luck. Your packs weigh the same."],
       ["nightwatch", "They spot the danger, you already have the gear for it."],
+      ["lonewolf", "Neither of you needs rescuing, and you respect that about each other."],
     ],
     foes: [
       ["camper", "Brought a hammock and zero snacks. Expects to share yours."],
       ["mystic", "You ration. They eat whatever grows on a log."],
+      ["glamper", "Packed a hair dryer instead of a water filter. In the woods."],
     ],
   },
   nightwatch: {
     friends: [
       ["survivalist", "You notice the problem, they've already got a plan for it."],
       ["tattletale", "Two sets of eyes that miss nothing. Nobody gets away with anything."],
+      ["medic", "They listen as well as you do, and they never push you to talk."],
     ],
     foes: [
       ["bard", "You're trying to listen for footsteps. They're singing."],
       ["trailblazer", "They charge ahead before you've finished reading the room."],
+      ["schemer", "You can see every string they're pulling. It's exhausting."],
     ],
   },
   trailblazer: {
     friends: [
       ["lonewolf", "Neither of you waits for permission. You just go."],
       ["mystic", "Always up for anything, and they actually keep up."],
+      ["scout", "They make the plan, you lead the charge. Things get done."],
     ],
     foes: [
       ["camper", "You want the summit. They want a nap at the bottom."],
       ["nightwatch", "Every time you move, they want to \"think about it first.\""],
+      ["schemer", "Agrees with every word you say, then does what they wanted anyway."],
     ],
   },
   lonewolf: {
     friends: [
       ["trailblazer", "They get it: freedom first, questions later."],
       ["camper", "Easygoing company that never asks where you're going."],
+      ["survivalist", "Self-sufficient and quiet. You trust that."],
     ],
     foes: [
       ["tattletale", "You wander off for five minutes and they file a missing-person report."],
       ["scout", "They want a buddy system. You are the buddy system."],
+      ["medic", "Keeps checking in on you. Please stop checking in on you."],
     ],
   },
   bard: {
     friends: [
       ["camper", "The best audience a storyteller could ask for."],
       ["mystic", "They give you the wildest material for your next story."],
+      ["glamper", "Finally, someone who appreciates a dramatic entrance."],
     ],
     foes: [
       ["nightwatch", "Shushes you right before the best part."],
       ["tattletale", "Fact-checks your story while you're still telling it."],
+      ["survivalist", "Interrupts your ghost story to explain why that couldn't happen."],
     ],
   },
   mystic: {
     friends: [
       ["bard", "They turn your strangest moments into legends."],
       ["trailblazer", "Says yes to every adventure, just like you."],
+      ["schemer", "Always has a plan, and you're always in."],
     ],
     foes: [
       ["scout", "Has a printed schedule. You have vibes."],
       ["survivalist", "Won't share snacks and hides the mushrooms from you."],
+      ["tattletale", "Wrote down everything you ate. For the medic. And for the record."],
     ],
   },
   medic: {
     friends: [
       ["scout", "They keep the group organized, you keep the group okay."],
       ["camper", "Warm, gentle and kind, your kind of people."],
+      ["nightwatch", "Quiet and thoughtful, and they actually let you help."],
     ],
     foes: [
       ["lonewolf", "Refuses help, then shows up with a sprained ankle."],
       ["mystic", "You've treated them for \"just one bite\" three times this trip."],
+      ["schemer", "Knows exactly how nice you are, and runs a tab on it."],
     ],
   },
   tattletale: {
     friends: [
       ["nightwatch", "They see everything, and you make sure it gets reported."],
       ["scout", "Finally, someone who respects the rules as much as you do."],
+      ["survivalist", "You both read the warning signs. Literally, every single one."],
     ],
     foes: [
       ["lonewolf", "Breaks every rule, then disappears before you can write it down."],
       ["bard", "That's not what happened and you both know it."],
+      ["schemer", "You know they did it. You just can't prove it. Yet."],
     ],
   },
   camper: {
     friends: [
       ["bard", "Campfire stories and good vibes, all night long."],
       ["lonewolf", "Neither of you needs to talk. It's nice."],
+      ["medic", "They bring the tea, you bring the calm. Perfect trade."],
     ],
     foes: [
       ["trailblazer", "Keeps saying \"just one more mile\" like that's a good thing."],
       ["survivalist", "Turns a relaxing night into a disaster drill."],
+      ["scout", "Wakes you up at 6 a.m. for a \"fun\" sunrise hike."],
+    ],
+  },
+  glamper: {
+    friends: [
+      ["bard", "You both believe life should be a little more cinematic."],
+      ["schemer", "Somehow always finds you an outlet. You don't ask how."],
+      ["camper", "Slow mornings, fuzzy socks, no alarms. Bliss."],
+    ],
+    foes: [
+      ["survivalist", "Calls your hair dryer \"dead weight.\" It's emotional support."],
+      ["trailblazer", "Wants to hike nine miles before breakfast. You want breakfast."],
+      ["scout", "Their packing list has no room for your pillow."],
+    ],
+  },
+  schemer: {
+    friends: [
+      ["glamper", "You get them the nice things. They never ask where from."],
+      ["mystic", "Says yes to every plan and never asks what's in it for you."],
+      ["camper", "Easygoing, never asks questions, always shares."],
+    ],
+    foes: [
+      ["tattletale", "Writes down everything you say. Ruins everything."],
+      ["nightwatch", "Saw through your plan before you'd finished making it."],
+      ["trailblazer", "Two people trying to run the same group, and only one of you does it openly."],
     ],
   },
 };
@@ -1698,7 +1900,8 @@ function pathFromUrl() {
   if (!raw) return null;
   const keys = raw.split(".");
   if (!keys.every((key) => Object.prototype.hasOwnProperty.call(ANSWERS, key))) return null;
-  if (ANSWERS[keys[keys.length - 1]].next !== "result") return null;
+  const lastNext = ANSWERS[keys[keys.length - 1]].next;
+  if (lastNext !== "result" && lastNext !== OLD_LAST_PAGE) return null;
   return keys;
 }
 

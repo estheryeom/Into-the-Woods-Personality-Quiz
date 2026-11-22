@@ -379,11 +379,14 @@ html[lang="ko"] .title-font {
 .side-doodle .doodle-stem  { stroke: var(--cream); }
 .side-doodle .doodle-spot  { fill: #e0664c; stroke: none; }
 
-/* Cinnamon roll: golden bun, cinnamon swirl, cream icing, wavy heat lines */
-.side-doodle .doodle-bun   { stroke: #e0a050; }
-.side-doodle .doodle-swirl { stroke: #c9733a; stroke-width: 2.2; }
-.side-doodle .doodle-icing { stroke: var(--cream); stroke-width: 2; }
-.side-doodle .doodle-drip  { fill: var(--cream); stroke: none; }
+/* Cinnamon roll: warm golden bun, bold cinnamon swirl, thick cream icing,
+   wavy heat lines. A soft golden tint so it looks baked and edible. */
+.side-doodle .doodle-bun      { stroke: #f0b866; fill: #c98a45; }
+.side-doodle .doodle-bun-side { fill: #9a5f2e; }
+.side-doodle .doodle-swirl    { stroke: #6b3518; stroke-width: 3; }
+.side-doodle .doodle-icing    { fill: var(--cream); stroke: var(--cream); stroke-width: 1.5; }
+.side-doodle .doodle-layer    { stroke: #6b3518; stroke-width: 1.8; }
+.side-doodle .doodle-sugar { fill: var(--cream); stroke: none; }
 .side-doodle .doodle-steam { stroke: var(--text-soft); stroke-width: 1.8; animation: steam-rise 2.4s ease-in-out infinite; }
 .side-doodle .steam-2 { animation-delay: 0.8s; }
 .side-doodle .steam-3 { animation-delay: 1.6s; }
@@ -399,8 +402,8 @@ html[lang="ko"] .title-font {
   .side-doodle .doodle-steam { animation: none; opacity: 0.8; }
 }
 
-/* Second roll faces the other way */
-.side-doodled > .side-doodle:last-child:has(.doodle-bun) svg { transform: scaleX(-1) rotate(-8deg); }
+/* Second roll faces the other way (a plain flip, no tilt: tilting blurs it) */
+.side-doodled > .side-doodle:last-child:has(.doodle-bun) svg { transform: scaleX(-1); }
 
 @media (max-width: 600px) {
   .side-doodle {
@@ -1506,4 +1509,79 @@ a.restart-btn:focus-visible,
   .smoke-puff:nth-child(2) { transform: translate(-30%, -1.4em) scale(1.3); }
   .smoke-puff:nth-child(3) { transform: translate(-70%, -2.4em) scale(1.7); opacity: 0.2; }
   .smoke-puff:nth-child(n+4) { display: none; }
+}
+
+/* A word with a gold star glowing softly behind it (the star key's gold) */
+.star-word {
+  position: relative;
+  display: inline-block;
+  isolation: isolate;          /* keeps the star behind the word, not the page */
+  white-space: nowrap;
+}
+
+.star-text {
+  position: relative;
+  color: #fff6d6;
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 6px rgba(242, 209, 107, 0.6);
+  animation: star-text-glow 2.8s ease-in-out infinite;
+}
+
+.star-behind {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3.4em;
+  height: 3.4em;
+  z-index: -1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.star-behind svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.star-behind .star-shape {
+  fill: #f2d16b;
+  fill-opacity: 0.25;
+  stroke: #f2d16b;
+  stroke-opacity: 0.6;
+  stroke-width: 1.2;
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(0 0 4px rgba(242, 209, 107, 0.9));
+  animation: star-shine 2.8s ease-in-out infinite;
+}
+
+.star-behind .star-rays {
+  fill: none;
+  stroke: var(--cream);
+  stroke-width: 1.6;
+  stroke-opacity: 0.6;
+  animation: key-twinkle 2.8s ease-in-out infinite;
+}
+
+@keyframes star-shine {
+  0%, 100% { transform: scale(0.92) rotate(0deg);  fill-opacity: 0.18;
+             filter: drop-shadow(0 0 3px rgba(242, 209, 107, 0.35)); }
+  50%      { transform: scale(1.06) rotate(8deg);  fill-opacity: 0.32;
+             filter: drop-shadow(0 0 7px rgba(242, 209, 107, 0.6)); }
+}
+
+@keyframes star-text-glow {
+  0%, 100% { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 4px rgba(242, 209, 107, 0.6); }
+  50%      { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 10px rgba(242, 209, 107, 1); }
+}
+
+/* Less motion: the star just glows steadily */
+@media (prefers-reduced-motion: reduce) {
+  .star-text,
+  .star-behind .star-shape,
+  .star-behind .star-rays { animation: none; }
 }
