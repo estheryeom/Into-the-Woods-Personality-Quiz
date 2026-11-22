@@ -103,9 +103,9 @@ const ANSWERS = {
     points: { glamper: 2 },
     next: "page2",
   },
-  omw: {
-    text: "Woke up at 6:50 and texted \"omw!!\" from bed",
-    points: { camper: 2, schemer: 1 },
+  bandaids: {
+    text: "Woke up at 6:15 to pack extra band-aids and snacks for whoever forgets theirs",
+    points: { medic: 2 },
     next: "page2",
   },
 
@@ -118,7 +118,7 @@ const ANSWERS = {
   },
   small: {
     text: "Made yourself small, hoping the bear wouldn't see you",
-    points: { nightwatch: 2, survivalist: 1 },
+    points: { nightwatch: 1, survivalist: 1 },
     outcome: "You hold your breath behind a bush. The bear huffs and wanders off. So, apparently, did your friends.",
     next: "page3",
   },
@@ -234,7 +234,7 @@ const ANSWERS = {
   },
   backstory: {
     text: "Looked through their stuff to figure out who lives there",
-    points: { bard: 2, mystic: 1 },
+    points: { bard: 3, mystic: 1 },
     outcome: "A crossword, three harmonicas and a photo of a goat in a sweater. You decide it belongs to a retired magician, and leave before he gets back.",
     next: "page5",
   },
@@ -338,7 +338,7 @@ const ANSWERS = {
   },
   pretend: {
     text: "Pretended to be asleep",
-    points: { schemer: 2 },
+    points: { schemer: 1 },
     outcome: "You count to five hundred and peek. The shapes are gone. Or somewhere you can't see.",
     next: "page10",
   },
@@ -532,9 +532,11 @@ const ANSWERS = {
 //   carousel, saga, timeline, nexttrip: the group chat (removed)
 const RETIRED_CHOICES = ["carousel", "saga", "timeline", "nexttrip"];
 
-// Answers that were swapped for a new one on the same page (when the
-// Tattletale was removed). Old share links get the new answer instead.
-const RENAMED_CHOICES = { carve: "patterns", blame: "technically" };
+// Answers that were swapped for a new one on the same page. Old share
+// links get the new answer instead.
+//   carve, blame: swapped when the Tattletale was removed
+//   omw: swapped for bandaids to make the Field Medic more common
+const RENAMED_CHOICES = { carve: "patterns", blame: "technically", omw: "bandaids" };
 
 // ---------------------------------------------------------
 // Extra story lines that depend on your WHOLE path, not just
