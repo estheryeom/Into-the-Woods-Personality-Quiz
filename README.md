@@ -136,5 +136,5 @@ All photos are real photographs from [Wikimedia Commons](https://commons.wikimed
 | `medic.jpg` | dbking | CC BY 2.0 | [link](https://commons.wikimedia.org/wiki/File:St._Bernard_puppy.jpg) |
 | `tattletale.jpg` | Mathias Appel | CC0 | [link](https://commons.wikimedia.org/wiki/File:Meerkat_Standing.jpg) |
 | `camper.jpg` | Wilfredor | CC0 | [link](https://commons.wikimedia.org/wiki/File:Hydrochoeris_hydrochaeris_in_Brazil_in_Petr%C3%B3polis,_Rio_de_Janeiro,_Brazil_09.jpg) |
-| `glamper.jpg` | Dorian Claeys | CC BY-SA 2.5 | [link](https://commons.wikimedia.org/wiki/File:Persan_white.jpg) |
+| `glamper.jpg` (white kitten) | Firman MPH (via Pixabay) | CC0 | [link](https://commons.wikimedia.org/wiki/File:A_white_kitten.jpg) |
 | `schemer.jpg` | Tognopop's grandfather | Public domain | [link](https://commons.wikimedia.org/wiki/File:Red_fox_pup_in_a_forest_of_Haute-Normandie.jpg) |

@@ -926,8 +926,8 @@ const RESULTS = {
     tagline: "Brought a ring light. There's no outlet.",
     image: {
       src: "images/glamper.jpg",
-      alt: "A fluffy white Persian cat lounging like royalty on a black leather sofa",
-      credit: "Dorian Claeys, CC BY-SA 2.5",
+      alt: "A fluffy pure-white kitten (not a grown cat) with one gold eye and one blue eye, gazing straight at the camera",
+      credit: "Firman MPH via Pixabay (CC0)",
     },
     description:
       "You came to the woods with a skincare routine, a throw blanket and strong opinions about the tent. You love beautiful things, good food and being comfortable, and you're not going to apologize for it. Under all the complaining is something softer: you make places feel nice because feeling cared for matters to you more than you admit. Things only get rough when life stops being comfortable, because that's the part you've had the least practice with.",
