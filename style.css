@@ -470,10 +470,6 @@ html[lang="ko"] .title-font {
   100% { opacity: 0;   transform: translateY(-3px); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .side-doodle .doodle-steam { animation: none; opacity: 0.8; }
-}
-
 /* Second roll faces the other way (a plain flip, no tilt: tilting blurs it) */
 .side-doodled > .side-doodle:last-child:has(.doodle-bun) svg { transform: scaleX(-1); }
 
@@ -516,10 +512,6 @@ html[lang="ko"] .title-font {
   94%           { transform: scaleY(0.08); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .angry-eyes .eye { animation: none; }
-}
-
 /* Tiny doodle key with a star head (key page) */
 .key-doodle {
   display: flex;
@@ -553,10 +545,6 @@ html[lang="ko"] .title-font {
   50%      { opacity: 1; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .key-doodle .key-sparkle { animation: none; }
-}
-
 /* Sparkles around the page 11 story lines and the result name + photo
    (see addSparkles in script.js). They twinkle, then fade out by 8 seconds. */
 .story-sparkled {
@@ -588,10 +576,6 @@ html[lang="ko"] .title-font {
 @keyframes story-sparkles-fade {
   0%, 80% { opacity: 1; }
   100%    { opacity: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .story-sparkle { animation: none; opacity: 0.8; }
 }
 
 /* Doodle cover over the question. Click to reveal.
@@ -1617,11 +1601,6 @@ a.restart-btn:focus-visible,
   }
 }
 
-/* People who asked for less motion just see steady red */
-@media (prefers-reduced-motion: reduce) {
-  .flicker-word { animation: none; }
-}
-
 /* A word sitting on a tiny campfire, smoke rising up through it */
 .campfire-word {
   position: relative;
@@ -1716,16 +1695,6 @@ a.restart-btn:focus-visible,
   100% { transform: translate(-70%, -3.6em) scale(2.1); opacity: 0; }
 }
 
-/* Less motion: fire holds still, smoke hangs as a soft haze */
-@media (prefers-reduced-motion: reduce) {
-  .campfire .flame,
-  .campfire .campfire-spark { animation: none; }
-  .smoke-puff { animation: none; opacity: 0.3; }
-  .smoke-puff:nth-child(2) { transform: translate(-30%, -1.4em) scale(1.3); }
-  .smoke-puff:nth-child(3) { transform: translate(-70%, -2.4em) scale(1.7); opacity: 0.2; }
-  .smoke-puff:nth-child(n+4) { display: none; }
-}
-
 /* A word with a gold star glowing softly behind it (the star key's gold) */
 .star-word {
   position: relative;
@@ -1793,11 +1762,4 @@ a.restart-btn:focus-visible,
 @keyframes star-text-glow {
   0%, 100% { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 4px rgba(242, 209, 107, 0.6); }
   50%      { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 10px rgba(242, 209, 107, 1); }
-}
-
-/* Less motion: the star just glows steadily */
-@media (prefers-reduced-motion: reduce) {
-  .star-text,
-  .star-behind .star-shape,
-  .star-behind .star-rays { animation: none; }
 }

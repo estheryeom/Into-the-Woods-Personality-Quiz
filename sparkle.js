@@ -5,9 +5,9 @@
    half a second. Kept sparse on purpose so it isn't distracting.
    ========================================================= */
 (function () {
-  // People who've asked their phone/computer for less motion still get
-  // the sparkle, just a calmer one that twinkles in place.
-  const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Full sparkle on every device. (Phones often report "reduce motion"
+  // from battery saver, which used to shrink or switch off the effects.)
+  const calm = false;
 
   // Touch screens: no cursor to follow, so instead every tap
   // (anywhere, including answers and the back button) sets off a
@@ -68,8 +68,8 @@
     }
   }
 
-  // The wand dust trail below is mouse-only, and skipped for reduced motion.
-  if (calm || window.matchMedia("(hover: none)").matches) return;
+  // The wand dust trail below is mouse-only.
+  if (window.matchMedia("(hover: none)").matches) return;
 
   const SPACING = 14; // pixels the mouse must travel before the next speck
   let lastX = null;

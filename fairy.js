@@ -14,9 +14,6 @@
    script.js calls window.fairyOnPage(pageId) every time a page shows.
    ========================================================= */
 (function () {
-  // Less-motion setting on the phone/computer: no fairy at all.
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
   const LIFETIME = 8000; // ms before it goes to hide for good
   const rand = (a, b) => a + Math.random() * (b - a);
   const pick = (list) => list[Math.floor(Math.random() * list.length)];

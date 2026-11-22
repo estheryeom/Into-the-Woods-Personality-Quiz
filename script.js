@@ -1501,7 +1501,9 @@ function dropLeaves(pageId) {
 
   // Shuffle the landing spots so leaves fill in randomly
   const slots = [...Array(count).keys()].sort(() => Math.random() - 0.5);
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Leaves fall on every device; only very old browsers without the
+  // animation API get them placed straight onto the pile.
+  const reduceMotion = typeof Element.prototype.animate !== "function";
 
   slots.forEach((slot, i) => {
     const timer = setTimeout(() => {
