@@ -201,7 +201,7 @@ const ANSWERS = {
   // ----- Page 4.5: the empty campsite -----
   raid: {
     text: "Took the backpack, finders keepers",
-    points: { schemer: 2, survivalist: 1 },
+    points: { schemer: 2, lonewolf: 1 },
     outcome: "You yank the backpack off the branch. Inside: a sleeve of cookies and a headlamp. The headlamp is dead. The cookies are not. You keep walking.",
     next: "page5",
   },
@@ -239,7 +239,7 @@ const ANSWERS = {
   },
   paws: {
     text: "Noticed the paw prints around the tree",
-    points: { nightwatch: 2, survivalist: 1 },
+    points: { nightwatch: 2, tattletale: 1 },
     outcome: "The paw prints are old. Probably. You sit where you can see anything coming.",
     next: "page6",
   },
@@ -401,7 +401,7 @@ const ANSWERS = {
   },
   sos: {
     text: "Spelled out SOS with sticks and rocks",
-    points: { scout: 2, survivalist: 1 },
+    points: { scout: 2, trailblazer: 1 },
     outcome: "Someone has added a tiny pebble smiley face next to your SOS. Beside it, something glints.",
     next: "page-key",
   },
@@ -462,7 +462,7 @@ const ANSWERS = {
   // ----- Chapter 10½: the fairy's favor -----
   wayhome: {
     text: "Asked the fairy for the way out",
-    points: { scout: 2, survivalist: 1 },
+    points: { scout: 2, trailblazer: 1 },
     outcome: "He snaps his fingers, and glowing mushrooms pop up in a path. It's a very short walk. A flashlight hits your face. \"HEY! We've got one!\"",
     next: "page11",
   },
