@@ -2042,7 +2042,7 @@ function onShareOption(event) {
 
 // ---------------------------------------------------------
 // Instagram Story poster: your result drawn on a 1080x1920 picture
-// (the size of a story), with the quiz's web address printed on it.
+// (the size of a story) with your type's photo.
 // Websites can't post to Instagram directly, so on phones we hand the
 // picture to the share sheet (pick Instagram -> Story), and the link is
 // copied so it can go on a Link sticker. On a computer you save it.
@@ -2052,12 +2052,6 @@ const POSTER_H = 1920;
 let storyBlob = null;
 let storyBlobUrl = null;
 let storyOpener = null;
-
-// The quiz's home address, short enough to print (no https://, no ?path=)
-function siteAddress() {
-  const path = window.location.pathname.replace(/index\.html$/, "").replace(/\/$/, "");
-  return window.location.host + path;
-}
 
 // Split text into lines that fit `maxWidth`. Words that are too long on
 // their own get broken letter by letter.
@@ -2226,10 +2220,10 @@ async function drawStoryPoster(photo) {
   y = drawWrapped(ctx, result.name, { y: y + 24, size: 104, minSize: 72, maxLines: 2, weight: "700", family: ko ? display : body, color: "#f2b84b", lineHeight: 1.12 });
   y = drawWrapped(ctx, result.tagline, { y: y + 22, size: 42, minSize: 34, maxLines: 3, style: "italic", family: body, color: "#c9d3c3", lineHeight: 1.3 });
 
-  // The photo, with a soft frame. A long name or tagline makes it a bit
-  // smaller, so the web address always stays clear of Instagram's reply bar.
-  const py = y + 44;
-  const ph = Math.round(Math.max(360, Math.min(540, 1280 - py)));
+  // The photo, big, with a soft frame. A long name or tagline makes it a bit
+  // smaller, so everything stays clear of Instagram's reply bar at the bottom.
+  const py = y + 50;
+  const ph = Math.round(Math.max(420, Math.min(600, 1450 - py)));
   const pw = Math.round((ph * 4) / 3);
   const px = (POSTER_W - pw) / 2;
   if (photo) {
@@ -2294,35 +2288,6 @@ async function drawStoryPoster(photo) {
     y = cy + chipH;
   }
 
-  // Call to action + the web address, in a gold pill so it stands out.
-  // Kept above Instagram's reply bar at the bottom of the screen.
-  const ctaY = Math.max(y + 60, 1500);
-  const cta = t("story.cta", "Which one are you? Take the quiz:");
-  const ctaEnd = drawWrapped(ctx, cta, { y: ctaY, size: 40, maxLines: 2, minSize: 32, weight: "600", family: body, color: "#f4efe2" });
-  const address = siteAddress();
-  let size = 40;
-  ctx.font = `700 ${size}px ${body}`;
-  while (ctx.measureText(address).width > 860 && size > 22) {
-    size -= 2;
-    ctx.font = `700 ${size}px ${body}`;
-  }
-  const pillW = Math.min(980, ctx.measureText(address).width + 90);
-  const pillH = size + 52;
-  const pillX = (POSTER_W - pillW) / 2;
-  const pillY = ctaEnd + 22;
-  ctx.save();
-  ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
-  ctx.shadowBlur = 24;
-  ctx.shadowOffsetY = 8;
-  roundRect(ctx, pillX, pillY, pillW, pillH, pillH / 2);
-  ctx.fillStyle = "#f2b84b";
-  ctx.fill();
-  ctx.restore();
-  ctx.fillStyle = "#14241b";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(address, POSTER_W / 2, pillY + pillH / 2 + 1);
-
   return canvas;
 }
 
@@ -2336,8 +2301,24 @@ function canvasToBlob(canvas) {
   });
 }
 
+// The poster's photo comes from images/poster-photos/<type>.js: the same
+// photo stored as text (made by images/make-poster-photos.ps1). Browsers
+// always let a picture stored like that be saved, even when the quiz is
+// opened straight from your computer, so the photo never goes missing.
+function loadPosterPhoto(type) {
+  return new Promise((resolve) => {
+    const ready = () => window.POSTER_PHOTOS && window.POSTER_PHOTOS[type];
+    if (ready()) return resolve(loadImage(ready()));
+    const script = document.createElement("script");
+    script.src = `images/poster-photos/${type}.js`;
+    script.onload = () => resolve(ready() ? loadImage(ready()) : loadImage(RESULTS[type].image.src));
+    script.onerror = () => resolve(loadImage(RESULTS[type].image.src)); // fall back to the normal photo
+    document.head.appendChild(script);
+  });
+}
+
 async function makeStoryPoster() {
-  const photo = await loadImage(RESULTS[calculateResult().ranking[0]].image.src);
+  const photo = await loadPosterPhoto(calculateResult().ranking[0]);
   try {
     return await canvasToBlob(await drawStoryPoster(photo));
   } catch {
