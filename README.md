@@ -75,7 +75,7 @@ The rescue scene is put together from your whole path (see `STORY_EXTRAS` in `sc
 - **Neither:** the shadows were "probably deer."
 - Little callbacks for starting a fire, rationing your granola bar, hiding trail mix and giving your snacks to the bear.
 
-## The 13 personality types
+## The 14 personality types
 
 Each type's results page shows a real photo (no AI images), its strengths and watch-outs, and a "What makes you tick" section. That section borrows ideas from MBTI, the Enneagram and the Big Five, but describes them in plain words instead of showing test labels, since a story quiz can't really measure things like introversion vs. extraversion.
 
@@ -83,7 +83,8 @@ Each type's results page shows a real photo (no AI images), its strengths and wa
 |---|---|---|
 | **The Eagle Scout** | organized planner | bald eagle chicks |
 | **The Survivalist** | prepared for the worst | chipmunk with stuffed cheeks |
-| **The Night Watch** | strategic, private, loyal to a few | barred owl |
+| **The Night Watch** | strategic, private, loyal to a few (INTJ) | barred owl |
+| **The Will-o'-the-Wisp** | reads everyone, gives everything, vanishes without warning (INFJ) | glowing firefly |
 | **The Wanderer** | curious loner who quietly cares | heron standing on one leg |
 | **The Trailblazer** | bold leader | mountain goat kid |
 | **The Lone Wolf** | self-reliant, looks out for number one | howling wolf pup |
@@ -132,6 +133,7 @@ All photos are real photographs from [Wikimedia Commons](https://commons.wikimed
 | `scout.jpg` | Dave Menke, U.S. Fish & Wildlife Service | Public domain | [link](https://commons.wikimedia.org/wiki/File:Bald_eagle_chicks_-_DPLA_-_3b7711bbef7b06dc32fc138bf95e138a.jpg) |
 | `survivalist.jpg` | Ashley Lee | CC BY 4.0 | [link](https://commons.wikimedia.org/wiki/File:Chipmunk_with_Full_Cheeks.jpg) |
 | `nightwatch.jpg` | Dick Daniels | CC BY-SA 3.0 | [link](https://commons.wikimedia.org/wiki/File:Barred_Owl_(Strix_varia)_RWD.jpg) |
+| `wisp.jpg` | art farmer | CC BY-SA 2.0 | [link](https://commons.wikimedia.org/wiki/File:Photinus_pyralis_Firefly_glowing.jpg) |
 | `wanderer.jpg` | The Modern Polymath | CC BY-SA 4.0 | [link](https://commons.wikimedia.org/wiki/File:Great_Blue_Heron_standing_on_one_leg.jpg) |
 | `trailblazer.jpg` | Charles J. Sharp | CC BY-SA 4.0 | [link](https://commons.wikimedia.org/wiki/File:Mountain_goat_(Oreamnos_americanus)_kid_Radium.jpg) |
 | `lonewolf.jpg` | U.S. Fish & Wildlife Service | Public domain | [link](https://commons.wikimedia.org/wiki/File:Mexican_wolf_pup_(6411046205).jpg) |

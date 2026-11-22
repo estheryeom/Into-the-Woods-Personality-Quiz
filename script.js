@@ -24,8 +24,15 @@
      Happy Camper   ~9%  (ISFP)            Eagle Scout    ~9%  (ESTJ)
      Glamper        ~9%  (ESFP)            Campfire Bard  ~8%  (ENFP)
      Lone Wolf      ~5%  (ISTP)            Mushroom Mystic ~4% (ESTP)
-     Night Watch    ~4%  (INTJ, INFJ)      Wanderer       ~3%  (INTP)
-     Schemer        ~3%  (ENTP)            Trailblazer    ~2%  (ENTJ: the rarest)
+     Night Watch    ~2%  (INTJ)            Will-o'-the-Wisp ~2% (INFJ)
+     Wanderer       ~3%  (INTP)            Schemer        ~3%  (ENTP)
+     Trailblazer    ~2%  (ENTJ: the rarest)
+   Night Watch vs. Wisp: both see what's coming. The Night Watch THINKS
+   it through (strategy, logic, control). The Wisp FEELS it (reads people,
+   gives everything, then vanishes without warning).
+   Introverts vs. extroverts: answers about missing your friends, needing
+   them back, or calling out for them lean extroverted (Counselor, Bard).
+   Being fine on your own leans introverted.
    ISFJ and ESFJ have no type of their own. The Medic (quiet, loyal care)
    and the Counselor (warm, organized care) are their closest fits.
    If you change points, re-check the mix stays close to this.
@@ -36,12 +43,13 @@
    ========================================================= */
 
 // ---------------------------------------------------------
-// The 13 personality types (short names for the meters)
+// The 14 personality types (short names for the meters)
 // ---------------------------------------------------------
 const TYPES = {
   scout:       "The Eagle Scout",
   survivalist: "The Survivalist",
   nightwatch:  "The Night Watch",
+  wisp:        "The Will-o'-the-Wisp",
   trailblazer: "The Trailblazer",
   lonewolf:    "The Lone Wolf",
   bard:        "The Campfire Bard",
@@ -59,7 +67,7 @@ const TYPES = {
 // ---------------------------------------------------------
 const ANSWERS = {
   // ----- Page 1: which "Let's start" button? -----
-  // Every button gives +0.25 to 3 or 4 types, and the 4 buttons cover all 13
+  // Every button gives +0.25 to 3 or 4 types, and the 4 buttons cover all 14
   // types between them, so everyone starts with the same small head start.
   direct: {
     text: "Clicked the big button in the middle",
@@ -75,7 +83,7 @@ const ANSWERS = {
   },
   reliant: {
     text: "Found the tiny button next to the big one",
-    points: { nightwatch: 0.25, counselor: 0.25, medic: 0.25 },
+    points: { nightwatch: 0.25, wisp: 0.25, counselor: 0.25, medic: 0.25 },
     outcome: "Your friend planned everything, even the bear spray they tucked in your bag \"just in case.\" You follow the group into the pines.",
     next: "page-name",
   },
@@ -105,7 +113,7 @@ const ANSWERS = {
   },
   bandaids: {
     text: "Woke up at 6:15 to pack extra band-aids and snacks for whoever forgets theirs",
-    points: { medic: 2 },
+    points: { medic: 3 },
     next: "page2",
   },
 
@@ -118,7 +126,7 @@ const ANSWERS = {
   },
   small: {
     text: "Made yourself small, hoping the bear wouldn't see you",
-    points: { nightwatch: 1, survivalist: 1 },
+    points: { wisp: 1, survivalist: 1 },
     outcome: "You hold your breath behind a bush. The bear huffs and wanders off. So, apparently, did your friends.",
     next: "page3",
   },
@@ -222,7 +230,7 @@ const ANSWERS = {
   },
   iou: {
     text: "Borrowed one granola bar and left a sorry note",
-    points: { medic: 2, counselor: 1 },
+    points: { medic: 3 },
     outcome: "\"Sorry! I borrowed 1 granola bar (oat & honey).\" You tuck the note under a rock and keep walking.",
     next: "page5",
   },
@@ -234,7 +242,7 @@ const ANSWERS = {
   },
   backstory: {
     text: "Looked through their stuff to figure out who lives there",
-    points: { bard: 3, mystic: 1 },
+    points: { bard: 2, mystic: 1 },
     outcome: "A crossword, three harmonicas and a photo of a goat in a sweater. You decide it belongs to a retired magician, and leave before he gets back.",
     next: "page5",
   },
@@ -242,7 +250,7 @@ const ANSWERS = {
   // ----- Page 5: the fallen tree -----
   leaves: {
     text: "Shed a single tear and gathered dry leaves for a cushion",
-    points: { camper: 2, medic: 1 },
+    points: { camper: 2, medic: 2 },
     outcome: "Your leaf pile is cozy. Well, cozy-ish.",
     next: "page6",
   },
@@ -294,7 +302,7 @@ const ANSWERS = {
   // ----- Page 6.5: the mushrooms kick in -----
   listen: {
     text: "Listened to what the trees had to say",
-    points: { bard: 2, medic: 1 },
+    points: { bard: 1, medic: 1, wisp: 1 },
     outcome: "The trees mostly want to talk about you. Then, all at once, they go quiet.",
     next: "page7",
   },
@@ -320,7 +328,7 @@ const ANSWERS = {
   // ----- Page 7: shadows -----
   callout: {
     text: "Called out to the shadows, hoping they were your friends",
-    points: { medic: 2 },
+    points: { counselor: 1, bard: 1 },
     outcome: "Your voice cracks. The shapes don't move.",
     next: "page8",
   },
@@ -332,7 +340,7 @@ const ANSWERS = {
   },
   stick: {
     text: "Grabbed a stick and walked straight at the shadows",
-    points: { trailblazer: 2 },
+    points: { trailblazer: 3 },
     outcome: "You march at them, stick raised. Nothing there. And now you can't see your shelter.",
     next: "page9",
   },
@@ -346,19 +354,19 @@ const ANSWERS = {
   // ----- Page 8: the voice -----
   follow: {
     text: "Followed the voice that sounded like your friend",
-    points: { medic: 2 },
+    points: { bard: 1, counselor: 1 },
     outcome: "The voice stays just ahead of you, then stops. You're alone, and your shelter is gone.",
     next: "page9",
   },
   question: {
     text: "Tested the voice with a question only your friend would know",
-    points: { nightwatch: 2 },
+    points: { nightwatch: 3 },
     outcome: "\"What's our group chat called?\" Silence. Then, right behind your ear: \"Come here.\" You run.",
     next: "page9",
   },
   nicetry: {
     text: "Told the voice \"Nice try\" and stayed put",
-    points: { survivalist: 2, lonewolf: 1 },
+    points: { lonewolf: 2, survivalist: 1 },
     outcome: "It calls your name for an hour. Then it stops.",
     next: "page10",
   },
@@ -390,7 +398,7 @@ const ANSWERS = {
   },
   bolt: {
     text: "Ran blindly into the dark",
-    points: { lonewolf: 2 },
+    points: { lonewolf: 3 },
     outcome: "A root trips you, face-first into the dirt. Something tiny and hard pokes your cheek.",
     next: "page-key",
   },
@@ -469,7 +477,7 @@ const ANSWERS = {
   },
   nope: {
     text: "Stayed far away from the tiny door",
-    points: { nightwatch: 2, survivalist: 1 },
+    points: { wisp: 2, survivalist: 1 },
     outcome: "You scoot away, backward, right into someone's legs. A flashlight clicks on. \"Search and rescue! You're okay!\"",
     next: "page11",
   },
@@ -483,7 +491,7 @@ const ANSWERS = {
   },
   findfriends: {
     text: "Asked the fairy to find your friends",
-    points: { medic: 3 },
+    points: { counselor: 1, medic: 2 },
     outcome: "He confers with a moth. \"They're fine. They're at the ranger station, eating your snacks.\" Glowing mushrooms light the way. \"HEY! We've got one!\"",
     next: "page11",
   },
@@ -513,10 +521,10 @@ const ANSWERS = {
     outcome: "\"They're fine. One of them cried a little.\" You get a ride home and sleep for eleven hours.",
     next: "result",
   },
-  handled: {
-    text: "Insisted you had it handled",
-    points: { lonewolf: 2, trailblazer: 1 },
-    outcome: "\"Sure you did.\" She hands you a second foil blanket anyway. You get a ride home and sleep for eleven hours.",
+  hush: {
+    text: "Hugged the ranger, then didn't say a word the whole ride home",
+    points: { wisp: 3 },
+    outcome: "You hug her like you've known her for years. Then you pull your hood up, and that's it: not one more word. Your friends text \"are you ok??\" You leave them on read. You get home and sleep for eleven hours.",
     next: "result",
   },
   food: {
@@ -536,7 +544,8 @@ const RETIRED_CHOICES = ["carousel", "saga", "timeline", "nexttrip"];
 // links get the new answer instead.
 //   carve, blame: swapped when the Tattletale was removed
 //   omw: swapped for bandaids to make the Field Medic more common
-const RENAMED_CHOICES = { carve: "patterns", blame: "technically", omw: "bandaids" };
+//   handled: swapped for hush when the Will-o'-the-Wisp was added
+const RENAMED_CHOICES = { carve: "patterns", blame: "technically", omw: "bandaids", handled: "hush" };
 
 // ---------------------------------------------------------
 // Extra story lines that depend on your WHOLE path, not just
@@ -610,7 +619,7 @@ const STORY_EXTRAS = {
 };
 
 // ---------------------------------------------------------
-// The 13 results
+// The 14 results
 //
 //   image:     a real photo (no AI) from Wikimedia Commons, saved in /images
 //   strengths: [title, detail] x6. Sincere, with one playful line.
@@ -717,6 +726,38 @@ const RESULTS = {
     wiring: "Analytical and independent, with very high standards for yourself and everyone around you.",
     stress: "You shut down and trust no one. You go quiet, make secret backup plans, and start treating friends like suspects.",
     need: "Permission to not have it all figured out. And a few people safe enough that you can stop watching the door around them.",
+  },
+  wisp: {
+    name: "The Will-o'-the-Wisp",
+    tagline: "Lit the way for everyone. Then vanished without a word.",
+    image: {
+      src: "images/wisp.jpg",
+      alt: "A firefly glowing yellow-green in the dark",
+      credit: "art farmer, CC BY-SA 2.0",
+    },
+    description:
+      "You feel the mood of a room the second you walk in, and you usually know what someone needs before they do. People tell you things they've never told anyone, and you hold every one of them carefully. You give and give, quietly, and you never ask for much back. But you're keeping track, even if you'd never say so. Somewhere inside, a line exists. Nobody knows where it is, and you never warn them. Then one day someone crosses it, and you're just... gone. No fight, no goodbye. A soft little light that guided everyone through the dark, and then, without a sound, wasn't there anymore.",
+    strengths: [
+      ["Reads people instantly", "Fake laugh, bad day, secret crush. You clock it in two seconds and never say a word."],
+      ["The one people open up to", "Strangers tell you their life story at the campfire. You didn't even ask."],
+      ["Deeply caring", "You notice who's quiet, who's cold and who hasn't eaten, and you fix it before anyone else sees."],
+      ["Sees where it's all going", "Your gut is scary accurate. \"I have a bad feeling about this\" has saved the group more than once."],
+      ["Lives by your values", "You'd rather be lost than do something that feels wrong. You know exactly what you stand for."],
+      ["Quietly magical", "Nobody can quite explain you, and somehow that makes everyone want to follow your light."],
+    ],
+    watchouts: [
+      ["The door slam", "One day you're their closest person. The next, you've blocked them everywhere, and they're still asking what they did."],
+      ["You never warned anyone", "You were hurt for months and said \"it's fine\" every time. Then you blamed them for not reading your mind."],
+      ["Your silence is a punishment", "You call it \"needing space.\" Everyone around you can tell it's a verdict."],
+      ["Martyr mode", "You give until you're empty, then quietly resent everyone for taking what you offered."],
+      ["Impossible to actually know", "You know everyone's secrets. Nobody knows yours. That's not depth, it's a wall."],
+      ["Ghosting is not a boundary", "Disappearing feels safer than one hard conversation. It's not safer. It's just lonelier, for both of you."],
+    ],
+    core: [["Intuitive", "Caring", "Mysterious"], "You see right into people, give them everything, and keep the real you behind glass."],
+    drive: "Real, deep connection, and a life that matches what you believe in.",
+    wiring: "Empathetic and intense on the inside, calm and hard to read on the outside. You feel everything, and you show almost none of it.",
+    stress: "You go dark. You stop replying, smile through everything, and quietly decide who's out of your life, often without telling them.",
+    need: "To say \"that hurt me\" out loud, the first time. And people who stay even after they've seen the parts of you that don't glow.",
   },
   wanderer: {
     name: "The Wanderer",
@@ -1711,12 +1752,24 @@ const RELATIONS = {
     friends: [
       ["survivalist", "You notice the problem, they've already got a plan for it."],
       ["wanderer", "Quiet, sharp, and never asks you to talk about your feelings."],
-      ["scout", "Finally, someone who also read the map before leaving the car."],
+      ["wisp", "You both saw it coming. You figured it out, they felt it."],
     ],
     foes: [
       ["bard", "You're trying to listen for footsteps. They're singing."],
       ["mystic", "Acts first, thinks never. You've had to plan around them three times today."],
       ["schemer", "You can see every string they're pulling. It's exhausting."],
+    ],
+  },
+  wisp: {
+    friends: [
+      ["medic", "You both feel everything. Neither of you says it out loud."],
+      ["bard", "They say every feeling out loud, so for once you don't have to guess."],
+      ["nightwatch", "Two people who saw it coming. They thought it through, you just knew."],
+    ],
+    foes: [
+      ["schemer", "Turns your feelings into a debate. You left the conversation ten minutes ago."],
+      ["mystic", "Stomps right through the mood you spent an hour carefully reading."],
+      ["trailblazer", "Wants a decision now. You need to sit with it for three days."],
     ],
   },
   wanderer: {
