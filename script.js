@@ -119,7 +119,7 @@ const ANSWERS = {
   phone: {
     text: "Kept using your dying phone to find a way out",
     points: { lonewolf: 2, scout: 1 },
-    outcome: "The screen flickers, shows 1%, and goes black.",
+    outcome: "The screen {{flickers}}, shows 1%, and goes black.",
     next: "page4",
   },
   friends: {
@@ -920,10 +920,167 @@ function fillStory(pageId) {
   storyBox.innerHTML = "";
   lines.forEach((line) => {
     const p = document.createElement("p");
-    p.textContent = line;
+    // Words wrapped in {{double braces}} get the red flicker effect
+    line.split(/\{\{(.+?)\}\}/).forEach((part, i) => {
+      if (i % 2 === 0) {
+        p.append(part);
+      } else {
+        const span = document.createElement("span");
+        span.className = "flicker-word";
+        span.textContent = part;
+        p.appendChild(span);
+      }
+    });
     storyBox.appendChild(p);
   });
   storyBox.hidden = lines.length === 0;
+
+  storyBox.classList.remove("story-covered");
+  const stickers = ANSWER_COVERS[history[history.length - 1]] || STORY_COVERS[pageId];
+  if (stickers && lines.length) addStoryCover(storyBox, stickers);
+}
+
+// ---------------------------------------------------------
+// Doodle cover: hides the story lines (not the question) behind
+// black-and-white doodles until you click it
+// ---------------------------------------------------------
+
+const DOODLE_PAW = `
+  <svg viewBox="0 0 60 60" aria-hidden="true">
+    <path d="M30 32c-9 0-16 7-15 14 1 6 8 7 15 5 7 2 14 1 15-5 1-7-6-14-15-14z"/>
+    <ellipse cx="14" cy="26" rx="5" ry="7" transform="rotate(-25 14 26)"/>
+    <ellipse cx="24" cy="15" rx="5" ry="7.5" transform="rotate(-8 24 15)"/>
+    <ellipse cx="37" cy="15" rx="5" ry="7.5" transform="rotate(10 37 15)"/>
+    <ellipse cx="47" cy="27" rx="5" ry="7" transform="rotate(28 47 27)"/>
+  </svg>`;
+
+const DOODLE_COFFEE = `
+  <svg viewBox="0 0 60 60" aria-hidden="true">
+    <path d="M14 26h28l-3 24c-.5 3-3 5-6 5H23c-3 0-5.5-2-6-5z"/>
+    <path d="M41 31c6-1 9 2 8 6s-5 6-9 5"/>
+    <path d="M12 26c0-2 1-3 3-3h26c2 0 3 1 3 3"/>
+    <path d="M17 38h22"/>
+    <path d="M22 18c-3-3 3-5 0-9M29 18c-3-3 3-5 0-9M36 18c-3-3 3-5 0-9"/>
+  </svg>`;
+
+const DOODLE_BEAR_PAW = `
+  <svg viewBox="0 0 60 60" aria-hidden="true">
+    <path d="M12 40c0-8 8-12 18-12s18 4 18 12c0 7-6 10-10 9-3-1-5-2-8-2s-5 1-8 2c-4 1-10-2-10-9z"/>
+    <ellipse cx="10" cy="27" rx="4" ry="5" transform="rotate(-30 10 27)"/>
+    <ellipse cx="19" cy="19" rx="4" ry="5" transform="rotate(-15 19 19)"/>
+    <ellipse cx="30" cy="16" rx="4" ry="5"/>
+    <ellipse cx="41" cy="19" rx="4" ry="5" transform="rotate(15 41 19)"/>
+    <ellipse cx="50" cy="27" rx="4" ry="5" transform="rotate(30 50 27)"/>
+    <path d="M7 21l-3-5M17 13l-2-5M30 10V4M43 13l2-5M53 21l3-5"/>
+  </svg>`;
+
+const DOODLE_CLAW = `
+  <svg viewBox="0 0 60 60" aria-hidden="true">
+    <path d="M12 6c5 14 7 28 3 46"/>
+    <path d="M27 4c5 16 6 32 2 52"/>
+    <path d="M42 6c5 14 6 27 2 44"/>
+  </svg>`;
+
+const DOODLE_PHONE = `
+  <svg viewBox="0 0 60 60" aria-hidden="true">
+    <rect x="17" y="4" width="26" height="52" rx="5"/>
+    <path d="M17 13h26M17 46h26M26 8.5h8"/>
+    <circle cx="30" cy="51" r="2"/>
+    <path d="M23 21h14M23 27h10M23 33h12"/>
+  </svg>`;
+
+// [doodle, left %, top %, size rem, rotation deg]
+const PAW_COFFEE_STICKERS = [
+  [DOODLE_PAW, 3, 8, 2.6, -18],
+  [DOODLE_PAW, 9, 58, 1.6, 12],
+  [DOODLE_COFFEE, 15, 52, 2.4, 10],
+  [DOODLE_PAW, 20, 10, 1.5, -35],
+  [DOODLE_PAW, 27, 4, 2, 25],
+  [DOODLE_PAW, 32, 62, 1.7, -10],
+  [DOODLE_COFFEE, 40, 60, 2.1, -12],
+  [DOODLE_PAW, 46, 2, 1.6, 30],
+  [DOODLE_PAW, 55, 58, 2.2, -30],
+  [DOODLE_COFFEE, 64, 2, 2.3, 14],
+  [DOODLE_PAW, 68, 62, 1.5, 22],
+  [DOODLE_PAW, 74, 8, 1.8, -20],
+  [DOODLE_PAW, 78, 50, 2.5, 20],
+  [DOODLE_PAW, 85, 64, 1.6, -28],
+  [DOODLE_COFFEE, 89, 6, 2.6, -8],
+  [DOODLE_PAW, 94, 48, 1.7, 15],
+];
+
+const BEAR_STICKERS = [
+  [DOODLE_BEAR_PAW, 3, 8, 2.6, -15],
+  [DOODLE_CLAW, 9, 55, 2.2, 20],
+  [DOODLE_BEAR_PAW, 17, 58, 1.7, 10],
+  [DOODLE_CLAW, 22, 4, 2, -25],
+  [DOODLE_BEAR_PAW, 30, 10, 1.6, 25],
+  [DOODLE_BEAR_PAW, 35, 60, 2.1, -12],
+  [DOODLE_CLAW, 44, 2, 2.3, 15],
+  [DOODLE_BEAR_PAW, 52, 58, 1.8, 30],
+  [DOODLE_CLAW, 60, 55, 2, -18],
+  [DOODLE_BEAR_PAW, 64, 4, 2.2, -20],
+  [DOODLE_BEAR_PAW, 72, 60, 1.6, 18],
+  [DOODLE_CLAW, 77, 6, 1.9, 25],
+  [DOODLE_BEAR_PAW, 84, 52, 2.5, -8],
+  [DOODLE_CLAW, 90, 4, 2.4, -12],
+  [DOODLE_BEAR_PAW, 95, 58, 1.6, 22],
+];
+
+const PHONE_STICKERS = [
+  [DOODLE_PHONE, 3, 6, 2.6, -15],
+  [DOODLE_PHONE, 10, 56, 1.8, 18],
+  [DOODLE_PHONE, 19, 8, 1.6, 25],
+  [DOODLE_PHONE, 27, 58, 2.2, -10],
+  [DOODLE_PHONE, 35, 2, 1.9, 12],
+  [DOODLE_PHONE, 44, 60, 1.6, -25],
+  [DOODLE_PHONE, 53, 4, 2.3, -18],
+  [DOODLE_PHONE, 61, 56, 1.9, 22],
+  [DOODLE_PHONE, 69, 6, 1.6, 30],
+  [DOODLE_PHONE, 77, 54, 2.4, -12],
+  [DOODLE_PHONE, 85, 4, 2, 15],
+  [DOODLE_PHONE, 94, 52, 1.7, -22],
+];
+
+// Which pages get a cover, and which doodles go on it
+const STORY_COVERS = {
+  page2: PAW_COFFEE_STICKERS,
+  "page2-5": BEAR_STICKERS,   // right after the bear answer
+  page3: BEAR_STICKERS,
+};
+
+// Overrides by the answer you just picked (wins over STORY_COVERS)
+const ANSWER_COVERS = {
+  run: PHONE_STICKERS,     // "Ran away and left your friends behind"
+  small: PHONE_STICKERS,   // "Made yourself small..."
+};
+
+function addStoryCover(storyBox, stickers) {
+  storyBox.classList.add("story-covered");
+
+  const cover = document.createElement("button");
+  cover.type = "button";
+  cover.className = "story-cover";
+
+  stickers.forEach(([svg, left, top, size, rotate]) => {
+    const sticker = document.createElement("span");
+    sticker.className = "story-sticker";
+    sticker.innerHTML = svg;
+    sticker.style.cssText = `left:${left}%;top:${top}%;width:${size}rem;height:${size}rem;transform:rotate(${rotate}deg)`;
+    cover.appendChild(sticker);
+  });
+
+  const label = document.createElement("span");
+  label.className = "story-cover-label";
+  label.textContent = t("story.clickToRead", "CLICK TO READ");
+  cover.appendChild(label);
+
+  cover.addEventListener("click", () => {
+    storyBox.classList.remove("story-covered");
+    cover.remove();
+  });
+
+  storyBox.appendChild(cover);
 }
 
 // ---------------------------------------------------------

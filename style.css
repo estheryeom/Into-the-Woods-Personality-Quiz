@@ -348,6 +348,71 @@ html[lang="ko"] .title-font {
   margin: 0 0 0.75rem;
 }
 
+/* Doodle cover over the story lines (page 2). Click to reveal. */
+.story.story-covered {
+  position: relative;
+  min-height: 6.5rem;
+}
+
+.story.story-covered p {
+  visibility: hidden;          /* no peeking around the edges */
+}
+
+.story-cover {
+  position: absolute;
+  inset: -0.6rem -1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  font: inherit;
+  font-style: normal;
+  color: #111;
+  background: #e8dcc4;
+  border: 2.5px solid #111;
+  border-radius: 18px 22px 16px 24px / 22px 16px 24px 18px;   /* wobbly, hand-drawn edge */
+  box-shadow: 4px 4px 0 #111;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.story-cover:hover {
+  transform: translate(-2px, -2px) rotate(-0.4deg);
+  box-shadow: 6px 6px 0 #111;
+}
+
+.story-cover:focus-visible {
+  outline: 3px solid var(--sun);
+  outline-offset: 4px;
+}
+
+.story-sticker {
+  position: absolute;
+  pointer-events: none;
+}
+
+.story-sticker svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #111;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.story-cover-label {
+  position: relative;          /* above the stickers */
+  padding: 0.1rem 0.6rem;
+  font-size: clamp(1.4rem, 4vw, 2rem);   /* same size as .question */
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #e8dcc4;         /* little paper patch so doodles never cross the words */
+  border-radius: 8px;
+}
+
 .question {
   max-width: 720px;
   font-size: clamp(1.4rem, 4vw, 2rem);
@@ -1045,4 +1110,28 @@ a.restart-btn:focus-visible,
   font-size: 1.4rem;
   letter-spacing: 0.03em;
   text-transform: none;
+}
+
+/* A word in the story that flickers red, like a dying phone screen */
+.flicker-word {
+  color: #e02424;
+  font-weight: bold;
+  text-shadow: 0 0 6px rgba(255, 40, 40, 0.7);
+  animation: flicker 2.4s infinite;
+}
+
+@keyframes flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 6px rgba(255, 40, 40, 0.7);
+  }
+  20%, 24%, 55% {
+    opacity: 0.2;
+    text-shadow: none;
+  }
+}
+
+/* People who asked for less motion just see steady red */
+@media (prefers-reduced-motion: reduce) {
+  .flicker-word { animation: none; }
 }
