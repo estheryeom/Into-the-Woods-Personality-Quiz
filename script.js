@@ -16,6 +16,18 @@
    It's fine if some types (like the Lone Wolf) come up rarely.
    Don't tack on a +1 just to even out the totals.
 
+   HOW COMMON EACH TYPE SHOULD BE (roughly, if people answered at
+   random). Based on how common the closest Myers-Briggs types are in
+   the general US population (Myers-Briggs Foundation sample):
+     Field Medic   ~22%  (ESFJ, ENFJ, half of ISFJ: the most common)
+     Happy Camper  ~13%  (ISFP, INFP)      Survivalist  ~12%  (ISTJ)
+     Eagle Scout    ~9%  (ESTJ)            Glamper       ~9%  (ESFP)
+     Campfire Bard  ~8%  (ENFP)            Night Watch   ~7%  (INFJ, INTJ, INTP)
+     Tattletale     ~7%  (half of ISFJ)    Lone Wolf     ~5%  (ISTP)
+     Mushroom Mystic ~4% (ESTP)            Schemer       ~3%  (ENTP)
+     Trailblazer    ~2%  (ENTJ: the rarest)
+   If you change points, re-check the mix stays close to this.
+
    ADDING A NEW CHAPTER
    - Copy a <section> in index.html, give it a new id and new data-choice keys.
    - Add those keys to ANSWERS, and point an earlier answer's "next" at it.
@@ -80,7 +92,7 @@ const ANSWERS = {
   },
   callround: {
     text: "Woke up at 5:45 to call everyone and make sure they were up",
-    points: { medic: 2 },
+    points: { medic: 3 },
     next: "page2",
   },
   glowup: {
@@ -97,7 +109,7 @@ const ANSWERS = {
   // ----- Page 2: the bear -----
   run: {
     text: "Ran away and left your friends behind",
-    points: { lonewolf: 3, survivalist: 1 },
+    points: { lonewolf: 2, survivalist: 2 },
     outcome: "You sprint until the yelling fades. No bear behind you. Also, no trail.",
     next: "page3",
   },
@@ -109,13 +121,13 @@ const ANSWERS = {
   },
   bark: {
     text: "Barked, and got your friends to bark too",
-    points: { trailblazer: 2, bard: 1 },
+    points: { bard: 2, trailblazer: 1 },
     outcome: "You bark. Your friends join in. The bear tilts its head. For one glorious second, it works. Then it charges.",
     next: "page2-5",
   },
   snacks: {
     text: "Offered the bear your snacks",
-    points: { schemer: 2, camper: 1 },
+    points: { camper: 2, schemer: 1 },
     outcome: "The bear eats your gummy worms, bag and all. Then it looks at you like you're dessert.",
     next: "page2-5",
   },
@@ -135,7 +147,7 @@ const ANSWERS = {
   },
   right: {
     text: "Turned right",
-    points: { nightwatch: 2 },
+    points: { survivalist: 2, nightwatch: 1 },
     outcome: "You run until the crashing fades. No bear. No friends either.",
     next: "page3",
   },
@@ -175,7 +187,7 @@ const ANSWERS = {
   },
   retrace: {
     text: "Retraced your steps, trusting your sense of direction",
-    points: { trailblazer: 2, mystic: 1 },
+    points: { trailblazer: 1, mystic: 1 },
     outcome: "You're sure you came this way. Pretty sure.",
     next: "page-camp",
   },
@@ -188,21 +200,21 @@ const ANSWERS = {
 
   // ----- Page 4.5: the empty campsite -----
   raid: {
-    text: "Took the campsite's snacks and headlamp",
+    text: "Took the backpack, finders keepers",
     points: { schemer: 2, survivalist: 1 },
-    outcome: "You stuff a sleeve of cookies and a headlamp into your jacket. The headlamp is dead. The cookies are not. You keep walking.",
+    outcome: "You yank the backpack off the branch. Inside: a sleeve of cookies and a headlamp. The headlamp is dead. The cookies are not. You keep walking.",
     next: "page5",
   },
   iou: {
-    text: "Borrowed one granola bar and left a signed IOU",
-    points: { tattletale: 2 },
-    outcome: "\"IOU: 1 granola bar (oat & honey).\" Signed, dated, time-stamped, tucked under a rock. You keep walking.",
+    text: "Borrowed one granola bar and left a sorry note",
+    points: { tattletale: 3 },
+    outcome: "\"Sorry! I borrowed 1 granola bar (oat & honey).\" You tuck the note under a rock and keep walking.",
     next: "page5",
   },
   tentnap: {
-    text: "Crawled into the tent for the real pillow",
+    text: "Rescued a real pillow from the torn tent",
     points: { glamper: 2, camper: 1 },
-    outcome: "You wake up an hour later with a pillow crease on your face. Still nobody. You take the pillow with you.",
+    outcome: "The tent is a lost cause: ripped wide open and soaked through. But the pillow is dry. You hug it to your chest and keep walking.",
     next: "page5",
   },
   backstory: {
@@ -253,7 +265,7 @@ const ANSWERS = {
   },
   gum: {
     text: "Chewed your last piece of gum and called it dinner",
-    points: { camper: 2 },
+    points: { camper: 3 },
     outcome: "The gum stopped tasting like anything an hour ago. Then you hear something.",
     next: "page7",
   },
@@ -267,7 +279,7 @@ const ANSWERS = {
   // ----- Page 6.5: the mushrooms kick in -----
   listen: {
     text: "Listened to what the trees had to say",
-    points: { bard: 2, mystic: 1 },
+    points: { bard: 2 },
     outcome: "The trees mostly want to talk about you. Then, all at once, they go quiet.",
     next: "page7",
   },
@@ -305,7 +317,7 @@ const ANSWERS = {
   },
   stick: {
     text: "Grabbed a stick and walked straight at the shadows",
-    points: { trailblazer: 3 },
+    points: { trailblazer: 2 },
     outcome: "You march at them, stick raised. Nothing there. And now you can't see your shelter.",
     next: "page9",
   },
@@ -319,7 +331,7 @@ const ANSWERS = {
   // ----- Page 8: the voice -----
   follow: {
     text: "Followed the voice that sounded like your friend",
-    points: { medic: 1, camper: 1 },
+    points: { medic: 2, camper: 1 },
     outcome: "The voice stays just ahead of you, then stops. You're alone, and your shelter is gone.",
     next: "page9",
   },
@@ -357,7 +369,7 @@ const ANSWERS = {
   },
   climb: {
     text: "Climbed a tree to look around",
-    points: { nightwatch: 2 },
+    points: { nightwatch: 1, bard: 1 },
     outcome: "The branch cracks, and you slide back down. Something tiny falls out of a knot in the trunk and bonks you on the head.",
     next: "page-key",
   },
@@ -389,7 +401,7 @@ const ANSWERS = {
   },
   sos: {
     text: "Spelled out SOS with sticks and rocks",
-    points: { scout: 3 },
+    points: { scout: 2, survivalist: 1 },
     outcome: "Someone has added a tiny pebble smiley face next to your SOS. Beside it, something glints.",
     next: "page-key",
   },
@@ -430,7 +442,7 @@ const ANSWERS = {
   },
   pick: {
     text: "Gave up on the key and kicked the tiny door open",
-    points: { trailblazer: 2, lonewolf: 1 },
+    points: { lonewolf: 2, trailblazer: 1 },
     outcome: "One kick. The tiny door bangs open, and warm light spills out, along with the smell of cinnamon rolls.",
     next: "page-fairy",
   },
@@ -462,7 +474,7 @@ const ANSWERS = {
   },
   spell: {
     text: "Asked the fairy to teach you a spell",
-    points: { schemer: 2, bard: 1 },
+    points: { bard: 2, schemer: 1 },
     outcome: "He teaches you a spell for finding lost things. You spin three times, feeling ridiculous, and stop facing a porch light. \"HEY! We've got one!\"",
     next: "page11",
   },
@@ -482,7 +494,7 @@ const ANSWERS = {
   },
   askfriends: {
     text: "Asked if your friends were okay",
-    points: { medic: 2 },
+    points: { medic: 3 },
     outcome: "\"They're fine. One of them cried a little.\" You get a ride home and sleep for eleven hours.",
     next: "result",
   },
@@ -556,8 +568,8 @@ const STORY_EXTRAS = {
 
     // The empty campsite was the rangers' supply camp
     if (picked("raid")) lines.push(t("extra.raid", "\"Also, someone cleaned out our supply camp up the trail. Cookies, a headlamp...\" You chew very, very quietly."));
-    if (picked("iou")) lines.push(t("extra.iou", "\"And whoever left an IOU at our supply camp: very thorough. Time-stamped and everything.\""));
-    if (picked("tentnap")) lines.push(t("extra.tentnap", "\"Weird thing. Somebody napped in our supply tent and took the pillow.\" The pillow is under your arm right now."));
+    if (picked("iou")) lines.push(t("extra.iou", "\"And whoever left a sorry note at our supply camp over one granola bar: very polite. We appreciated it.\""));
+    if (picked("tentnap")) lines.push(t("extra.tentnap", "\"Weird thing. Somebody dug through our wrecked supply tent just to take the pillow.\" The pillow is under your arm right now."));
 
     // The tiny door: a little surprise, or a little regret
     if (openedDoor) {
