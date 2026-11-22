@@ -21,6 +21,10 @@ Every page is one chapter: a question with 2 to 4 answers. Each answer:
 ```
 Page 1 (pick a start button)
    │
+Name page
+   │
+Wake-up question (no story): "Hike at 7 a.m. What time are you waking up?"
+   │
 Page 2: the bear
    ├── Run away / Make yourself small ──────────┐
    └── Bark / Snacks ─► Page 2.5: which way? ───┤
@@ -92,8 +96,8 @@ Each type's results page shows a real photo (no AI images), its strengths and wa
 
 ### How you answer counts too
 
-- **Slow answers:** spending more than 1 min 30 sec on a question (time with the tab in the background doesn't count) adds +0.5 to The Night Watch (overthinking) and +0.5 to The Happy Camper (putting off decisions). At most 3 slow questions count, so timing can nudge your result but never outweigh your answers.
-- **Going back:** pressing "back" on more than 3 different questions adds +0.5 to The Survivalist (anxious, extra careful) and +0.5 to The Night Watch (overthinking). Going back on the same question several times only counts once.
+- **Slow answers:** spending more than 2 minutes on a question (time with the tab in the background doesn't count) adds +0.25 to The Happy Camper (the laziest type). At most 3 slow questions count (+0.75 max).
+- **Going back:** pressing "back" more than 3 times in total (same question or different ones) adds +0.5 to The Glamper (picky perfectionist), once.
 - The result page has a "How you took the quiz" box that explains any of these nudges. Share links carry them too (`&slow=N&back=N`), so friends see the same result.
 
 Each result has 6 strengths and 6 watch-outs. The watch-outs are written to be blunt on purpose.

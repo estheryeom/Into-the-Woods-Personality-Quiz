@@ -12,6 +12,10 @@
    3. At the end we add up the points. The type with the most
       points is your result. The second-highest is your "streak".
 
+   POINTS: an answer only gives points to types it truly fits.
+   It's fine if some types (like the Lone Wolf) come up rarely.
+   Don't tack on a +1 just to even out the totals.
+
    ADDING A NEW CHAPTER
    - Copy a <section> in index.html, give it a new id and new data-choice keys.
    - Add those keys to ANSWERS, and point an earlier answer's "next" at it.
@@ -40,29 +44,54 @@ const TYPES = {
 // ---------------------------------------------------------
 const ANSWERS = {
   // ----- Page 1: which "Let's start" button? -----
+  // Every button gives +0.25 to 3 types, and the 4 buttons cover all 12
+  // types between them, so everyone starts with the same small head start.
   direct: {
     text: "Clicked the big button in the middle",
-    points: { trailblazer: 2, scout: 1 },
-    outcome: "Saturday, 7 a.m. You're first at the trailhead. Your friends show up late with iced coffees, and the trail climbs into the pines.",
+    points: { scout: 0.25, survivalist: 0.25, trailblazer: 0.25 },
+    outcome: "Saturday, 7 a.m. The second everyone's at the trailhead, you're already walking. Your friends hurry to keep up as the trail climbs into the pines.",
     next: "page-name",
   },
   quirky: {
     text: "Clicked the small button in the top-right corner",
-    points: { bard: 2, lonewolf: 1 },
+    points: { bard: 0.25, lonewolf: 0.25, mystic: 0.25 },
     outcome: "You show up humming, in a hat nobody asked for. Your friends pretend not to know you. The trail winds into the pines.",
     next: "page-name",
   },
   reliant: {
     text: "Found the tiny button next to the big one",
-    points: { tattletale: 2, schemer: 1 },
+    points: { nightwatch: 0.25, tattletale: 0.25, medic: 0.25 },
     outcome: "Your friend planned everything, even the bear spray they tucked in your bag \"just in case.\" You follow the group into the pines.",
     next: "page-name",
   },
   carefree: {
     text: "Clicked the medium button at the bottom",
-    points: { camper: 2, mystic: 1, glamper: 1 },
-    outcome: "Saturday morning. Bag packed in a hurry, hair still wet, you meet up with your friends at the trailhead. Whatever you forgot, you'll figure it out. Still, what a beautiful day.",
+    points: { camper: 0.25, glamper: 0.25, schemer: 0.25 },
+    outcome: "Saturday morning. You meet up with your friends at the trailhead. Whatever you forgot to pack, you'll figure it out. The sky is blue, the air smells like pine. What a beautiful day.",
     next: "page-name",
+  },
+
+  // ----- Wake-up question (no story, just a question about you) -----
+  // No outcome on purpose: page 2 still opens with the start button's story.
+  alarm5: {
+    text: "Woke up at 5:00, with a backup alarm and a bag packed the night before",
+    points: { scout: 2 },
+    next: "page2",
+  },
+  callround: {
+    text: "Woke up at 5:45 to call everyone and make sure they were up",
+    points: { medic: 2 },
+    next: "page2",
+  },
+  glowup: {
+    text: "Woke up at 6:00 for skincare, an outfit and an iced coffee",
+    points: { glamper: 2 },
+    next: "page2",
+  },
+  omw: {
+    text: "Woke up at 6:50 and texted \"omw!!\" from bed",
+    points: { camper: 2, schemer: 1 },
+    next: "page2",
   },
 
   // ----- Page 2: the bear -----
@@ -120,7 +149,7 @@ const ANSWERS = {
   // ----- Page 3: lost in the woods -----
   phone: {
     text: "Kept using your dying phone to find a way out",
-    points: { lonewolf: 2, scout: 1, glamper: 1 },
+    points: { lonewolf: 2, glamper: 1 },
     outcome: "The screen {{flickers}}, shows 1%, and goes black.",
     next: "page4",
   },
@@ -166,7 +195,7 @@ const ANSWERS = {
   },
   iou: {
     text: "Borrowed one granola bar and left a signed IOU",
-    points: { tattletale: 2, medic: 1 },
+    points: { tattletale: 2 },
     outcome: "\"IOU: 1 granola bar (oat & honey).\" Signed, dated, time-stamped, tucked under a rock. You keep walking.",
     next: "page5",
   },
@@ -224,7 +253,7 @@ const ANSWERS = {
   },
   gum: {
     text: "Chewed your last piece of gum and called it dinner",
-    points: { camper: 2, bard: 1 },
+    points: { camper: 2 },
     outcome: "The gum stopped tasting like anything an hour ago. Then you hear something.",
     next: "page7",
   },
@@ -302,13 +331,13 @@ const ANSWERS = {
   },
   nicetry: {
     text: "Told the voice \"Nice try\" and stayed put",
-    points: { survivalist: 2, lonewolf: 1, schemer: 1 },
+    points: { survivalist: 2, lonewolf: 1 },
     outcome: "It calls your name for an hour. Then it stops.",
     next: "page10",
   },
   rocks: {
     text: "Threw rocks at the voice",
-    points: { trailblazer: 2, survivalist: 1 },
+    points: { trailblazer: 2 },
     outcome: "The second rock hits something with a soft thunk. The voice stops mid-word, and something big crashes away.",
     next: "page10",
   },
@@ -334,7 +363,7 @@ const ANSWERS = {
   },
   bolt: {
     text: "Ran blindly into the dark",
-    points: { lonewolf: 2, mystic: 1 },
+    points: { lonewolf: 2 },
     outcome: "A root trips you, face-first into the dirt. Something tiny and hard pokes your cheek.",
     next: "page-key",
   },
@@ -395,7 +424,7 @@ const ANSWERS = {
   // ----- Chapter 10: the tiny door -----
   tapwand: {
     text: "Tried the star key in the tiny door",
-    points: { mystic: 2, camper: 1 },
+    points: { mystic: 2 },
     outcome: "It fits. Click. The door swings open, and warm light spills out, along with the smell of cinnamon rolls.",
     next: "page-fairy",
   },
@@ -407,7 +436,7 @@ const ANSWERS = {
   },
   decoration: {
     text: "Decided the tiny door was just a decoration",
-    points: { scout: 2, lonewolf: 1 },
+    points: { scout: 2 },
     outcome: "You leave it alone. Minutes later, a flashlight lands on your face. \"HEY! We've got one!\"",
     next: "page11",
   },
@@ -449,53 +478,32 @@ const ANSWERS = {
     text: "Told the ranger the hike was your friend's idea",
     points: { tattletale: 3, schemer: 1 },
     outcome: "The ranger writes down your friend's name. Your friend, ten feet away, hears every word. You get a ride home and sleep for eleven hours.",
-    next: "page-chat",
+    next: "result",
   },
   askfriends: {
     text: "Asked if your friends were okay",
     points: { medic: 2 },
     outcome: "\"They're fine. One of them cried a little.\" You get a ride home and sleep for eleven hours.",
-    next: "page-chat",
+    next: "result",
   },
   handled: {
     text: "Insisted you had it handled",
     points: { lonewolf: 2, trailblazer: 1 },
     outcome: "\"Sure you did.\" She hands you a second foil blanket anyway. You get a ride home and sleep for eleven hours.",
-    next: "page-chat",
+    next: "result",
   },
   food: {
     text: "Asked if there was any food",
     points: { glamper: 2, camper: 1 },
     outcome: "She finds you a granola bar. You eat it in two bites and ask about a second one. You get a ride home and sleep for eleven hours.",
-    next: "page-chat",
-  },
-
-  // ----- Page 12: the group chat, the next morning -----
-  carousel: {
-    text: "Posted a 10-photo carousel",
-    points: { glamper: 2, mystic: 1 },
-    next: "result",
-  },
-  saga: {
-    text: "Told the full story, with a bigger bear",
-    points: { bard: 2, schemer: 1 },
-    next: "result",
-  },
-  timeline: {
-    text: "Sent a timeline of who did what, with timestamps",
-    points: { tattletale: 2, survivalist: 1 },
-    next: "result",
-  },
-  nexttrip: {
-    text: "Started planning the next trip",
-    points: { mystic: 2, camper: 1 },
     next: "result",
   },
 };
 
-// Share links made before the group-chat page existed end on a
-// page-11 answer. They're still complete runs, so keep them working.
-const OLD_LAST_PAGE = "page-chat";
+// Answers from pages that were taken out of the quiz. Old share links may
+// still have them, so they're quietly dropped instead of breaking the link.
+//   carousel, saga, timeline, nexttrip: the group chat (removed)
+const RETIRED_CHOICES = ["carousel", "saga", "timeline", "nexttrip"];
 
 // ---------------------------------------------------------
 // Extra story lines that depend on your WHOLE path, not just
@@ -975,22 +983,21 @@ let playerName = ""; // typed on the name page, used when the voice calls you
 
 // ---------------------------------------------------------
 // HOW you answer counts too, not just what you pick:
-//   - Taking more than 1 min 30 sec on a question = indecisiveness.
-//     Each slow question adds +0.5 to the Night Watch (overthinking) and
-//     +0.5 to the Happy Camper (putting off decisions), up to 3 questions.
-//   - Pressing "back" on more than 3 different questions = second-guessing.
-//     That adds +0.5 to the Survivalist (anxious, extra careful) and +0.5 to
-//     the Night Watch (overthinking). Going back on the same question again
-//     only counts once.
-// These are small nudges on top of your answers. They can't outvote them.
+//   - Taking more than 2 minutes on a question = dragging your feet.
+//     Each slow question adds +0.25 to the Happy Camper (the laziest type),
+//     up to 3 questions (+0.75 at most).
+//   - Pressing "back" more than 3 times in total (same question or
+//     different ones) = picky perfectionist. That adds +0.5 to the Glamper
+//     (high standards, wants everything just right), once.
+// These are small nudges on top of your answers.
 // ---------------------------------------------------------
-const SLOW_MS = 90 * 1000;
+const SLOW_MS = 2 * 60 * 1000;
 const MAX_SLOW_COUNTED = 3;
-const SLOW_POINTS = { nightwatch: 0.5, camper: 0.5 };
-const BACK_LIMIT = 3; // more than this many questions = second-guesser
-const BACK_POINTS = { survivalist: 0.5, nightwatch: 0.5 };
+const SLOW_POINTS = { camper: 0.25 };
+const BACK_LIMIT = 3; // more than this many presses = perfectionist
+const BACK_POINTS = { glamper: 0.5 };
 
-let habits = { slow: new Set(), back: new Set() }; // page ids
+let habits = { slow: new Set(), back: 0 }; // slow: page ids, back: number of presses
 let pageShownAt = 0;
 let hiddenAt = null;
 
@@ -1009,7 +1016,7 @@ function slowCount() {
 }
 
 function isSecondGuesser() {
-  return habits.back.size > BACK_LIMIT;
+  return habits.back > BACK_LIMIT;
 }
 
 // Small helpers for the story
@@ -1039,7 +1046,13 @@ function fillStory(pageId) {
   const storyBox = document.querySelector(`#${CSS.escape(pageId)} .story`);
   if (!storyBox) return;
 
-  const lastAnswer = ANSWERS[history[history.length - 1]];
+  // The latest answer that has a story line. (The wake-up question has none,
+  // so page 2 still opens with what happened after the start button.)
+  let lastKey;
+  for (let i = history.length - 1; i >= 0 && !lastKey; i--) {
+    if (ANSWERS[history[i]].outcome) lastKey = history[i];
+  }
+  const lastAnswer = ANSWERS[lastKey];
   const lines = [];
   if (lastAnswer && lastAnswer.outcome) lines.push(lastAnswer.outcome);
   if (STORY_EXTRAS[pageId]) lines.push(...STORY_EXTRAS[pageId]().filter(Boolean));
@@ -1069,13 +1082,13 @@ function fillStory(pageId) {
   storyBox.hidden = lines.length === 0;
 
   // Little doodles on either side of the answer's outcome line
-  const sideDoodles = ANSWER_SIDE_DOODLES[history[history.length - 1]];
+  const sideDoodles = ANSWER_SIDE_DOODLES[lastKey];
   if (sideDoodles && lastAnswer && lastAnswer.outcome && storyBox.firstChild) {
     addSideDoodles(storyBox.firstChild, sideDoodles);
   }
 
   storyBox.classList.remove("story-covered");
-  const stickers = ANSWER_COVERS[history[history.length - 1]] || STORY_COVERS[pageId];
+  const stickers = ANSWER_COVERS[lastKey] || STORY_COVERS[pageId];
   if (stickers && lines.length) addStoryCover(storyBox, stickers);
 
   // Page 11 (the ranger): sparkles twinkle around the story, gone in 8 seconds
@@ -1837,7 +1850,7 @@ function pathParam() {
 function resultQuery() {
   let query = `path=${pathParam()}`;
   if (habits.slow.size) query += `&slow=${habits.slow.size}`;
-  if (habits.back.size) query += `&back=${habits.back.size}`;
+  if (habits.back) query += `&back=${habits.back}`;
   return query;
 }
 
@@ -1846,7 +1859,7 @@ function habitsFromUrl() {
   const params = new URLSearchParams(window.location.search);
   const count = (name) => Math.min(Math.max(parseInt(params.get(name), 10) || 0, 0), 50);
   const fake = (n) => new Set(Array.from({ length: n }, (_, i) => `shared-${i}`));
-  return { slow: fake(count("slow")), back: fake(count("back")) };
+  return { slow: fake(count("slow")), back: count("back") };
 }
 
 // "How you took the quiz": explain the timing / back-button nudges
@@ -1860,19 +1873,19 @@ function fillHabits() {
   if (slow) {
     notes.push(
       t("habitsSlow", (n) =>
-        `You spent more than a minute and a half on ${n} question${n === 1 ? "" : "s"}. ` +
-        "When there's no obvious right answer, you stall: weighing, re-reading, waiting to feel sure. " +
-        "That nudged your Night Watch (overthinking) and Happy Camper (putting off decisions) scores up a little.",
+        `You spent more than 2 minutes on ${n} question${n === 1 ? "" : "s"}. ` +
+        "No rush, right? It'll get done eventually. " +
+        "That nudged your Happy Camper (in no hurry, ever) score up a little.",
       slow)
     );
   }
-  const back = habits.back.size;
+  const back = habits.back;
   if (back) {
     notes.push(
       t("habitsBack", (n, secondGuesser) => {
-        const note = `You went back and reconsidered ${n} question${n === 1 ? "" : "s"}.`;
+        const note = `You hit "back" ${n} time${n === 1 ? "" : "s"}.`;
         return secondGuesser
-          ? `${note} Second-guessing yourself that often usually comes from being afraid of getting it wrong. That nudged your Survivalist (anxious, extra careful) and Night Watch (overthinking) scores up a little.`
+          ? `${note} Not quite right? Do it again. You want every answer to be just so. That nudged your Glamper (high standards, picky about the details) score up a little.`
           : `${note} Changing your mind a few times is just being thoughtful, so it didn't affect your result.`;
       }, back, isSecondGuesser())
     );
@@ -1898,10 +1911,10 @@ function shareLink() {
 function pathFromUrl() {
   const raw = new URLSearchParams(window.location.search).get("path");
   if (!raw) return null;
-  const keys = raw.split(".");
+  const keys = raw.split(".").filter((key) => !RETIRED_CHOICES.includes(key));
+  if (!keys.length) return null;
   if (!keys.every((key) => Object.prototype.hasOwnProperty.call(ANSWERS, key))) return null;
-  const lastNext = ANSWERS[keys[keys.length - 1]].next;
-  if (lastNext !== "result" && lastNext !== OLD_LAST_PAGE) return null;
+  if (ANSWERS[keys[keys.length - 1]].next !== "result") return null;
   return keys;
 }
 
@@ -2157,11 +2170,11 @@ if (allPersonalities) {
     const lastChoice = history.pop();
     if (!lastChoice) return;
     const pageId = pageOfChoice(lastChoice);
-    habits.back.add(pageId); // each question counts once, however many times you go back
+    habits.back += 1; // every press counts, same question or not
     showPage(pageId);
   });
 
-  // Name page: save the name, put it into the story, then start chapter 1
+  // Name page: save the name, put it into the story, then ask the wake-up question
   const nameInput = document.getElementById("name-input");
   document.getElementById("name-form").addEventListener("submit", (event) => {
     event.preventDefault();
@@ -2175,12 +2188,12 @@ if (allPersonalities) {
     document.querySelectorAll(".player-name").forEach((el) => {
       el.textContent = LANG === "ko" ? koVocative(playerName) : playerName;
     });
-    showPage("page2");
+    showPage("page-wake");
   });
 
   document.getElementById("restart-btn").addEventListener("click", () => {
     history = [];
-    habits = { slow: new Set(), back: new Set() };
+    habits = { slow: new Set(), back: 0 };
     // Drop ?path=... so a refresh doesn't bring the old result back
     window.history.replaceState(null, "", window.location.pathname);
     document.getElementById("result-shared-note").hidden = true;
