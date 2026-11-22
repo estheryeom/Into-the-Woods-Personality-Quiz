@@ -112,6 +112,8 @@ Each result has 6 strengths and 6 watch-outs. The watch-outs are written to be b
 - `style.css`: the forest theme, button sizes and phone layout
 - `script.js`: answer data, story text, scoring, results and sharing
 - `personalities.html`: every personality side by side (built from `RESULTS` in `script.js`)
+- `details.html?type=scout`: one personality's full write-up, like the result page but not about you (no "You are…", score mix or sharing)
+- `friends.html?type=scout`: one personality's friends and foes
 - `images/`: one photo per personality type (credits below)
 
 ## Adding a chapter

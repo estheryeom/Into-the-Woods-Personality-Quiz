@@ -1524,6 +1524,50 @@ a.restart-btn:focus-visible,
   color: var(--cream);
 }
 
+/* "More details →" and "Friends and Foes →" side by side on each card */
+.type-card-links {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1.1rem;
+}
+
+/* The More details page (details.html): built from the result page styles */
+.page-details {
+  padding-top: 2.5rem;
+}
+
+.page-details .back-link#back-to-all {
+  display: block;
+  width: fit-content;
+  text-align: left;
+}
+
+.details-note {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-soft);
+  margin: 0 0 0.75rem;
+}
+
+.page-details .kin-grid .result-box h3 {
+  color: var(--leaf);
+}
+
+.page-details .kin-grid .result-box:last-child h3 {
+  color: #e0664c;
+}
+
+.details-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.details-nav .back-link:last-child {
+  text-align: right;
+}
+
 /* The Friends and Foes page (friends.html) */
 .page-friends {
   max-width: 760px;

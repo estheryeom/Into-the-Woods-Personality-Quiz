@@ -376,6 +376,20 @@ const KO = {
     backToAll: `← 모든 유형 보기`,
     kinTitle: `찐친 & 상극`,
     kinLink: `찐친 & 상극 보러 가기 →`,
+
+    // More details page (details.html) — about the type, not about "you"
+    detailsLink: `자세히 보기 →`,
+    detailsTitle: `자세히 보기`,
+    detailsChapter: `이 유형 파헤치기`,
+    detailsNote: `이 유형 나온 사람한테 하는 말이라, 아래 '너'는 다 걔네 얘기야.`,
+    detailsStrengths: `장점`,
+    detailsWatchouts: `조심할 점`,
+    detailsTick: `얘네를 움직이는 것`,
+    detailsDrive: `원동력`,
+    detailsWiring: `회로`,
+    detailsStress: `스트레스 받으면`,
+    detailsNeed: `진짜 필요한 것`,
+    detailsQuiz: `테스트 하러 가기`,
     habitsSlow: (n) =>
       `질문 ${n}개에서 2분 넘게 뭉갰어. 급할 거 뭐 있어, 언젠간 하겠지 ㅋㅋ 그래서 해피 캠퍼(세상 급한 거 없음) 점수가 살짝 올라갔어.`,
     habitsBack: (n, secondGuesser) =>

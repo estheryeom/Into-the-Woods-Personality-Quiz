@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>More Details — Into the Woods</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Almendra:ital,wght@0,400;0,700;1,400&family=Henny+Penny&family=Jua&family=Macondo&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+  <!-- One personality up close (details.html?type=scout). Same boxes as the
+       result page, minus the parts that are about *your* quiz (runner-up,
+       personality mix, how you took the quiz, sharing). Filled in by script.js. -->
+  <main id="details-page" class="page page-result page-details">
+    <a id="back-to-all" class="back-link" href="personalities.html">← All the personalities</a>
+
+    <p id="details-chapter" class="chapter">Meet the personality</p>
+    <h1 id="details-name" class="result-name" tabindex="-1"></h1>
+    <p id="details-tagline" class="result-tagline"></p>
+
+    <figure class="result-photo">
+      <img id="details-photo" src="" alt="">
+      <figcaption id="details-photo-credit"></figcaption>
+    </figure>
+
+    <p id="details-note" class="details-note">Written to whoever gets this one, so every "you" below means one of them.</p>
+    <p id="details-description" class="result-description"></p>
+
+    <div class="result-grid">
+      <div class="result-box">
+        <h3 id="details-strengths-title">Strengths</h3>
+        <ul id="details-strengths"></ul>
+      </div>
+      <div class="result-box">
+        <h3 id="details-watchouts-title">Watch out for</h3>
+        <ul id="details-watchouts"></ul>
+      </div>
+    </div>
+
+    <div class="result-box">
+      <h3 id="details-tick-title">What makes them tick</h3>
+      <ul id="details-traits" class="traits"></ul>
+      <p id="details-core" class="tick-line"></p>
+      <dl class="tick">
+        <dt id="details-drive-title">What drives them</dt>
+        <dd id="details-drive"></dd>
+        <dt id="details-wiring-title">How they're wired</dt>
+        <dd id="details-wiring"></dd>
+        <dt id="details-stress-title">Under stress</dt>
+        <dd id="details-stress"></dd>
+        <dt id="details-need-title">What they actually need</dt>
+        <dd id="details-need"></dd>
+      </dl>
+    </div>
+
+    <div class="kin-grid">
+      <div class="result-box">
+        <h3 id="details-friends-title">Friends</h3>
+        <div id="result-friends" class="kin-list"></div>
+      </div>
+      <div class="result-box">
+        <h3 id="details-foes-title">Foes</h3>
+        <div id="result-foes" class="kin-list"></div>
+      </div>
+    </div>
+
+    <!-- Flip through the other personalities -->
+    <nav class="details-nav" aria-label="Other personalities">
+      <a id="details-prev" class="back-link" href="#"></a>
+      <a id="details-next" class="back-link" href="#"></a>
+    </nav>
+
+    <div class="all-footer">
+      <a id="details-quiz-link" class="restart-btn" href="index.html">Take the quiz</a>
+    </div>
+  </main>
+
+  <script src="ko.js?v=2"></script>
+  <script src="sparkle.js?v=2"></script>
+  <script src="script.js?v=2"></script>
+</body>
+</html>

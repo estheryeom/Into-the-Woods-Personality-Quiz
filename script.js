@@ -2615,7 +2615,17 @@ function showAllPersonalities(container) {
     kin.href = `friends.html?type=${type}${keepQuery()}`;
     kin.textContent = t("kinLink", "Friends and Foes →");
 
-    body.append(name, tagline, traits, description, kin, credit);
+    // The full write-up lives on its own page too (details.html?type=...)
+    const more = document.createElement("a");
+    more.className = "type-card-kin-link";
+    more.href = `details.html?type=${type}${keepQuery()}`;
+    more.textContent = t("detailsLink", "More details →");
+
+    const links = document.createElement("div");
+    links.className = "type-card-links";
+    links.append(more, kin);
+
+    body.append(name, tagline, traits, description, links, credit);
     card.append(img, body);
     container.appendChild(card);
   }
@@ -2665,6 +2675,91 @@ function showFriendsPage() {
   const back = document.getElementById("back-to-all");
   back.href = `personalities.html${query ? `?${query.slice(1)}` : ""}#${type}`;
   back.textContent = t("backToAll", "← All the personalities");
+}
+
+// ---------------------------------------------------------
+// The "More details" page (details.html?type=scout)
+// Same boxes as the result page, but about the type, not about you:
+// no runner-up, no personality mix, no quiz habits, no sharing.
+// ---------------------------------------------------------
+function showDetailsPage() {
+  const asked = new URLSearchParams(window.location.search).get("type");
+  const types = Object.keys(RESULTS);
+  const type = RESULTS[asked] ? asked : types[0];
+  const result = RESULTS[type];
+  const query = keepQuery();
+  const setText = (id, text) => (document.getElementById(id).textContent = text);
+
+  document.title = `${result.name} — ${t("detailsTitle", "More Details")}`;
+  setText("details-chapter", t("detailsChapter", "Meet the personality"));
+  setText("details-name", result.name);
+  setText("details-tagline", result.tagline);
+  setText("details-note", t("detailsNote", 'Written to whoever gets this one, so every "you" below means one of them.'));
+  setText("details-description", result.description);
+
+  const photo = document.getElementById("details-photo");
+  photo.src = result.image.src;
+  photo.alt = result.image.alt;
+  setText("details-photo-credit", t("photoCredit", (credit) => `Photo: ${credit}`, result.image.credit));
+
+  addSparkles(document.getElementById("details-name"), 14);
+  addSparkles(photo.closest(".result-photo"), 22);
+
+  // Box headings (written about "them", not "you")
+  setText("details-strengths-title", t("detailsStrengths", "Strengths"));
+  setText("details-watchouts-title", t("detailsWatchouts", "Watch out for"));
+  setText("details-tick-title", t("detailsTick", "What makes them tick"));
+  setText("details-drive-title", t("detailsDrive", "What drives them"));
+  setText("details-wiring-title", t("detailsWiring", "How they're wired"));
+  setText("details-stress-title", t("detailsStress", "Under stress"));
+  setText("details-need-title", t("detailsNeed", "What they actually need"));
+  setText("details-friends-title", t("kinFriends", "Friends"));
+  setText("details-foes-title", t("kinFoes", "Foes"));
+
+  fillList("details-strengths", result.strengths);
+  fillList("details-watchouts", result.watchouts);
+
+  const [traitWords, coreLine] = result.core;
+  const traits = document.getElementById("details-traits");
+  traits.innerHTML = "";
+  traitWords.forEach((word) => {
+    const li = document.createElement("li");
+    li.textContent = word;
+    traits.appendChild(li);
+  });
+  setText("details-core", coreLine);
+  setText("details-drive", result.drive);
+  setText("details-wiring", result.wiring);
+  setText("details-stress", result.stress);
+  setText("details-need", result.need);
+
+  // Friends & foes: tap one to read *their* details
+  fillKin("result-friends", RELATIONS[type].friends);
+  fillKin("result-foes", RELATIONS[type].foes);
+  const others = [...RELATIONS[type].friends, ...RELATIONS[type].foes].map(([other]) => other);
+  document.querySelectorAll("#details-page .kin-card").forEach((card, i) => {
+    const link = document.createElement("a");
+    link.className = "kin-card kin-card-link";
+    link.href = `details.html?type=${others[i]}${query}`;
+    link.append(...card.childNodes);
+    card.replaceWith(link);
+  });
+
+  // Previous / next personality (wraps around)
+  const i = types.indexOf(type);
+  const prev = types[(i - 1 + types.length) % types.length];
+  const next = types[(i + 1) % types.length];
+  const prevLink = document.getElementById("details-prev");
+  prevLink.href = `details.html?type=${prev}${query}`;
+  prevLink.textContent = `← ${TYPES[prev]}`;
+  const nextLink = document.getElementById("details-next");
+  nextLink.href = `details.html?type=${next}${query}`;
+  nextLink.textContent = `${TYPES[next]} →`;
+
+  const back = document.getElementById("back-to-all");
+  back.href = `personalities.html${query ? `?${query.slice(1)}` : ""}#${type}`;
+  back.textContent = t("backToAll", "← All the personalities");
+  setText("details-quiz-link", t("detailsQuiz", "Take the quiz"));
 }
 
 // Helper: turn [type, why] pairs into little photo cards
@@ -2717,6 +2812,8 @@ if (allPersonalities) {
   showAllPersonalities(allPersonalities);
 } else if (document.getElementById("friends-page")) {
   showFriendsPage();
+} else if (document.getElementById("details-page")) {
+  showDetailsPage();
 } else {
   document.querySelectorAll("[data-choice]").forEach((button) => {
     button.addEventListener("click", () => choose(button.dataset.choice));
