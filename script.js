@@ -368,13 +368,13 @@ const ANSWERS = {
   tapwand: {
     text: "Tried the star key in the tiny door",
     points: { mystic: 2, camper: 1 },
-    outcome: "It fits. Click. The door swings open, and warm light spills out, along with the smell of cinnamon toast.",
+    outcome: "It fits. Click. The door swings open, and warm light spills out, along with the smell of cinnamon rolls.",
     next: "page-fairy",
   },
   pick: {
     text: "Gave up on the key and kicked the tiny door open",
     points: { trailblazer: 2, lonewolf: 1 },
-    outcome: "One kick. The tiny door bangs open, and warm light spills out, along with the smell of cinnamon toast.",
+    outcome: "One kick. The tiny door bangs open, and warm light spills out, along with the smell of cinnamon rolls.",
     next: "page-fairy",
   },
   decoration: {
@@ -1156,9 +1156,24 @@ const DOODLE_MUSHROOMS = `
     <path d="M4 54h52"/>
   </svg>`;
 
+const DOODLE_CINNAMON_rolls = `
+  <svg viewBox="0 0 60 60" aria-hidden="true">
+    <path class="doodle-steam steam-1" d="M22 17c-3-2 3-4 0-6s3-4 0-6"/>
+    <path class="doodle-steam steam-2" d="M30 15c-3-2 3-4 0-6s3-4 0-6"/>
+    <path class="doodle-steam steam-3" d="M38 17c-3-2 3-4 0-6s3-4 0-6"/>
+    <circle class="doodle-bun" cx="30" cy="38" r="17"/>
+    <path class="doodle-swirl" d="M30 38a2 2 0 0 1 4 0a4 4 0 0 1-8 0a6 6 0 0 1 12 0a8 8 0 0 1-16 0a10 10 0 0 1 20 0a12 12 0 0 1-24 0"/>
+    <path class="doodle-icing" d="M15 33c4-3 7 1 11-1s7-3 11 0 7 1 8-1M21 32v5M33 31v6M41 32v3"/>
+    <circle class="doodle-drip" cx="21" cy="38" r="1.4"/>
+    <circle class="doodle-drip" cx="33" cy="38" r="1.4"/>
+    <circle class="doodle-drip" cx="41" cy="36" r="1.2"/>
+  </svg>`;
+
 // Answer you just picked -> [left doodle, right doodle] around its outcome line
 const ANSWER_SIDE_DOODLES = {
   forage: [DOODLE_BERRIES, DOODLE_MUSHROOMS],   // "The mushrooms taste like a basement..."
+  tapwand: [DOODLE_CINNAMON_rolls, DOODLE_CINNAMON_rolls], // "...the smell of cinnamon rolls."
+  pick: [DOODLE_CINNAMON_rolls, DOODLE_CINNAMON_rolls],    // "...the smell of cinnamon rolls."
 };
 
 function addSideDoodles(p, [leftSvg, rightSvg]) {
@@ -1842,7 +1857,40 @@ function showAllPersonalities(container) {
     credit.className = "type-card-credit";
     credit.textContent = t("photoCredit", (text) => `Photo: ${text}`, result.image.credit);
 
-    body.append(name, tagline, traits, description, credit);
+    // Friends & foes: small photo, name and the why line for each
+    const kin = document.createElement("div");
+    kin.className = "type-card-kin";
+    [
+      ["friends", t("kinFriends", "Friends")],
+      ["foes", t("kinFoes", "Foes")],
+    ].forEach(([group, label]) => {
+      const col = document.createElement("div");
+      col.className = `type-card-kin-col type-card-${group}`;
+      const heading = document.createElement("h3");
+      heading.textContent = label;
+      col.appendChild(heading);
+      RELATIONS[type][group].forEach(([other, why]) => {
+        const row = document.createElement("a");
+        row.className = "mini-kin";
+        row.href = `#${other}`;
+        const pic = document.createElement("img");
+        pic.src = RESULTS[other].image.src;
+        pic.alt = "";
+        pic.loading = "lazy";
+        const text = document.createElement("span");
+        const who = document.createElement("strong");
+        who.textContent = TYPES[other];
+        const detail = document.createElement("span");
+        detail.className = "detail";
+        detail.textContent = why;
+        text.append(who, detail);
+        row.append(pic, text);
+        col.appendChild(row);
+      });
+      kin.appendChild(col);
+    });
+
+    body.append(name, tagline, traits, description, kin, credit);
     card.append(img, body);
     container.appendChild(card);
   }

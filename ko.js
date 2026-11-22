@@ -332,6 +332,8 @@ const KO = {
     runnerUp: (name) => `+ ${name} 한 스푼`,
     photoCredit: (credit) => `사진: ${credit}`,
     youBadge: `나`,
+    kinFriends: `찐친`,
+    kinFoes: `상극`,
     backToResult: `← 내 결과로 돌아가기`,
     habitsSlow: (n) =>
       `질문 ${n}개에서 1분 30초 넘게 머물렀어. 딱 떨어지는 정답이 없으면 일단 멈칫하는 타입이지. 따져 보고, 다시 읽고, 확신이 올 때까지 기다리고. 그래서 밤의 파수꾼(생각 과다)이랑 해피 캠퍼(결정 미루기) 점수가 살짝 올라갔어.`,
