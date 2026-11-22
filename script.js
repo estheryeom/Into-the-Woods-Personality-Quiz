@@ -1550,6 +1550,9 @@ function showPage(pageId) {
     page.hidden = page.id !== pageId;
   });
 
+  // The tiny fairy pops up on some pages at random (see fairy.js)
+  if (window.fairyOnPage) window.fairyOnPage(pageId);
+
   clearLeafPile();
   if (pageId === "page6" && history[history.length - 1] === "leaves") {
     requestAnimationFrame(() => dropLeaves(pageId));

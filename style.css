@@ -45,6 +45,52 @@ html * {
   to   { opacity: 0;   transform: translate(var(--dx), var(--dy)) scale(0.2); }
 }
 
+/* The tiny fairy (see fairy.js): a 5px glowing body with two fluttering wings */
+.fairy {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fffbe8;
+  box-shadow: 0 0 3px 1px rgba(255, 236, 160, 0.95), 0 0 7px 2px rgba(255, 205, 235, 0.45);
+  pointer-events: none;
+  z-index: 9998;
+  transition: opacity 90ms linear;
+  will-change: transform, opacity;
+}
+
+.fairy::before,
+.fairy::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  width: 4px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(220, 245, 255, 0.55);
+  animation: fairy-wing 90ms ease-in-out infinite alternate;
+}
+
+.fairy::before { left: -3px; transform-origin: right bottom; }
+.fairy::after  { right: -3px; transform-origin: left bottom; }
+
+@keyframes fairy-wing {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0.3); }
+}
+
+/* Fairy dust: specks that vanish almost right away */
+.fairy-dust {
+  position: fixed;
+  border-radius: 50%;
+  box-shadow: 0 0 3px 1px rgba(255, 230, 150, 0.7);
+  pointer-events: none;
+  z-index: 9997;
+  animation: wand-dust 260ms ease-out forwards;  /* same fade as the wand dust */
+}
+
 /* Tap sparkle burst on touch screens (see sparkle.js). Gone in ~half a second. */
 .tap-spark,
 .tap-flash {
