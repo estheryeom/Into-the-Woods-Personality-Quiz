@@ -165,7 +165,7 @@ const ANSWERS = {
   fire: {
     text: "Started a fire, thanks to survival shows",
     points: { mystic: 2, trailblazer: 1 },
-    outcome: "Three blisters and a lot of swearing later, you have a small, smoky fire.",
+    outcome: "Three blisters and a lot of swearing later, you have a small, [[smoky fire]].",
     next: "page6",
   },
   paws: {
@@ -920,24 +920,101 @@ function fillStory(pageId) {
   storyBox.innerHTML = "";
   lines.forEach((line) => {
     const p = document.createElement("p");
-    // Words wrapped in {{double braces}} get the red flicker effect
-    line.split(/\{\{(.+?)\}\}/).forEach((part, i) => {
-      if (i % 2 === 0) {
-        p.append(part);
-      } else {
+    // Words wrapped in {{double braces}} get the red flicker effect.
+    // Words wrapped in [[double brackets]] sit on a little smoking campfire.
+    line.split(/(\{\{.+?\}\}|\[\[.+?\]\])/).forEach((part) => {
+      if (part.startsWith("{{")) {
         const span = document.createElement("span");
         span.className = "flicker-word";
-        span.textContent = part;
+        span.textContent = part.slice(2, -2);
         p.appendChild(span);
+      } else if (part.startsWith("[[")) {
+        p.appendChild(makeCampfireWord(part.slice(2, -2)));
+      } else if (part) {
+        p.append(part);
       }
     });
     storyBox.appendChild(p);
   });
   storyBox.hidden = lines.length === 0;
 
+  // Little doodles on either side of the answer's outcome line
+  const sideDoodles = ANSWER_SIDE_DOODLES[history[history.length - 1]];
+  if (sideDoodles && lastAnswer && lastAnswer.outcome && storyBox.firstChild) {
+    addSideDoodles(storyBox.firstChild, sideDoodles);
+  }
+
   storyBox.classList.remove("story-covered");
   const stickers = ANSWER_COVERS[history[history.length - 1]] || STORY_COVERS[pageId];
   if (stickers && lines.length) addStoryCover(storyBox, stickers);
+
+  // Page 11 (the ranger): sparkles twinkle around the story, gone in 8 seconds
+  if (pageId === "page11" && lines.length) addSparkles(storyBox);
+}
+
+// Sparkles that twinkle around an element (story lines, result photo,
+// result name), then fade away. They sit in a layer over the element
+// and remove themselves after 8s.
+function addSparkles(storyBox, COUNT = 18) {
+  // Showing the same thing again (e.g. switching language) restarts them
+  storyBox.querySelectorAll(":scope > .story-sparkles").forEach((old) => old.remove());
+  storyBox.classList.add("story-sparkled");
+  const layer = document.createElement("div");
+  layer.className = "story-sparkles";
+  layer.setAttribute("aria-hidden", "true");
+
+  for (let i = 0; i < COUNT; i++) {
+    const s = document.createElement("span");
+    s.className = "story-sparkle";
+    // Spread them around the edges: top, right, bottom, left
+    const side = i % 4;
+    const along = Math.random() * 100;
+    const out = -4 - Math.random() * 6; // just outside the text
+    if (side === 0) { s.style.left = `${along}%`; s.style.top = `${out}px`; }
+    if (side === 1) { s.style.top = `${along}%`; s.style.right = `${out}px`; }
+    if (side === 2) { s.style.left = `${along}%`; s.style.bottom = `${out}px`; }
+    if (side === 3) { s.style.top = `${along}%`; s.style.left = `${out}px`; }
+    const size = 8 + Math.random() * 10;
+    s.style.width = s.style.height = `${size}px`;
+    s.style.animationDelay = `${(Math.random() * 1.6).toFixed(2)}s`;
+    layer.appendChild(s);
+  }
+  storyBox.appendChild(layer);
+
+  setTimeout(() => {
+    layer.remove();
+    // Going back and forth can start a new batch; only tidy up if none is left
+    if (!storyBox.querySelector(".story-sparkles")) storyBox.classList.remove("story-sparkled");
+  }, 8000);
+}
+
+// A word with a tiny campfire under it, smoke drifting up through the letters
+function makeCampfireWord(text) {
+  const span = document.createElement("span");
+  span.className = "campfire-word";
+  span.textContent = text;
+
+  // Smoke puffs, each on its own delay so they rise one after another
+  for (let i = 0; i < 5; i++) {
+    const puff = document.createElement("span");
+    puff.className = "smoke-puff";
+    puff.style.setProperty("--i", i);
+    puff.setAttribute("aria-hidden", "true");
+    span.appendChild(puff);
+  }
+
+  const fire = document.createElement("span");
+  fire.className = "campfire";
+  fire.setAttribute("aria-hidden", "true");
+  fire.innerHTML = `
+    <svg viewBox="0 0 40 30">
+      <path class="flame flame-outer" d="M20 3c4 6 9 9 9 15a9 9 0 0 1-18 0c0-4 3-6 4-10 1 3 2 4 3 4 0-3 1-6 2-9z"/>
+      <path class="flame flame-inner" d="M20 12c2 3 5 5 5 8a5 5 0 0 1-10 0c0-2 2-4 3-6 0 2 1 2 1 2 0-1 0-3 1-4z"/>
+      <path class="campfire-logs" d="M6 23L34 28M34 23L6 28"/>
+      <path class="campfire-spark" d="M8 8l2 2M32 8l-2 2"/>
+    </svg>`;
+  span.appendChild(fire);
+  return span;
 }
 
 // ---------------------------------------------------------
@@ -1049,6 +1126,58 @@ const STORY_COVERS = {
   page3: BEAR_STICKERS,
 };
 
+// ---------------------------------------------------------
+// Side doodles: a small drawing to the left and right of a story line
+// ---------------------------------------------------------
+
+const DOODLE_BERRIES = `
+  <svg viewBox="0 0 60 60" aria-hidden="true">
+    <path class="doodle-leaf" d="M30 7c0 8-4 13-9 19M30 7c1 8 5 13 9 20M30 7c0 12 0 22-1 29"/>
+    <path class="doodle-leaf" d="M30 9c5-6 13-6 17-3-4 6-12 7-17 3z"/>
+    <circle class="doodle-berry" cx="20" cy="32" r="8"/>
+    <circle class="doodle-berry" cx="40" cy="33" r="8"/>
+    <circle class="doodle-berry" cx="29" cy="45" r="9"/>
+    <path class="doodle-shine" d="M16 29c1-2 2-3 4-3M36 30c1-2 2-3 4-3M24 42c1-2 3-3 5-3"/>
+  </svg>`;
+
+const DOODLE_MUSHROOMS = `
+  <svg viewBox="0 0 60 60" aria-hidden="true">
+    <path class="doodle-stem" d="M25 54c-1-7 0-14 1-20h8c1 6 2 13 1 20"/>
+    <path class="doodle-cap" d="M14 35c0-11 8-18 16-18s16 7 16 18z"/>
+    <circle class="doodle-spot" cx="24" cy="27" r="2.2"/>
+    <circle class="doodle-spot" cx="33" cy="23" r="1.8"/>
+    <circle class="doodle-spot" cx="38" cy="30" r="1.6"/>
+    <path class="doodle-stem" d="M10 54c0-4 0-7 1-10h4c1 3 1 6 1 10"/>
+    <path class="doodle-cap" d="M5 45c0-6 4-9 8-9s8 3 8 9z"/>
+    <circle class="doodle-spot" cx="12" cy="40" r="1.4"/>
+    <path class="doodle-stem" d="M45 54c0-5 0-8 1-11h4c1 3 1 6 1 11"/>
+    <path class="doodle-cap" d="M40 44c0-6 4-10 8-10s8 4 8 10z"/>
+    <circle class="doodle-spot" cx="50" cy="39" r="1.4"/>
+    <path d="M4 54h52"/>
+  </svg>`;
+
+// Answer you just picked -> [left doodle, right doodle] around its outcome line
+const ANSWER_SIDE_DOODLES = {
+  forage: [DOODLE_BERRIES, DOODLE_MUSHROOMS],   // "The mushrooms taste like a basement..."
+};
+
+function addSideDoodles(p, [leftSvg, rightSvg]) {
+  const text = document.createElement("span");
+  text.className = "side-doodle-text";
+  text.append(...p.childNodes);
+
+  const makeDoodle = (svg) => {
+    const d = document.createElement("span");
+    d.className = "side-doodle";
+    d.setAttribute("aria-hidden", "true");
+    d.innerHTML = svg;
+    return d;
+  };
+
+  p.classList.add("side-doodled");
+  p.append(makeDoodle(leftSvg), text, makeDoodle(rightSvg));
+}
+
 // Overrides by the answer you just picked (wins over STORY_COVERS)
 const ANSWER_COVERS = {
   run: PHONE_STICKERS,     // "Ran away and left your friends behind"
@@ -1084,6 +1213,107 @@ function addStoryCover(storyBox, stickers) {
 }
 
 // ---------------------------------------------------------
+// Falling leaves: after "pile up dry leaves", colored doodle
+// leaves drift down and land on top of the next question.
+// They stop once there's one full layer across the first line.
+// ---------------------------------------------------------
+const LEAF_SHAPES = [
+  // maple
+  `<svg viewBox="0 0 60 60" aria-hidden="true">
+    <path class="leaf-fill" d="M30 4l5 14 11-6-3 13 13 1-11 9 5 9-14-3-4 11h-4l-4-11-14 3 5-9-11-9 13-1-3-13 11 6z"/>
+    <path d="M30 56V22M30 40L17 29M30 40l13-11"/>
+  </svg>`,
+  // oval
+  `<svg viewBox="0 0 60 60" aria-hidden="true">
+    <path class="leaf-fill" d="M30 5c16 10 20 32 0 48C10 37 14 15 30 5z"/>
+    <path d="M30 9v49M30 24l-7-5M30 24l7-5M30 35l-9-6M30 35l9-6"/>
+  </svg>`,
+  // round birch
+  `<svg viewBox="0 0 60 60" aria-hidden="true">
+    <path class="leaf-fill" d="M30 8c17 0 24 20 14 34-6 8-22 8-28 0C6 28 13 8 30 8z"/>
+    <path d="M30 12v46M30 26l-8-6M30 26l8-6M30 37l-10-6M30 37l10-6"/>
+  </svg>`,
+];
+
+const LEAF_COLORS = ["#f4a259", "#e76f51", "#f6c453", "#c9733a", "#9cbf5a", "#e9a1b0"];
+
+let leafTimers = [];
+
+function clearLeafPile() {
+  leafTimers.forEach(clearTimeout);
+  leafTimers = [];
+  document.querySelectorAll(".leaf-pile").forEach((pile) => pile.remove());
+}
+
+function dropLeaves(pageId) {
+  const heading = document.querySelector(`#${CSS.escape(pageId)} .question`);
+  if (!heading) return;
+
+  // Measure the first line of the question so leaves only land on words
+  const range = document.createRange();
+  range.selectNodeContents(heading);
+  const firstLine = range.getClientRects()[0];
+  const box = heading.getBoundingClientRect();
+  if (!firstLine) return;
+
+  const pile = document.createElement("div");
+  pile.className = "leaf-pile";
+  pile.setAttribute("aria-hidden", "true");
+  heading.appendChild(pile);
+
+  const remPx = parseFloat(getComputedStyle(document.documentElement).fontSize);
+  const leafPx = 1.9 * remPx;
+  const step = leafPx * 0.8;   // slight overlap, still one layer
+  const lineLeft = firstLine.left - box.left;
+  const lineTop = firstLine.top - box.top;
+  const count = Math.max(3, Math.floor((firstLine.width - leafPx * 0.3) / step));
+  const spacing = (firstLine.width - leafPx * 0.3) / count;
+
+  // Shuffle the landing spots so leaves fill in randomly
+  const slots = [...Array(count).keys()].sort(() => Math.random() - 0.5);
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  slots.forEach((slot, i) => {
+    const timer = setTimeout(() => {
+      const leaf = document.createElement("span");
+      leaf.className = "falling-leaf";
+      leaf.innerHTML = LEAF_SHAPES[Math.floor(Math.random() * LEAF_SHAPES.length)];
+      leaf.style.setProperty("--leaf-color", LEAF_COLORS[Math.floor(Math.random() * LEAF_COLORS.length)]);
+
+      const x = lineLeft + slot * spacing + (Math.random() - 0.5) * spacing * 0.3;
+      const y = lineTop - leafPx * 0.62;   // resting on top of the letters
+      leaf.style.cssText += `left:${x}px;top:${y}px;width:${leafPx}px;height:${leafPx}px;`;
+
+      // Leaves lie on their side when they land
+      const rest = (Math.random() < 0.5 ? 90 : -90) + (Math.random() - 0.5) * 50;
+      const restTransform = `translate(0, 0) rotate(${rest}deg)`;
+      pile.appendChild(leaf);
+
+      if (reduceMotion) {
+        leaf.style.transform = restTransform;
+        return;
+      }
+
+      // Start just above the top of the screen and flutter down
+      const fallFrom = -(box.top + y + leafPx * 2);
+      const sway = 25 + Math.random() * 35;
+      const spin = Math.random() < 0.5 ? -1 : 1;
+      leaf.animate(
+        [
+          { transform: `translate(${sway}px, ${fallFrom}px) rotate(${spin * 20}deg)` },
+          { transform: `translate(${-sway}px, ${fallFrom * 0.7}px) rotate(${spin * -40}deg)` },
+          { transform: `translate(${sway * 0.7}px, ${fallFrom * 0.4}px) rotate(${spin * 50}deg)` },
+          { transform: `translate(${-sway * 0.4}px, ${fallFrom * 0.12}px) rotate(${rest - spin * 30}deg)` },
+          { transform: restTransform },
+        ],
+        { duration: 2600 + Math.random() * 1400, easing: "cubic-bezier(.35,.1,.55,1)", fill: "forwards" }
+      );
+    }, reduceMotion ? 0 : i * 260 + Math.random() * 200);
+    leafTimers.push(timer);
+  });
+}
+
+// ---------------------------------------------------------
 // Show one page and hide all the others
 // ---------------------------------------------------------
 // ---------------------------------------------------------
@@ -1113,6 +1343,11 @@ function showPage(pageId) {
   document.querySelectorAll(".page").forEach((page) => {
     page.hidden = page.id !== pageId;
   });
+
+  clearLeafPile();
+  if (pageId === "page6" && history[history.length - 1] === "leaves") {
+    requestAnimationFrame(() => dropLeaves(pageId));
+  }
 
   // The back button shows on every question except the first and the result
   document.getElementById("back-btn").hidden = pageId === "page1" || pageId === "result";
@@ -1318,6 +1553,10 @@ function showResult() {
   photo.src = result.image.src;
   photo.alt = result.image.alt;
   document.getElementById("result-photo-credit").textContent = t("photoCredit", (credit) => `Photo: ${credit}`, result.image.credit);
+
+  // Sparkles around the personality name and photo (gone in 8 seconds)
+  addSparkles(document.getElementById("result-name"), 14);
+  addSparkles(photo.closest(".result-photo"), 22);
 
   fillList("result-strengths", result.strengths);
   fillList("result-watchouts", result.watchouts);

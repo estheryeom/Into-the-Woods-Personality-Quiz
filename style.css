@@ -348,6 +348,154 @@ html[lang="ko"] .title-font {
   margin: 0 0 0.75rem;
 }
 
+/* Small doodles on either side of a story line (berries | text | mushrooms) */
+.story p.side-doodled {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.side-doodle {
+  flex: 0 0 auto;
+  width: 2.8rem;
+  height: 2.8rem;
+}
+
+.side-doodle svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--cream);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Colored outlines, no fill. Only the small accents get filled in. */
+.side-doodle .doodle-berry { stroke: #c27ad8; }
+.side-doodle .doodle-shine { stroke: var(--cream); stroke-width: 1.8; }
+.side-doodle .doodle-leaf  { stroke: var(--leaf); }
+.side-doodle .doodle-cap   { stroke: #e0664c; }
+.side-doodle .doodle-stem  { stroke: var(--cream); }
+.side-doodle .doodle-spot  { fill: #e0664c; stroke: none; }
+
+@media (max-width: 600px) {
+  .side-doodle {
+    width: 2.1rem;
+    height: 2.1rem;
+  }
+  .story p.side-doodled {
+    gap: 0.6rem;
+  }
+}
+
+/* Angry doodle eyes above the story on page 7 (they blink) */
+.angry-eyes {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 1rem;
+}
+
+.angry-eyes svg {
+  width: 9rem;
+  height: auto;
+  fill: none;
+  stroke: #ff3b30;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 4px rgba(255, 50, 40, 0.7));   /* faint red glow */
+}
+
+.angry-eyes .eye {
+  transform-box: fill-box;
+  transform-origin: center bottom;   /* top lid drops down to the bottom */
+  animation: angry-blink 4s infinite;
+}
+
+@keyframes angry-blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  94%           { transform: scaleY(0.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .angry-eyes .eye { animation: none; }
+}
+
+/* Tiny doodle key with a star head (key page) */
+.key-doodle {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 1rem;
+}
+
+.key-doodle svg {
+  width: 6.5rem;
+  height: auto;
+  transform: rotate(-18deg);   /* tilted like a little wand */
+  fill: none;
+  stroke: var(--cream);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.key-doodle .key-star {
+  fill: #f2d16b;
+  stroke-width: 1.2;
+}
+
+.key-doodle .key-sparkle {
+  stroke-width: 1.8;
+  animation: key-twinkle 2.4s ease-in-out infinite;
+}
+
+@keyframes key-twinkle {
+  0%, 100% { opacity: 0.25; }
+  50%      { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .key-doodle .key-sparkle { animation: none; }
+}
+
+/* Sparkles around the page 11 story lines and the result name + photo
+   (see addSparkles in script.js). They twinkle, then fade out by 8 seconds. */
+.story-sparkled {
+  position: relative;
+}
+
+.story-sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  animation: story-sparkles-fade 8s linear forwards;
+}
+
+.story-sparkle {
+  position: absolute;
+  background: #ffe066;
+  filter: drop-shadow(0 0 4px rgba(255, 220, 110, 0.9));
+  -webkit-clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  opacity: 0;
+  animation: story-sparkle-twinkle 1.6s ease-in-out infinite;
+}
+
+@keyframes story-sparkle-twinkle {
+  0%, 100% { opacity: 0;   transform: scale(0.4) rotate(0deg); }
+  50%      { opacity: 1;   transform: scale(1) rotate(45deg); }
+}
+
+@keyframes story-sparkles-fade {
+  0%, 80% { opacity: 1; }
+  100%    { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-sparkle { animation: none; opacity: 0.8; }
+}
+
 /* Doodle cover over the story lines (page 2). Click to reveal. */
 .story.story-covered {
   position: relative;
@@ -419,6 +567,37 @@ html[lang="ko"] .title-font {
   line-height: 1.35;
   margin: 0 0 2.5rem;
   outline: none;
+}
+
+/* Doodle leaves that fall onto the question (after the leaf-pile answer) */
+.question {
+  position: relative;          /* so the leaf pile can sit on top of it */
+}
+
+.leaf-pile {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.falling-leaf {
+  position: absolute;
+  will-change: transform;
+}
+
+.falling-leaf svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #111;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.falling-leaf .leaf-fill {
+  fill: var(--leaf-color);
 }
 
 /* All answer buttons are the same size */
@@ -533,7 +712,9 @@ html[lang="ko"] .title-font {
 
 .result-name {
   font-size: clamp(2rem, 6vw, 3.2rem);
-  margin: 0;
+  margin: 0 auto;
+  width: fit-content;           /* hug the name so its sparkles sit close */
+  max-width: 100%;
   color: var(--sun);
   outline: none;
 }
@@ -1134,4 +1315,107 @@ a.restart-btn:focus-visible,
 /* People who asked for less motion just see steady red */
 @media (prefers-reduced-motion: reduce) {
   .flicker-word { animation: none; }
+}
+
+/* A word sitting on a tiny campfire, smoke rising up through it */
+.campfire-word {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 1.45em;      /* room for the fire underneath */
+  white-space: nowrap;
+  color: #f3d9a4;
+  font-weight: bold;
+}
+
+.campfire {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 1.9em;
+  height: 1.45em;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* Same doodle style as the star key: cream outline, one accent color */
+.campfire svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: var(--cream);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.campfire .flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: campfire-flicker 0.9s ease-in-out infinite alternate;
+}
+
+.campfire .flame-inner {
+  fill: #f2a23c;               /* the accent, like the key's gold star */
+  stroke-width: 1.2;
+  animation-duration: 0.6s;
+  animation-delay: -0.3s;
+}
+
+.campfire .campfire-spark {
+  stroke-width: 1.8;
+  animation: key-twinkle 1.6s ease-in-out infinite;
+}
+
+@keyframes campfire-flicker {
+  0%   { transform: scale(1, 1) skewX(0deg); }
+  50%  { transform: scale(0.92, 1.08) skewX(-4deg); }
+  100% { transform: scale(1.04, 0.9) skewX(3deg); }
+}
+
+/* Puffs start at the flame tip and drift up across the letters */
+.smoke-puff {
+  position: absolute;
+  left: 50%;
+  bottom: 1.1em;
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  background: rgba(205, 205, 200, 0.55);
+  filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  animation: smoke-rise 3s ease-out infinite;
+  animation-delay: calc(var(--i) * -0.6s);
+}
+
+.smoke-puff:nth-child(even) {
+  animation-name: smoke-rise-alt;
+}
+
+@keyframes smoke-rise {
+  0%   { transform: translate(-50%, 0) scale(0.4); opacity: 0; }
+  15%  { opacity: 0.8; }
+  40%  { transform: translate(-20%, -1.3em) scale(1); }
+  70%  { transform: translate(-80%, -2.4em) scale(1.5); opacity: 0.45; }
+  100% { transform: translate(-30%, -3.6em) scale(2.1); opacity: 0; }
+}
+
+@keyframes smoke-rise-alt {
+  0%   { transform: translate(-50%, 0) scale(0.4); opacity: 0; }
+  15%  { opacity: 0.8; }
+  40%  { transform: translate(-85%, -1.3em) scale(1); }
+  70%  { transform: translate(-20%, -2.4em) scale(1.5); opacity: 0.45; }
+  100% { transform: translate(-70%, -3.6em) scale(2.1); opacity: 0; }
+}
+
+/* Less motion: fire holds still, smoke hangs as a soft haze */
+@media (prefers-reduced-motion: reduce) {
+  .campfire .flame,
+  .campfire .campfire-spark { animation: none; }
+  .smoke-puff { animation: none; opacity: 0.3; }
+  .smoke-puff:nth-child(2) { transform: translate(-30%, -1.4em) scale(1.3); }
+  .smoke-puff:nth-child(3) { transform: translate(-70%, -2.4em) scale(1.7); opacity: 0.2; }
+  .smoke-puff:nth-child(n+4) { display: none; }
 }
