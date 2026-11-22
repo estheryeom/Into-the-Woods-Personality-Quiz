@@ -1420,7 +1420,7 @@ a.restart-btn:focus-visible,
    ALL PERSONALITIES PAGE (personalities.html)
    --------------------------------------------------------- */
 .page-all {
-  max-width: 1100px;
+  max-width: 1240px;
   margin: 0 auto;
   padding-top: 2.5rem;
   padding-bottom: 3rem;
@@ -1447,8 +1447,23 @@ a.restart-btn:focus-visible,
 
 .type-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+  /* Four personalities per row on desktop */
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.25rem;
+}
+
+/* Tablets: two per row */
+@media (max-width: 900px) {
+  .type-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Phones: one per row */
+@media (max-width: 520px) {
+  .type-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 .type-card {
