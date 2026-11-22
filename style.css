@@ -594,13 +594,19 @@ html[lang="ko"] .title-font {
   .story-sparkle { animation: none; opacity: 0.8; }
 }
 
-/* Doodle cover over the story lines (page 2). Click to reveal. */
-.story.story-covered {
+/* Doodle cover over the question. Click to reveal.
+   The wrapper hugs the question so the cover fully hides it. */
+.question-cover-wrap {
   position: relative;
-  min-height: 6.5rem;
+  max-width: 720px;
+  margin: 0 0 2.5rem;          /* the question's own bottom gap moves here... */
 }
 
-.story.story-covered p {
+.question-cover-wrap > .question {
+  margin-bottom: 0;            /* ...so the cover ends right at the question */
+}
+
+.question-covered > .question {
   visibility: hidden;          /* no peeking around the edges */
 }
 
@@ -1130,8 +1136,13 @@ html[lang="ko"] .title-font {
     padding-bottom: 5rem;
   }
 
-  .question {
+  .question,
+  .question-cover-wrap {
     margin-bottom: 1.5rem;
+  }
+
+  .question-cover-wrap > .question {
+    margin-bottom: 0;
   }
 
   .story {

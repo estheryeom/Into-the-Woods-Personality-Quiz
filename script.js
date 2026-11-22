@@ -1099,9 +1099,11 @@ function fillStory(pageId) {
     addSideDoodles(storyBox.firstChild, sideDoodles);
   }
 
-  storyBox.classList.remove("story-covered");
+  // Doodle cover over the question (click to read)
+  const heading = document.querySelector(`#${CSS.escape(pageId)} .question`);
+  removeQuestionCover(heading);
   const stickers = ANSWER_COVERS[lastKey] || STORY_COVERS[pageId];
-  if (stickers && lines.length) addStoryCover(storyBox, stickers);
+  if (stickers && heading) addQuestionCover(heading, stickers);
 
   // Page 11 (the ranger): sparkles twinkle around the story, gone in 8 seconds
   if (pageId === "page11" && lines.length) addSparkles(storyBox);
@@ -1198,7 +1200,7 @@ function makeStarWord(text) {
 }
 
 // ---------------------------------------------------------
-// Doodle cover: hides the story lines (not the question) behind
+// Doodle cover: hides the question (not the story lines) behind
 // black-and-white doodles until you click it
 // ---------------------------------------------------------
 
@@ -1385,8 +1387,29 @@ const ANSWER_COVERS = {
   small: PHONE_STICKERS,   // "Made yourself small..."
 };
 
-function addStoryCover(storyBox, stickers) {
-  storyBox.classList.add("story-covered");
+// The cover sits in a wrapper around the question (not inside it), so
+// rewriting the question text (language switch, variants) never wipes it.
+function questionCoverWrap(heading) {
+  let wrap = heading.parentElement;
+  if (!wrap.classList.contains("question-cover-wrap")) {
+    wrap = document.createElement("div");
+    wrap.className = "question-cover-wrap";
+    heading.before(wrap);
+    wrap.appendChild(heading);
+  }
+  return wrap;
+}
+
+function removeQuestionCover(heading) {
+  const wrap = heading && heading.parentElement;
+  if (!wrap || !wrap.classList.contains("question-cover-wrap")) return;
+  wrap.classList.remove("question-covered");
+  wrap.querySelectorAll(":scope > .story-cover").forEach((c) => c.remove());
+}
+
+function addQuestionCover(heading, stickers) {
+  const wrap = questionCoverWrap(heading);
+  wrap.classList.add("question-covered");
 
   const cover = document.createElement("button");
   cover.type = "button";
@@ -1406,11 +1429,12 @@ function addStoryCover(storyBox, stickers) {
   cover.appendChild(label);
 
   cover.addEventListener("click", () => {
-    storyBox.classList.remove("story-covered");
+    wrap.classList.remove("question-covered");
     cover.remove();
+    heading.focus();
   });
 
-  storyBox.appendChild(cover);
+  wrap.appendChild(cover);
 }
 
 // ---------------------------------------------------------
