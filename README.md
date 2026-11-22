@@ -83,12 +83,12 @@ Each type's results page shows a real photo (no AI images), its strengths and wa
 |---|---|---|
 | **The Eagle Scout** | organized planner | bald eagle chicks |
 | **The Survivalist** | prepared for the worst | chipmunk with stuffed cheeks |
-| **The Night Watch** | strategic, private, loyal to a few (INTJ) | barred owl |
+| **The Lookout** | strategic, private, loyal to a few (INTJ) | common raven |
 | **The Will-o'-the-Wisp** | reads everyone, gives everything, vanishes without warning (INFJ) | glowing firefly |
-| **The Wanderer** | curious loner who quietly cares | heron standing on one leg |
+| **The Wanderer** | curious loner who quietly cares | baby elephant |
 | **The Trailblazer** | bold leader | mountain goat kid |
 | **The Lone Wolf** | self-reliant, looks out for number one | howling wolf pup |
-| **The Campfire Bard** | creative storyteller | grasshopper (sings all summer instead of working) |
+| **The Campfire Bard** | playful storyteller, the group's class clown | baby bottlenose dolphin |
 | **The Mushroom Mystic** | adventurous, overconfident | snail on tiny mushrooms |
 | **The Field Medic** | quiet, values-driven protector | Saint Bernard puppy |
 | **The Camp Counselor** | warm leader who plans for everyone | goose leading its goslings |
@@ -134,12 +134,12 @@ All photos are real photographs from [Wikimedia Commons](https://commons.wikimed
 |---|---|---|---|
 | `scout.jpg` | Dave Menke, U.S. Fish & Wildlife Service | Public domain | [link](https://commons.wikimedia.org/wiki/File:Bald_eagle_chicks_-_DPLA_-_3b7711bbef7b06dc32fc138bf95e138a.jpg) |
 | `survivalist.jpg` | Ashley Lee | CC BY 4.0 | [link](https://commons.wikimedia.org/wiki/File:Chipmunk_with_Full_Cheeks.jpg) |
-| `nightwatch.jpg` | Dick Daniels | CC BY-SA 3.0 | [link](https://commons.wikimedia.org/wiki/File:Barred_Owl_(Strix_varia)_RWD.jpg) |
+| `lookout.jpg` | Jacob W. Frank, NPS (Yellowstone) | Public domain | [link](https://commons.wikimedia.org/wiki/File:Raven_perched_on_a_snag_(51202203050).jpg) |
 | `wisp.jpg` | art farmer | CC BY-SA 2.0 | [link](https://commons.wikimedia.org/wiki/File:Photinus_pyralis_Firefly_glowing.jpg) |
-| `wanderer.jpg` | The Modern Polymath | CC BY-SA 4.0 | [link](https://commons.wikimedia.org/wiki/File:Great_Blue_Heron_standing_on_one_leg.jpg) |
+| `wanderer.jpg` | Shadow Ayush | CC BY-SA 4.0 | [link](https://commons.wikimedia.org/wiki/File:Elephant_calf,_Elephant_Breeding_Center,_Chitwan,_Nepal.jpg) |
 | `trailblazer.jpg` | Charles J. Sharp | CC BY-SA 4.0 | [link](https://commons.wikimedia.org/wiki/File:Mountain_goat_(Oreamnos_americanus)_kid_Radium.jpg) |
 | `lonewolf.jpg` | U.S. Fish & Wildlife Service | Public domain | [link](https://commons.wikimedia.org/wiki/File:Mexican_wolf_pup_(6411046205).jpg) |
-| `bard.jpg` | Colette Gemmell | CC BY 4.0 | [link](https://commons.wikimedia.org/wiki/File:Grasshopper_in_Clover.jpg) |
+| `bard.jpg` | caroline legg | CC BY 2.0 | [link](https://commons.wikimedia.org/wiki/File:Bottle_Nosed_Dolphin_calf_(52161073611).jpg) |
 | `mystic.jpg` | Chainfoto | CC0 | [link](https://commons.wikimedia.org/wiki/File:Snail_and_mushroom.jpg) |
 | `medic.jpg` | dbking | CC BY 2.0 | [link](https://commons.wikimedia.org/wiki/File:St._Bernard_puppy.jpg) |
 | `counselor.jpg` | The High Fin Sperm Whale | CC BY-SA 3.0 | [link](https://commons.wikimedia.org/wiki/File:Canada_Goose_(Branta_canadensis)_with_goslings.JPG) |

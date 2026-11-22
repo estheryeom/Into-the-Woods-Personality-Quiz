@@ -1542,13 +1542,6 @@ a.restart-btn:focus-visible,
   text-align: left;
 }
 
-.details-note {
-  font-size: 0.85rem;
-  font-style: italic;
-  color: var(--text-soft);
-  margin: 0 0 0.75rem;
-}
-
 .page-details .kin-grid .result-box h3 {
   color: var(--leaf);
 }

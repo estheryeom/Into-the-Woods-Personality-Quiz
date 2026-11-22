@@ -24,10 +24,10 @@
      Happy Camper   ~9%  (ISFP)            Eagle Scout    ~9%  (ESTJ)
      Glamper        ~9%  (ESFP)            Campfire Bard  ~8%  (ENFP)
      Lone Wolf      ~5%  (ISTP)            Mushroom Mystic ~4% (ESTP)
-     Night Watch    ~2%  (INTJ)            Will-o'-the-Wisp ~2% (INFJ)
+     Lookout        ~2%  (INTJ)            Will-o'-the-Wisp ~2% (INFJ)
      Wanderer       ~3%  (INTP)            Schemer        ~3%  (ENTP)
      Trailblazer    ~2%  (ENTJ: the rarest)
-   Night Watch vs. Wisp: both see what's coming. The Night Watch THINKS
+   Lookout vs. Wisp: both see what's coming. The Lookout THINKS
    it through (strategy, logic, control). The Wisp FEELS it (reads people,
    gives everything, then vanishes without warning).
    Introverts vs. extroverts: answers about missing your friends, needing
@@ -48,7 +48,7 @@
 const TYPES = {
   scout:       "The Eagle Scout",
   survivalist: "The Survivalist",
-  nightwatch:  "The Night Watch",
+  lookout:     "The Lookout",
   wisp:        "The Will-o'-the-Wisp",
   trailblazer: "The Trailblazer",
   lonewolf:    "The Lone Wolf",
@@ -83,7 +83,7 @@ const ANSWERS = {
   },
   reliant: {
     text: "Found the tiny button next to the big one",
-    points: { nightwatch: 0.25, wisp: 0.25, counselor: 0.25, medic: 0.25 },
+    points: { lookout: 0.25, wisp: 0.25, counselor: 0.25, medic: 0.25 },
     outcome: "Your friend planned everything, even the bear spray they tucked in your bag \"just in case.\" You follow the group into the pines.",
     next: "page-name",
   },
@@ -204,7 +204,7 @@ const ANSWERS = {
   },
   shelter: {
     text: "Decided to find shelter before dark",
-    points: { survivalist: 2, scout: 1 },
+    points: { scout: 2, survivalist: 1 },
     outcome: "You look for anything that could block the wind.",
     next: "page-camp",
   },
@@ -215,9 +215,9 @@ const ANSWERS = {
     next: "page-camp",
   },
   stay: {
-    text: "Stayed right where you were so you couldn't get more lost",
-    points: { scout: 2, survivalist: 1 },
-    outcome: "You sit on a rock. Technically, this is what the experts say to do.",
+    text: "Stopped and replayed every turn you took, looking for anything familiar",
+    points: { survivalist: 2, scout: 1 },
+    outcome: "Left at the mossy stump. Right at the... other mossy stump. You sit on a rock and replay it again. Technically, staying put is what the experts say to do anyway.",
     next: "page-camp",
   },
 
@@ -262,7 +262,7 @@ const ANSWERS = {
   },
   paws: {
     text: "Noticed the paw prints around the tree",
-    points: { nightwatch: 2, wanderer: 1 },
+    points: { lookout: 2, wanderer: 1 },
     outcome: "The paw prints are old. Probably. You sit where you can see anything coming.",
     next: "page6",
   },
@@ -334,7 +334,7 @@ const ANSWERS = {
   },
   freeze: {
     text: "Froze and gripped the bear spray",
-    points: { survivalist: 2, nightwatch: 1 },
+    points: { survivalist: 2, lookout: 1 },
     outcome: "Your thumb finds the trigger. The shapes don't move either.",
     next: "page8",
   },
@@ -360,7 +360,7 @@ const ANSWERS = {
   },
   question: {
     text: "Tested the voice with a question only your friend would know",
-    points: { nightwatch: 3 },
+    points: { lookout: 3 },
     outcome: "\"What's our group chat called?\" Silence. Then, right behind your ear: \"Come here.\" You run.",
     next: "page9",
   },
@@ -392,7 +392,7 @@ const ANSWERS = {
   },
   climb: {
     text: "Climbed a tree to look around",
-    points: { wanderer: 2, nightwatch: 1 },
+    points: { wanderer: 2, lookout: 1 },
     outcome: "The branch cracks, and you slide back down. Something tiny falls out of a knot in the trunk and bonks you on the head.",
     next: "page-key",
   },
@@ -406,7 +406,7 @@ const ANSWERS = {
   // ----- Page 10: the longest night (each one finds the key) -----
   watch: {
     text: "Stayed up on watch all night",
-    points: { nightwatch: 3 },
+    points: { lookout: 3 },
     outcome: "Around 3 a.m., you spot something you've been staring past all night: a tiny glint by your foot.",
     next: "page-key",
   },
@@ -445,7 +445,7 @@ const ANSWERS = {
   },
   evidence: {
     text: "Treated the star key as evidence",
-    points: { wanderer: 2, nightwatch: 1 },
+    points: { wanderer: 2, lookout: 1 },
     outcome: "You pinch it by the edges like a detective. Someone small dropped this. Then you spot the next clue.",
     next: "page-door",
   },
@@ -623,7 +623,7 @@ const STORY_EXTRAS = {
 //
 //   image:     a real photo (no AI) from Wikimedia Commons, saved in /images
 //   strengths: [title, detail] x6. Sincere, with one playful line.
-//   watchouts: [title, detail] x6. Deliberately blunt. No sugarcoating.
+//   watchouts: [title, detail] x6. Honest and direct, but not cruel.
 //   core:      who you are at heart (3 trait words + a sentence)
 //   drive:     what motivates you
 //   wiring:    how you tend to think and react
@@ -640,7 +640,7 @@ const RESULTS = {
       credit: "Dave Menke, U.S. Fish & Wildlife Service (public domain)",
     },
     description:
-      "You're the one who plans the trip, writes the packing list, and knows exactly where the first-aid kit is. In a crisis you don't panic, you organize. Under all that competence is a quieter belief: if you stop holding everything together, it will all fall apart, and it will be your fault. That belief makes you the most dependable person in most rooms. It also makes it very hard for you to rest.",
+      "You're the one who plans the trip, writes the packing list, and knows exactly where the first-aid kit is. In a crisis you don't panic, you organize. Under all that competence is a quieter belief: if you stop holding everything together, it will all fall apart, and it will be your fault. That belief makes you the most dependable person in most rooms. It also makes it very hard for you to rest. And because you expect the most from yourself, you expect a lot from your friends and partners too. That can push the people you love to be better, or make them feel like they're never quite enough.",
     strengths: [
       ["Organized and thorough", "You think things through ahead of time, so nothing important gets forgotten."],
       ["Calm in a crisis", "While everyone else screams, you're handing out jobs. \"You, get water. You, stop crying.\""],
@@ -650,12 +650,12 @@ const RESULTS = {
       ["Makes chaos manageable", "You can turn a messy, overwhelming situation into steps people can actually follow."],
     ],
     watchouts: [
-      ["Control freak in a fleece", "You call it \"being organized.\" Everyone else calls it being bossed around, and they've stopped telling you."],
-      ["Your plan is not a personality", "When the plan falls apart, so do you. You'd rather be miserable on schedule than happy off-script."],
-      ["Martyr mode", "You take on everyone's job, refuse help, then quietly resent them for not helping. You built that trap yourself."],
-      ["The silent scorekeeper", "You remember every time someone dropped the ball. You never say it out loud, but it leaks out in your tone, and people feel it."],
-      ["Rest feels like failure", "A free afternoon with nothing planned makes you anxious. That isn't discipline. That's a problem."],
-      ["Plan police", "\"We said we'd leave at 7:00. It is 7:04.\" Your friends hear this in their nightmares."],
+      ["Control freak in a fleece", "You call it \"being organized.\" Some might call it being bossed around."],
+      ["Your plan is not a personality", "When the plan falls apart, you tend to fall apart with it. Sometimes you'd rather be miserable on schedule than happy off-script."],
+      ["Martyr mode", "You take on everyone's job, turn down help, then quietly resent them for not helping. It's a trap you built yourself."],
+      ["The silent scorekeeper", "You remember every time someone dropped the ball. You rarely say it out loud, but it can leak out in your tone, and people feel it."],
+      ["Rest feels like failure", "A free afternoon with nothing planned makes you anxious. That isn't always discipline."],
+      ["Plan police", "\"We said we'd leave at 7:00. It's 7:04.\""],
     ],
     core: [["Practical", "Structured", "Decisive"], "You like clear plans, clear roles and getting things done the proven way."],
     drive: "Being capable and doing well. Every merit badge counts, and you secretly keep track of all of them.",
@@ -672,7 +672,7 @@ const RESULTS = {
       credit: "Ashley Lee, CC BY 4.0",
     },
     description:
-      "You've already imagined everything that could go wrong, which is exactly why you're still standing. Somewhere along the way you learned that the world won't look after you, so you look after yourself, with water, a charger and a plan B. It keeps you safe. It also keeps you braced for a disaster that, most days, never shows up.",
+      "You've already imagined everything that could go wrong, which is exactly why you're still standing. Somewhere along the way you learned that the world won't look after you, so you look after yourself, with water, a charger and a plan B. It keeps you safe. It also keeps you braced for a disaster that, most days, never shows up. When you're lost, you stop moving right away and replay the whole path in your head, turn by turn, matching every tree and rock to what you remember. Where an Eagle Scout already has a shortcut in mind, you can lose a lot of daylight rebuilding the memory. You don't follow rules blindly, but once a habit sticks, it's really hard to break. And since you genuinely love the idea of improving yourself, feeling stuck in your own routines makes you harder on yourself than anyone else could be.",
     strengths: [
       ["Prepared for anything", "You think ahead and make sure you have what you need before you need it."],
       ["Practical and resourceful", "You can fix anything with duct tape, a paperclip and pure spite."],
@@ -695,16 +695,16 @@ const RESULTS = {
     stress: "You go into lockdown: more checking, more doubting, less trusting. Everyone starts to look like a threat, even the people who love you.",
     need: "Proof that you can relax and still be safe. People who show up consistently, so your guard can finally come down.",
   },
-  nightwatch: {
-    name: "The Night Watch",
+  lookout: {
+    name: "The Lookout",
     tagline: "Noticed the paw prints. Noticed the shadows. Noticed you noticing.",
     image: {
-      src: "images/nightwatch.jpg",
-      alt: "A barred owl perched on a branch, staring straight at the camera",
-      credit: "Dick Daniels, CC BY-SA 3.0",
+      src: "images/lookout.jpg",
+      alt: "A common raven perched on a dead snag, watching everything",
+      credit: "Jacob W. Frank, Yellowstone National Park (NPS), public domain",
     },
     description:
-      "You figured out what was going on an hour ago, and you're already three steps into a plan nobody else knows about. You trust very few people, and to those few you're fiercely loyal. You'll be a little sneaky if it gets the job done, but there's always a principle behind it. Being the smartest one in the room keeps you safe. It also makes it a lonely room.",
+      "You figured out what was going on an hour ago, and you're already three steps into a plan nobody else knows about. You trust very few people, and to those few you're fiercely loyal. You'll be a little sneaky if it gets the job done, but there's always a principle behind it. When someone wrongs you, and you have proof they no longer bring anything good to your life, you make that known, and then you let go fast. It isn't revenge. It's self-preservation. Some people find it harsh, but to you it's simple: people who wrong you don't get the privilege of having you in their lives. Being the smartest one in the room keeps you safe. It also makes it a lonely room.",
     strengths: [
       ["Sees ten moves ahead", "While everyone panics about tonight, you've already planned for tomorrow."],
       ["Fiercely loyal", "Your circle is tiny. Anyone in it has a bodyguard for life."],
@@ -718,7 +718,7 @@ const RESULTS = {
       ["Cold when you think you're being efficient", "You call it \"just being honest.\" Other people call it brutal, and they've stopped coming to you with feelings."],
       ["Intellectual snob", "You quietly rank everyone by how smart they are. They can feel which number they got."],
       ["A little paranoid", "Not everyone is plotting something. Most people aren't thinking about you nearly as much as you think."],
-      ["Your grudges are filed and labeled", "You never yell. You just remember, forever, with dates."],
+      ["Case closed", "Once someone's wronged you and you have the receipts, you say so and you're done. It looks harsh from the outside. To you, they just lost the privilege."],
       ["Lonely at the top of your own head", "You'd rather be right and alone than wrong with company. Lately, you've been very right."],
     ],
     core: [["Strategic", "Loyal", "Private"], "You see the whole board, keep your cards close, and protect your people."],
@@ -736,27 +736,27 @@ const RESULTS = {
       credit: "art farmer, CC BY-SA 2.0",
     },
     description:
-      "You feel the mood of a room the second you walk in, and you usually know what someone needs before they do. People tell you things they've never told anyone, and you hold every one of them carefully. You give and give, quietly, and you never ask for much back. But you're keeping track, even if you'd never say so. Somewhere inside, a line exists. Nobody knows where it is, and you never warn them. Then one day someone crosses it, and you're just... gone. No fight, no goodbye. A soft little light that guided everyone through the dark, and then, without a sound, wasn't there anymore.",
+      "You feel the mood of a room the second you walk in, and you usually know what someone needs before they do. People tell you things they've never told anyone, and you hold every one of them carefully. You give and give, quietly, and you never ask for much back. But you're keeping track, even if you'd never say so. You read the room better than anyone, and you're quietly taking notes the whole time. Every slip, every secret, every soft spot gets filed away, and when you feel threatened, you use it, sometimes without even realizing you're doing it. And you hold grudges for a very, very long time. Somewhere inside, a line exists. Nobody knows where it is, and you never warn them. Then one day someone crosses it, and you're just... gone. No fight, no goodbye. A soft little light that guided everyone through the dark, and then, without a sound, wasn't there anymore.",
     strengths: [
       ["Reads people instantly", "Fake laugh, bad day, secret crush. You clock it in two seconds and never say a word."],
       ["The one people open up to", "Strangers tell you their life story at the campfire. You didn't even ask."],
       ["Deeply caring", "You notice who's quiet, who's cold and who hasn't eaten, and you fix it before anyone else sees."],
       ["Sees where it's all going", "Your gut is scary accurate. \"I have a bad feeling about this\" has saved the group more than once."],
       ["Lives by your values", "You'd rather be lost than do something that feels wrong. You know exactly what you stand for."],
-      ["Quietly magical", "Nobody can quite explain you, and somehow that makes everyone want to follow your light."],
+      ["Generous when you're happy", "When you're happy, you're the most generous, loving and kind person in the room."],
     ],
     watchouts: [
       ["The door slam", "One day you're their closest person. The next, you've blocked them everywhere, and they're still asking what they did."],
       ["You never warned anyone", "You were hurt for months and said \"it's fine\" every time. Then you blamed them for not reading your mind."],
       ["Your silence is a punishment", "You call it \"needing space.\" Everyone around you can tell it's a verdict."],
-      ["Martyr mode", "You give until you're empty, then quietly resent everyone for taking what you offered."],
+      ["You keep receipts on everyone", "You know exactly what to say to make someone feel small, because you've been studying them. You call it understanding people. Sometimes it's ammunition."],
       ["Impossible to actually know", "You know everyone's secrets. Nobody knows yours. That's not depth, it's a wall."],
       ["Ghosting is not a boundary", "Disappearing feels safer than one hard conversation. It's not safer. It's just lonelier, for both of you."],
     ],
     core: [["Intuitive", "Caring", "Mysterious"], "You see right into people, give them everything, and keep the real you behind glass."],
     drive: "Real, deep connection, and a life that matches what you believe in.",
     wiring: "Empathetic and intense on the inside, calm and hard to read on the outside. You feel everything, and you show almost none of it.",
-    stress: "You go dark. You stop replying, smile through everything, and quietly decide who's out of your life, often without telling them.",
+    stress: "You go dark. You stop replying, smile through everything, and quietly decide who's out of your life, often without telling them. Years later, you still remember exactly why.",
     need: "To say \"that hurt me\" out loud, the first time. And people who stay even after they've seen the parts of you that don't glow.",
   },
   wanderer: {
@@ -764,11 +764,11 @@ const RESULTS = {
     tagline: "Didn't get lost. Got distracted by a really interesting rock.",
     image: {
       src: "images/wanderer.jpg",
-      alt: "A fluffy great blue heron standing on one leg on a log in still water, alone and deep in thought",
-      credit: "The Modern Polymath, CC BY-SA 4.0",
+      alt: "A baby elephant with fuzzy hair on its head, chewing on a fence rail and curling its trunk",
+      credit: "Shadow Ayush, CC BY-SA 4.0",
     },
     description:
-      "You need quiet the way other people need air. Long walks, no plans, nobody talking: that's where your mind finally relaxes and starts noticing things, like the pattern in the bark or why the creek bends left. People think you're distant. Really, you care more than you let on. You just show it by remembering something someone said three months ago, or showing up with exactly the fact they needed.",
+      "You need quiet the way other people need air. Long walks, no plans, nobody talking: that's where your mind finally relaxes and starts noticing things, like the pattern in the bark or why the creek bends left. You also overthink, a lot, and the overthinking turns into procrastination: you can't start until you've found the best way to start. People think you're distant, or even blunt. Really, you care more than you let on, and inside you're working hard to keep your feelings in balance. You just show it by remembering something someone said three months ago, or showing up with exactly the fact they needed.",
     strengths: [
       ["Notices patterns", "You spot the thing that repeats, connects or doesn't fit, long before anyone else does."],
       ["Low-drama company", "Being around you is calm. No pressure, no performance, no small talk required."],
@@ -779,17 +779,17 @@ const RESULTS = {
     ],
     watchouts: [
       ["Your care is invisible", "You think you're showing it. Nobody can tell. People can't feel what you never say."],
-      ["Overthinking is your full-time job", "You've thought about it from nine angles and done nothing. That's not wisdom. It's a loop."],
+      ["Analysis paralysis", "You've looked at it from nine angles and still haven't decided. That's not wisdom. It's a loop."],
       ["Missing in action", "\"Recharging\" has quietly turned into three weeks of unanswered texts. Your friends think you're mad at them."],
       ["Explains when people wanted a hug", "They're crying, and you're explaining why it happened. Nobody asked for the science."],
       ["Random risk, no warning", "Totally calm for months, then you jump in a freezing lake to \"see what happens.\" Nobody saw it coming, including you."],
-      ["Drifts through plans", "You agreed to come. You got distracted on the way. You're still not there."],
+      ["Procrastination with extra steps", "You're still researching the best way to start, so you haven't started. The deadline doesn't care how much you've thought about it."],
     ],
     core: [["Analytical", "Curious", "Quietly caring"], "You need space to think, and you care about people more than you show."],
     drive: "Room to think, and understanding how the world really works.",
     wiring: "Very curious and introverted, with more feeling under the surface than you let anyone see.",
-    stress: "You disappear. You stop answering, sink into a project or a long walk, and wait until it all passes.",
-    need: "People who let you be quiet without taking it personally. And who can tell you care, even when you don't say it.",
+    stress: "You go quiet. You don't fully disappear, you just stop answering, even though you've read every text. Then you sink into a project or a long walk and wait until it all passes.",
+    need: "People who let you be quiet without taking it personally. And who can tell you care, without you having to say it or put on big gestures that would feel fake to you.",
   },
   trailblazer: {
     name: "The Trailblazer",
@@ -800,7 +800,7 @@ const RESULTS = {
       credit: "Charles J. Sharp, CC BY-SA 4.0",
     },
     description:
-      "You don't wait for permission, and you don't wait for a plan. When everyone else freezes, you're already moving, and people follow because you look like you know where you're going. Underneath is a rule you made for yourself a long time ago: never look weak, never be the one who needs saving. Your confidence is your biggest strength, and occasionally your biggest problem.",
+      "You don't wait for permission, and you don't wait for a plan. When everyone else freezes, you're already moving, and people follow because you look like you know where you're going. Underneath is a rule you made for yourself a long time ago: never look weak, never be the one who needs saving. You're easily misunderstood. People see the confidence and assume nothing gets to you. It does, more than you'd ever let them see. Your confidence is your biggest strength, and occasionally your biggest problem.",
     strengths: [
       ["Takes charge", "When nobody knows what to do, you step up and give the group a direction."],
       ["Brave and decisive", "You order at a restaurant in four seconds. Your friends take twenty minutes and still pick wrong."],
@@ -810,11 +810,11 @@ const RESULTS = {
       ["Honest and direct", "People always know exactly where they stand with you."],
     ],
     watchouts: [
-      ["Steamroller", "You don't lead people, you drag them. Half your group follows you because arguing with you is too much work."],
-      ["Can't admit you're wrong", "You weren't lost. You were \"taking the scenic route.\" For three hours. Everyone knew."],
+      ["Steamroller", "Some might say your group follows you because reasoning with you is too much work."],
+      ["Can't admit you're wrong", "You weren't lost. You were \"taking the scenic route.\" For hours. Some people knew."],
       ["Reckless", "You skip the risks because thinking about them feels slow. Other people pay for that more often than you do."],
       ["Bad listener", "You're planning your answer while people are still talking. They've noticed."],
-      ["Everything is a competition", "Even game night. Even the hike. People don't want to compete with you. They want to hang out with you."],
+      ["Everything is a competition", "Even game night. Even the hike. People want to hang out with you, but they might not want to compete with you."],
       ["Allergic to feelings", "You'd rather be angry than sad, because angry feels strong. Your friends have no idea what's actually going on with you."],
     ],
     core: [["Bold", "Strategic", "Driven"], "You see the goal and go straight at it."],
@@ -832,7 +832,7 @@ const RESULTS = {
       credit: "U.S. Fish & Wildlife Service (public domain)",
     },
     description:
-      "You trust yourself more than anyone else, and honestly, your track record backs that up. You'd rather handle things alone than wait for a group to agree. Somewhere along the way, needing people started to feel risky, so you decided not to. It works, right up until the night you really could use someone and nobody knows to come looking.",
+      "You trust yourself more than anyone else, and honestly, your track record backs that up. You'd rather handle things alone than wait for a group to agree, and you don't do rigid rules, because you'd rather make your own. Somewhere along the way, needing people started to feel risky, so you decided not to. It works, right up until the night you really could use someone and nobody knows to come looking.",
     strengths: [
       ["Self-reliant", "You trust yourself to figure things out without waiting for help."],
       ["Cool under pressure", "Total chaos all around you, and you're just quietly finishing your snack."],
@@ -845,7 +845,7 @@ const RESULTS = {
       ["You'd leave your friends with the bear", "Maybe not literally. But when it gets hard, you save yourself first, and people remember."],
       ["Emotionally unavailable", "Your \"close\" friends don't really know you. You've made sure of that."],
       ["Too proud to ask for help", "You'll carry 17 grocery bags in one trip before asking anyone. That's not strength. It's stubbornness."],
-      ["Ghosting isn't a boundary", "Disappearing for a week without a word feels like rejection to the people who care about you. Because it is."],
+      ["All in or not at all", "When you truly love someone, it's really hard for you to let go. But if your heart isn't 100% in it, long-term commitment feels impossible."],
       ["Selfish when it counts", "Your snacks, your time, your plans. \"Looking out for myself\" often means nobody else gets let in."],
       ["Lonely, and calling it freedom", "You say you like being alone. Some of that is true. Some of it is just safer than getting hurt."],
     ],
@@ -860,11 +860,11 @@ const RESULTS = {
     tagline: "Got lost in the woods. Got a great story out of it.",
     image: {
       src: "images/bard.jpg",
-      alt: "A green grasshopper peeking out from a clover leaf, like it is about to start a song",
-      credit: "Colette Gemmell, CC BY 4.0",
+      alt: "A baby bottlenose dolphin leaping out of the water, mid-splash",
+      credit: "caroline legg, CC BY 2.0",
     },
     description:
-      "You turn every disaster into a story, and everyone wants to sit next to you at the campfire. You think in pictures and possibilities, and you'd rather take the interesting path than the correct one. Deep down, you want to be seen, really seen, for who you are. When people get you, you light up. When they don't, it hurts a lot more than you let on.",
+      "You turn every disaster into a story, and everyone wants to sit next to you at the campfire. You're affectionate, playful and all in on real emotional connection. You're also the class clown, the jester of the group, and that's the catch: it's hard for people to take you seriously. You're charming and a natural leader, so part of you wants to lead, and part of you just wants the laugh. And because you run on other people's validation, the laugh usually wins. Deep down, you want to be seen, really seen, for who you are. When people get you, you light up. When they don't, it hurts a lot more than you let on.",
     strengths: [
       ["Creative and imaginative", "You see stories and ideas where other people see ordinary life."],
       ["Lifts the mood", "Lost, cold and hungry? You've already made up a song about it, and it slaps."],
@@ -877,7 +877,7 @@ const RESULTS = {
       ["All starts, no finishes", "You have twelve brilliant ideas and zero finished ones. Starting is the fun part. Finishing is the part you skip."],
       ["Procrastination royalty", "You call it \"waiting for inspiration.\" Everyone else calls it missing the deadline. Again."],
       ["Main character syndrome", "Every story somehow comes back to you. People love the show, but some of them would like a turn."],
-      ["Drama magnet", "A small problem becomes a three-act tragedy. You don't just feel things, you perform them."],
+      ["Misunderstood? Not as much as you think", "You feel like nobody really gets you. Honestly, most people get you more than you think."],
       ["Thin skin", "One lukewarm reaction to your idea and you're crushed for a week. Not everyone who disagrees with you is attacking you."],
       ["Allergic to responsibility", "Bills, chores, emails. You let the boring stuff pile up until someone else has to deal with it."],
     ],
@@ -896,7 +896,7 @@ const RESULTS = {
       credit: "Chainfoto, CC0",
     },
     description:
-      "You're curious, fearless about new experiences, and a little too confident in what you learned on the internet. You'd rather try something and see what happens than sit around wondering. Part of that is pure love of life. Part of it is that sitting still with a boring or uncomfortable feeling is the one thing you really can't stand.",
+      "You're curious, fearless about new experiences, and a little too confident in what you learned on the internet. You'd rather try something and see what happens than sit around wondering. Part of that is pure love of life. Part of it is that sitting still with a boring or uncomfortable feeling is the one thing you really can't stand. You can be the most outgoing person at the campsite, but you still need alone time to recharge, and you need people to respect that independence.",
     strengths: [
       ["Adventurous and curious", "You want to know how things work, and the best way to find out is to try."],
       ["Adapts fast", "When plans change, you roll with it instead of getting stuck."],
@@ -906,10 +906,10 @@ const RESULTS = {
       ["Learns by doing", "You pick up new skills faster by trying them than most people do by studying."],
     ],
     watchouts: [
-      ["Confidently wrong", "One reel and you're an expert. You ate the mushrooms. You will eat the mushrooms again."],
+      ["Confidently wrong", "One reel and you're an expert. You'll explain it to anyone who'll listen, with total confidence, and still be wrong."],
       ["Acts first, Googles later", "You searched \"are these berries poisonous\" after you ate them."],
       ["Running from boredom", "You chase the next thrill because sitting with a hard feeling scares you more than any bear."],
-      ["Unreliable", "You said yes to three plans and showed up to the most exciting one. Your friends make backup plans for you now."],
+      ["May not be the most reliable", "You said yes to three plans and showed up to the most exciting one. Your friends make backup plans for you now."],
       ["Consequences are for later", "\"Future me will deal with it.\" Future you is tired of cleaning up after you."],
       ["Shallow commitment", "Hobbies, plans, sometimes people. You're all in for two weeks, then gone when the shine wears off."],
     ],
@@ -917,7 +917,7 @@ const RESULTS = {
     drive: "New experiences. You hate missing out, and sometimes skip right past the risks to get to the fun part.",
     wiring: "Wide open to anything new, and not very interested in rules, schedules or reading the instructions.",
     stress: "You get scattered and impulsive, chasing distractions and saying yes to things you'll regret, just to avoid feeling stuck.",
-    need: "Something worth staying for. And one friend who's allowed to say, \"Maybe don't eat that.\"",
+    need: "Something worth staying for. And one friend who's allowed to say, \"Maybe don't do that.\"",
   },
   medic: {
     name: "The Field Medic",
@@ -941,8 +941,8 @@ const RESULTS = {
       ["Idealizes people, then gets crushed", "You fell for who you hoped they were, not who they actually are. Then you act surprised. Every time."],
       ["Expects mind-reading", "You never say what's wrong, then feel betrayed that nobody noticed. Nobody can read a mind. Not even yours."],
       ["Saving people who don't want saving", "You keep trying to fix someone who never asked to be fixed. That's not love. That's a project."],
-      ["Your values are a wall", "Disagree with your morals once, and you quietly drop that person forever. They never even find out why."],
-      ["Way too trusting", "You'd follow a creepy voice into the woods because it sounded like a friend. You give fourth chances to people who didn't deserve a second."],
+      ["Your values are a wall", "Disagree with your morals once, and you quietly drop that person in your head. They get demoted, and they never even find out why."],
+      ["Way too trusting", "You give one too many chances to people who didn't deserve any."],
       ["Forgetting yourself", "You remembered everyone's water bottle except your own."],
     ],
     core: [["Idealistic", "Gentle", "Devoted"], "You're guided by your values, and you'd do almost anything for the few people you love."],
@@ -967,21 +967,21 @@ const RESULTS = {
       ["Reads the room", "You know who's about to cry, who's annoyed and who needs a snack, before they do."],
       ["Keeps morale up", "In a crisis you're the one saying \"We've got this,\" and somehow people believe you."],
       ["Brings out the best in people", "You see potential in everyone, and you won't stop until they see it too."],
-      ["Turns a group into a team", "Five random people and an hour with you, and they have roles, a name and a chant."],
+      ["Makes everyone feel wanted", "Nobody gets left out around you. You make everyone feel welcome and encouraged, especially the quiet ones."],
     ],
     watchouts: [
       ["Your friends are not your projects", "You have a five-step plan for their life. They never asked for it, and they're tired of the check-ins."],
       ["Your help comes with strings", "You give great advice, then sulk when people don't take it. Help that needs a thank-you isn't really help."],
       ["Approval addict", "A hundred people like you and one doesn't. Guess which one you think about all week."],
       ["Toxic positivity", "\"Look on the bright side!\" Stop it. Sometimes it's just bad, and people need you to say so."],
-      ["Can't let a conflict breathe", "Two friends argue, and within the hour you've called a group meeting. Some things need a day, not a mediator."],
+      ["You overextend yourself", "You try to please everyone, even though you know you can't. And somewhere along the way, some people end up hurt anyway."],
       ["No idea who you are alone", "Take away the group, the plan and the people to look after, and you don't know what's left. That should scare you more than it does."],
     ],
     core: [["Charismatic", "Empathetic", "Organized"], "You see who people could become, and you can't help leading them there."],
     drive: "Helping people grow and keeping the group together, headed somewhere better.",
     wiring: "Very outgoing, warm and organized. You're a planner whose plans are mostly about people.",
     stress: "You over-organize everyone's feelings: more check-ins, more meetings, more \"we need to talk.\" Then you burn out alone where nobody can see.",
-    need: "To be loved when you're not in charge. And to let the group stumble without it being your fault.",
+    need: "To feel accepted even when you're not the one leading. And because you pour so much energy into everyone else, people who check in on you too, and tell you you're doing great.",
   },
   camper: {
     name: "The Happy Camper",
@@ -1004,8 +1004,8 @@ const RESULTS = {
     watchouts: [
       ["Lazy, and calling it chill", "Being relaxed is great. Letting everyone else carry the work while you nap isn't."],
       ["Can't make a decision to save your life", "\"Where do you want to eat?\" \"I don't mind.\" You do mind. You just don't want to be responsible for the answer."],
-      ["Conflict coward", "You'd rather swallow a problem for a year than have one uncomfortable conversation."],
-      ["No opinions, no backbone", "You agree with whoever's in the room. People don't know what you actually think, because you never say it."],
+      ["Conflict avoidant", "You'd rather swallow a problem for a year than have one uncomfortable conversation."],
+      ["Too chill for the crisis", "You stay so calm during someone else's emergency that they wonder if you care at all."],
       ["Ignoring problems until they explode", "Unpaid bill? Weird noise in the car? Friend who seems off? \"Later.\" Later is now a disaster."],
       ["Drifting through your own life", "You go along with everything, so you end up living a life other people chose for you."],
     ],
@@ -1026,26 +1026,26 @@ const RESULTS = {
     description:
       "You came to the woods with a skincare routine, a throw blanket and strong opinions about the tent. You love beautiful things, good food and being comfortable, and you're not going to apologize for it. Under all the complaining is something softer: you make places feel nice because feeling cared for matters to you more than you admit. Things only get rough when life stops being comfortable, because that's the part you've had the least practice with.",
     strengths: [
-      ["Great taste", "You know what looks good, tastes good and feels good, and everyone's life is a little nicer for it."],
-      ["Makes anywhere cozy", "Give you ten minutes and the tent is a boutique hotel. Fairy lights included."],
+      ["Fun and bold", "You say the thing, wear the thing, and turn an ordinary night into an event."],
+      ["Quietly influential", "People copy your playlist, your coffee order, your jacket. You set the vibe, and everyone follows it."],
       ["Knows what you want", "You don't pretend to be fine with things you're not. People always know where you stand."],
-      ["Brings the good stuff", "Real coffee, decent snacks, the nice blanket. Everyone mocks your packing until they need something from it."],
+      ["Makes people feel special", "Your gifts and plans are always perfect, because you notice what people actually like."],
       ["Self-care pro", "You rest, you hydrate, you set boundaries. Most people could learn a thing or two from you."],
       ["Fun once you're comfy", "Get you warm and fed, and you're the best company at the campsite."],
     ],
     watchouts: [
       ["Complaining is your cardio", "The bugs, the dirt, the cold, the bugs again. Everyone else is cold too. They're just not narrating it."],
-      ["High maintenance", "You call it having standards. Your friends call it the 40-minute delay while you found a flattering angle."],
-      ["Pics or it didn't happen", "You spent the whole sunset filming the sunset. You were there. You just didn't see it."],
+      ["High maintenance", "You call it having standards. Your friends call it a daily nuisance."],
+      ["Rules for thee", "You gave your ex too many chances, while judging your friends for doing the exact same thing."],
       ["Bails when it gets hard", "The second things get ugly or uncomfortable, you want out. Most growth is uncomfortable, so you keep skipping it."],
       ["Your comfort, their problem", "Someone always ends up carrying your extra bag or giving up the good sleeping spot. You rarely notice who."],
-      ["Your feed is happier than you are", "You'd rather look like you're having a great time than admit you're not. People can tell."],
+      ["Judges in two seconds", "If a place, an outfit or a person doesn't pass your first glance, it's out. You've missed some good ones that way."],
     ],
     core: [["Refined", "Expressive", "Comfort-loving"], "You care how things look and feel, and you make the world a little prettier."],
     drive: "Comfort and beauty. You want life to feel good and look good, and you secretly like being a little envied.",
     wiring: "Very tuned in to your senses: textures, smells, sounds, vibes. Easily delighted, and just as easily annoyed.",
     stress: "You get whiny and sulky, retreat to whatever comfort you can find, and make sure everyone knows how much you're suffering.",
-    need: "Proof that you can handle hard, unglamorous things and come out fine. And friends who like you with bed hair and no filter.",
+    need: "Proof that you can handle hard, unglamorous things and come out thriving, and that all your effort wasn't just \"luck.\" And friends who like you with bed hair and no filter.",
   },
   schemer: {
     name: "The Schemer",
@@ -1058,17 +1058,17 @@ const RESULTS = {
     description:
       "You always have an angle, and you'll argue for it until everyone else gives up. You read the room, find the weak spot in every plan, and walk away with exactly what you came for, and somehow people thank you for it. To you, a conversation is a sport: you'll take the other side just to see if you can win, poke holes in anything that sounds too sure of itself, and enjoy every comeback. It isn't that you don't care. Somewhere along the way you learned that winning the argument felt safer than admitting what you actually wanted. The cost is that nobody, sometimes not even you, knows which opinions are really yours.",
     strengths: [
-      ["Wins any debate", "You find the loophole, the counterpoint and the technicality before the other person finishes their sentence."],
+      ["Wins any debate, closes any deal", "You find the loophole and the counterpoint before the other person finishes their sentence, then land on the version where everyone thinks they won."],
       ["Pokes holes in bad ideas", "You spot the flaw in a plan before it costs everyone a night in the woods."],
       ["Charming", "You could talk a bear out of its lunch, then get it to carry the bag for you."],
       ["Reads people fast", "Five minutes after meeting someone, you know what they want and what they're afraid of."],
-      ["Born negotiator", "Deals, trades, compromises. You find the version where everyone thinks they won."],
+      ["Quick study", "You pick up a new hobby in a weekend and can argue about it like a pro by Monday."],
       ["Quick on your feet", "Put on the spot, you always have a comeback, a plan B and a better argument."],
     ],
     watchouts: [
       ["It's manipulation", "You call it networking, or persuasion, or \"just helping things along.\" It's manipulation, and more people have noticed than you think."],
       ["Devil's advocate nobody asked for", "Someone shares good news, and you find the flaw in it. You call it a debate. Everyone else hears an attack."],
-      ["You'd rather win than be right", "You'll defend a point you don't even believe just so you don't lose. People have stopped bringing things up around you."],
+      ["Sometimes you'd rather win than be right", "You'll defend a point you don't even believe just so you don't lose. People have stopped bringing things up around you."],
       ["Arguing is not a personality", "You argued with the trail sign. You argued with the ranger. You'd argue with the bear if it held still long enough."],
       ["Lawyer for yourself", "When it blows up, you have a ten-point case for why it wasn't your fault. It was your fault."],
       ["Everything's a transaction", "You keep a quiet tally of favors. Your friends have started to wonder if they're friends or assets."],
@@ -1728,7 +1728,7 @@ const RELATIONS = {
     friends: [
       ["survivalist", "Finally, someone else who packed the backup batteries."],
       ["counselor", "You run the packing list, they run the morale. Dream team."],
-      ["nightwatch", "Someone else who made a backup plan for the backup plan."],
+      ["lookout", "Someone else who made a backup plan for the backup plan."],
     ],
     foes: [
       ["mystic", "Every plan you make, they snack their way off of it."],
@@ -1739,7 +1739,7 @@ const RELATIONS = {
   survivalist: {
     friends: [
       ["scout", "You both trust preparation over luck. Your packs weigh the same."],
-      ["nightwatch", "They spot the danger, you already have the gear for it."],
+      ["lookout", "They spot the danger, you already have the gear for it."],
       ["lonewolf", "Neither of you needs rescuing, and you respect that about each other."],
     ],
     foes: [
@@ -1748,7 +1748,7 @@ const RELATIONS = {
       ["glamper", "Packed a hair dryer instead of a water filter. In the woods."],
     ],
   },
-  nightwatch: {
+  lookout: {
     friends: [
       ["survivalist", "You notice the problem, they've already got a plan for it."],
       ["wanderer", "Quiet, sharp, and never asks you to talk about your feelings."],
@@ -1764,7 +1764,7 @@ const RELATIONS = {
     friends: [
       ["medic", "You both feel everything. Neither of you says it out loud."],
       ["bard", "They say every feeling out loud, so for once you don't have to guess."],
-      ["nightwatch", "Two people who saw it coming. They thought it through, you just knew."],
+      ["lookout", "Two people who saw it coming. They thought it through, you just knew."],
     ],
     foes: [
       ["schemer", "Turns your feelings into a debate. You left the conversation ten minutes ago."],
@@ -1775,7 +1775,7 @@ const RELATIONS = {
   wanderer: {
     friends: [
       ["medic", "Two quiet hearts, zero small talk."],
-      ["nightwatch", "You both think before you speak. Sometimes for days."],
+      ["lookout", "You both think before you speak. Sometimes for days."],
       ["camper", "Happy to sit by the creek with you for hours, saying nothing."],
     ],
     foes: [
@@ -1792,7 +1792,7 @@ const RELATIONS = {
     ],
     foes: [
       ["camper", "You want the summit. They want a nap at the bottom."],
-      ["nightwatch", "Every time you move, they want to \"think about it first.\""],
+      ["lookout", "Every time you move, they want to \"think about it first.\""],
       ["schemer", "Agrees with every word you say, then does what they wanted anyway."],
     ],
   },
@@ -1815,7 +1815,7 @@ const RELATIONS = {
       ["glamper", "Finally, someone who appreciates a dramatic entrance."],
     ],
     foes: [
-      ["nightwatch", "Shushes you right before the best part."],
+      ["lookout", "Shushes you right before the best part."],
       ["schemer", "Argues with your story while you're still telling it."],
       ["survivalist", "Interrupts your ghost story to explain why that couldn't happen."],
     ],
@@ -1829,7 +1829,7 @@ const RELATIONS = {
     foes: [
       ["scout", "Has a printed schedule. You have vibes."],
       ["survivalist", "Won't share snacks and hides the mushrooms from you."],
-      ["nightwatch", "Watches you eat the mushroom like they're taking notes for the investigation."],
+      ["lookout", "Watches you eat the mushroom like they're taking notes for the investigation."],
     ],
   },
   medic: {
@@ -1840,7 +1840,7 @@ const RELATIONS = {
     ],
     foes: [
       ["lonewolf", "Refuses help, then shows up with a sprained ankle."],
-      ["nightwatch", "Calls your feelings \"inefficient.\" To your face."],
+      ["lookout", "Calls your feelings \"inefficient.\" To your face."],
       ["schemer", "Knows exactly how nice you are, and runs a tab on it."],
     ],
   },
@@ -1888,7 +1888,7 @@ const RELATIONS = {
     ],
     foes: [
       ["counselor", "Wants everyone to agree. You disagree for fun."],
-      ["nightwatch", "Saw through your plan before you'd finished making it."],
+      ["lookout", "Saw through your plan before you'd finished making it."],
       ["trailblazer", "Two people who refuse to lose an argument. Somebody bring snacks, this will take a while."],
     ],
   },
@@ -2694,7 +2694,6 @@ function showDetailsPage() {
   setText("details-chapter", t("detailsChapter", "Meet the personality"));
   setText("details-name", result.name);
   setText("details-tagline", result.tagline);
-  setText("details-note", t("detailsNote", 'Written to whoever gets this one, so every "you" below means one of them.'));
   setText("details-description", result.description);
 
   const photo = document.getElementById("details-photo");
