@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Friends and Foes — Into the Woods</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Almendra:ital,wght@0,400;0,700;1,400&family=Henny+Penny&family=Jua&family=Macondo&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page page-friends">
+    <a id="back-to-all" class="back-link" href="personalities.html">← All the personalities</a>
+
+    <!-- Filled in by script.js from RESULTS + RELATIONS, using ?type=... -->
+    <header class="all-header">
+      <p id="kin-chapter" class="chapter title-font">Friends and Foes</p>
+      <img id="kin-photo" class="kin-hero-photo" src="" alt="">
+      <h1 id="kin-name" class="result-name"></h1>
+      <p id="kin-tagline" class="result-tagline"></p>
+    </header>
+
+    <div id="friends-page" class="kin-grid">
+      <div class="result-box">
+        <h3>Friends</h3>
+        <div id="result-friends" class="kin-list"></div>
+      </div>
+      <div class="result-box">
+        <h3>Foes</h3>
+        <div id="result-foes" class="kin-list"></div>
+      </div>
+    </div>
+
+    <div class="all-footer">
+      <a id="friends-quiz-link" class="restart-btn" href="index.html">Take the quiz</a>
+    </div>
+  </main>
+
+  <script src="ko.js"></script>
+  <script src="sparkle.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

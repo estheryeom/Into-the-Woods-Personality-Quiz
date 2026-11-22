@@ -367,6 +367,9 @@ const KO = {
     kinFriends: `찐친`,
     kinFoes: `상극`,
     backToResult: `← 내 결과로 돌아가기`,
+    backToAll: `← 모든 유형 보기`,
+    kinTitle: `찐친 & 상극`,
+    kinLink: `찐친 & 상극 보러 가기 →`,
     habitsSlow: (n) =>
       `질문 ${n}개에서 2분 넘게 뭉갰어. 급할 거 뭐 있어, 언젠간 하겠지 ㅋㅋ 그래서 해피 캠퍼(세상 급한 거 없음) 점수가 살짝 올라갔어.`,
     habitsBack: (n, secondGuesser) =>

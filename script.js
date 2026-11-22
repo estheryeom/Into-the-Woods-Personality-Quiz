@@ -2459,43 +2459,62 @@ function showAllPersonalities(container) {
     credit.className = "type-card-credit";
     credit.textContent = t("photoCredit", (text) => `Photo: ${text}`, result.image.credit);
 
-    // Friends & foes: small photo, name and the why line for each
-    const kin = document.createElement("div");
-    kin.className = "type-card-kin";
-    [
-      ["friends", t("kinFriends", "Friends")],
-      ["foes", t("kinFoes", "Foes")],
-    ].forEach(([group, label]) => {
-      const col = document.createElement("div");
-      col.className = `type-card-kin-col type-card-${group}`;
-      const heading = document.createElement("h3");
-      heading.textContent = label;
-      col.appendChild(heading);
-      RELATIONS[type][group].forEach(([other, why]) => {
-        const row = document.createElement("a");
-        row.className = "mini-kin";
-        row.href = `#${other}`;
-        const pic = document.createElement("img");
-        pic.src = RESULTS[other].image.src;
-        pic.alt = "";
-        pic.loading = "lazy";
-        const text = document.createElement("span");
-        const who = document.createElement("strong");
-        who.textContent = TYPES[other];
-        const detail = document.createElement("span");
-        detail.className = "detail";
-        detail.textContent = why;
-        text.append(who, detail);
-        row.append(pic, text);
-        col.appendChild(row);
-      });
-      kin.appendChild(col);
-    });
+    // Friends & foes live on their own page (friends.html?type=...)
+    const kin = document.createElement("a");
+    kin.className = "type-card-kin-link";
+    kin.href = `friends.html?type=${type}${keepQuery()}`;
+    kin.textContent = t("kinLink", "Friends and Foes →");
 
     body.append(name, tagline, traits, description, kin, credit);
     card.append(img, body);
     container.appendChild(card);
   }
+}
+
+// Carries your result (?path=...) and language from page to page, so the
+// "You" badge and "Back to my result" keep working. Starts with "&".
+function keepQuery() {
+  const path = pathFromUrl();
+  if (!path) return langParam();
+  history = path;
+  habits = habitsFromUrl();
+  return `&${resultQuery()}${langParam()}`;
+}
+
+// ---------------------------------------------------------
+// The "Friends and Foes" page (friends.html?type=scout)
+// ---------------------------------------------------------
+function showFriendsPage() {
+  const asked = new URLSearchParams(window.location.search).get("type");
+  const type = RESULTS[asked] ? asked : Object.keys(RESULTS)[0];
+  const result = RESULTS[type];
+  const query = keepQuery();
+
+  const photo = document.getElementById("kin-photo");
+  photo.src = result.image.src;
+  photo.alt = result.image.alt;
+  document.getElementById("kin-name").textContent = result.name;
+  document.getElementById("kin-tagline").textContent = result.tagline;
+  document.getElementById("kin-chapter").textContent = t("kinTitle", "Friends and Foes");
+  document.title = `${t("kinTitle", "Friends and Foes")} — ${result.name}`;
+  addSparkles(document.getElementById("kin-name"), 14);
+
+  fillKin("result-friends", RELATIONS[type].friends);
+  fillKin("result-foes", RELATIONS[type].foes);
+
+  // Tap a friend or foe to see *their* friends and foes
+  const others = [...RELATIONS[type].friends, ...RELATIONS[type].foes].map(([other]) => other);
+  document.querySelectorAll("#friends-page .kin-card").forEach((card, i) => {
+    const link = document.createElement("a");
+    link.className = "kin-card kin-card-link";
+    link.href = `friends.html?type=${others[i]}${query}`;
+    link.append(...card.childNodes);
+    card.replaceWith(link);
+  });
+
+  const back = document.getElementById("back-to-all");
+  back.href = `personalities.html${query ? `?${query.slice(1)}` : ""}#${type}`;
+  back.textContent = t("backToAll", "← All the personalities");
 }
 
 // Helper: turn [type, why] pairs into little photo cards
@@ -2546,6 +2565,8 @@ applyKoreanData();
 
 if (allPersonalities) {
   showAllPersonalities(allPersonalities);
+} else if (document.getElementById("friends-page")) {
+  showFriendsPage();
 } else {
   document.querySelectorAll("[data-choice]").forEach((button) => {
     button.addEventListener("click", () => choose(button.dataset.choice));
