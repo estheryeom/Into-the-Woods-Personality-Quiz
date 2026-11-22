@@ -1,7 +1,7 @@
 /* =========================================================
    The tiny fairy.
    About once every three pages after "Let's start" (randomly, so
-   it's never on the same pages twice), a 5px fairy darts in,
+   it's never on the same pages twice), a 12px fairy darts in,
    flits around leaving fairy dust that vanishes almost instantly,
    ducks behind words in the question and behind answer bubbles,
    and buzzes over the bubbles. After 8 seconds it dives behind one
@@ -69,14 +69,51 @@
     const el = document.createElement("div");
     el.className = "fairy";
     el.setAttribute("aria-hidden", "true");
+    // Fairy silhouette: two pairs of wings, head, dress, legs and a star wand
+    el.innerHTML =
+      '<svg viewBox="0 0 20 20">' +
+      '<g class="fairy-wing">' +
+      '<path d="M10 8.5C7 2.5 1.5 2 1.2 5.6 1 8.6 5.5 9.8 10 9.2Z"/>' +
+      '<path d="M10 9.6C6.5 10 3 13 4.4 15.6 5.8 17.4 8.6 13.6 10 10.4Z"/>' +
+      "</g>" +
+      '<g class="fairy-wing" transform="matrix(-1 0 0 1 20 0)">' +
+      '<path d="M10 8.5C7 2.5 1.5 2 1.2 5.6 1 8.6 5.5 9.8 10 9.2Z"/>' +
+      '<path d="M10 9.6C6.5 10 3 13 4.4 15.6 5.8 17.4 8.6 13.6 10 10.4Z"/>' +
+      "</g>" +
+      '<g class="fairy-body">' +
+      '<circle cx="10" cy="4.3" r="1.9"/>' +
+      '<path d="M9.1 6.4h1.8L13 14.2H7Z"/>' +
+      '<path class="fairy-line" d="M9.1 14v4.2M10.9 14v4.2M10.6 7.6l4.2-3.4"/>' +
+      '<circle class="fairy-star" cx="15.4" cy="3.6" r="1.3"/>' +
+      "</g>" +
+      "</svg>";
+    let facing = 1;
 
     const answers = Array.from(page.querySelectorAll(".answer-btn"));
     const words = wordRanges(page);
     const rectOf = (thing) => thing.getBoundingClientRect();
 
     // Starts just off a random edge of the screen
-    const W = () => window.innerWidth;
+    const W = () => document.documentElement.clientWidth || window.innerWidth;
     const H = () => window.innerHeight;
+
+    // Phones scroll, so only pick words/bubbles that are on screen right
+    // now (otherwise it would vanish behind a bubble you can't see).
+    // If none are on screen, fall back to the closest one.
+    const onScreen = (thing) => {
+      const r = rectOf(thing);
+      return r.bottom > 0 && r.top < H() && r.right > 0 && r.left < W();
+    };
+    const pickOnScreen = (list) => {
+      const seen = list.filter(onScreen);
+      if (seen.length) return pick(seen);
+      const gap = (t) => { const r = rectOf(t); return r.top > H() ? r.top - H() : -r.bottom; };
+      return list.slice().sort((a, b) => gap(a) - gap(b))[0];
+    };
+
+    // Speeds are tuned for a laptop screen. On a small phone screen the
+    // same speed would cross it in a blink, so it flies slower there.
+    const S = () => Math.max(0.5, Math.min(1, Math.min(W(), H()) / 700));
     const edge = Math.floor(Math.random() * 4);
     const pos = {
       x: edge === 0 ? -12 : edge === 1 ? W() + 12 : rand(0, W()),
@@ -131,11 +168,11 @@
       () => [go(somewhere(), rand(120, 450))],
       () => [go(somewhere(), rand(300, 600)), wait(rand(80, 500))],
       () => [wait(rand(200, 900))],
-      () => (words.length ? hideBehind(pick(words)) : []),
-      () => hideBehind(pick(answers)),
+      () => (words.length ? hideBehind(pickOnScreen(words)) : []),
+      () => hideBehind(pickOnScreen(answers)),
       () => {
         // Buzz over the top of a bubble, hopping between a few spots on it
-        const btn = pick(answers);
+        const btn = pickOnScreen(answers);
         const hops = [];
         for (let i = 2 + Math.floor(Math.random() * 3); i > 0; i--) {
           const r = rectOf(btn);
@@ -159,7 +196,7 @@
     function finish() {
       // Final dive: behind a random answer bubble, then gone for good
       ending = true;
-      const btn = pick(answers);
+      const btn = pickOnScreen(answers);
       const box = () => rectOf(btn);
       const into = centerOf(btn)();
       queue = [go(() => into, rand(220, 380), box), wait(250, box)];
@@ -211,16 +248,16 @@
       const dx = target.x - pos.x;
       const dy = target.y - pos.y;
       const dist = Math.hypot(dx, dy) || 1;
-      const sp = speed * Math.min(1, dist / 50 + 0.2); // eases in on arrival
+      const sp = speed * S() * Math.min(1, dist / 50 + 0.2); // eases in on arrival
       const steer = Math.min(1, 7 * dt);
       vel.x += ((dx / dist) * sp - vel.x) * steer;
       vel.y += ((dy / dist) * sp - vel.y) * steer;
       // Wobbly, flighty path, plus the odd sudden dart
-      vel.x += Math.sin(elapsed * 0.013 + seed) * 260 * dt;
-      vel.y += Math.cos(elapsed * 0.017 + seed * 2) * 260 * dt;
+      vel.x += Math.sin(elapsed * 0.013 + seed) * 260 * S() * dt;
+      vel.y += Math.cos(elapsed * 0.017 + seed * 2) * 260 * S() * dt;
       if (Math.random() < 0.02) {
-        vel.x += rand(-160, 160);
-        vel.y += rand(-160, 160);
+        vel.x += rand(-160, 160) * S();
+        vel.y += rand(-160, 160) * S();
       }
       pos.x += vel.x * dt;
       pos.y += vel.y * dt;
@@ -248,7 +285,10 @@
       }
 
       const bob = Math.sin(elapsed * 0.025) * 1.2;
-      el.style.transform = `translate(${pos.x - 2.5}px, ${pos.y - 2.5 + bob}px)`;
+      // Turn to face the way it's flying (only on a clear change, so it doesn't flicker)
+      if (vel.x > 25) facing = 1;
+      else if (vel.x < -25) facing = -1;
+      el.style.transform = `translate(${pos.x - 6}px, ${pos.y - 6 + bob}px) scaleX(${facing})`;
       raf = requestAnimationFrame(frame);
     }
 
