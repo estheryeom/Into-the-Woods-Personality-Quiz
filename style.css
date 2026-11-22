@@ -409,7 +409,7 @@ html[lang="ko"] .title-font {
   max-width: 680px;
   margin: 0 0 1.5rem;
   color: var(--text-soft);
-  font-size: 1.05rem;
+  font-size: 1.33rem;     /* +10%, then +15% */
   line-height: 1.65;
   font-style: italic;
 }
@@ -1135,7 +1135,7 @@ html[lang="ko"] .title-font {
   }
 
   .story {
-    font-size: 1rem;
+    font-size: 1.265rem;    /* +10%, then +15% */
   }
 
   .answers {
