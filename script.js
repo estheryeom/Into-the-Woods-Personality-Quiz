@@ -19,13 +19,15 @@
    HOW COMMON EACH TYPE SHOULD BE (roughly, if people answered at
    random). Based on how common the closest Myers-Briggs types are in
    the general US population (Myers-Briggs Foundation sample):
-     Field Medic   ~22%  (ESFJ, ENFJ, half of ISFJ: the most common)
-     Happy Camper  ~13%  (ISFP, INFP)      Survivalist  ~12%  (ISTJ)
-     Eagle Scout    ~9%  (ESTJ)            Glamper       ~9%  (ESFP)
-     Campfire Bard  ~8%  (ENFP)            Night Watch   ~7%  (INFJ, INTJ, INTP)
-     Tattletale     ~7%  (half of ISFJ)    Lone Wolf     ~5%  (ISTP)
-     Mushroom Mystic ~4% (ESTP)            Schemer       ~3%  (ENTP)
-     Trailblazer    ~2%  (ENTJ: the rarest)
+     Field Medic   ~18%  (INFP, plus ISFJ: the most common)
+     Camp Counselor ~15% (ENFJ, plus ESFJ) Survivalist  ~12%  (ISTJ)
+     Happy Camper   ~9%  (ISFP)            Eagle Scout    ~9%  (ESTJ)
+     Glamper        ~9%  (ESFP)            Campfire Bard  ~8%  (ENFP)
+     Lone Wolf      ~5%  (ISTP)            Mushroom Mystic ~4% (ESTP)
+     Night Watch    ~4%  (INTJ, INFJ)      Wanderer       ~3%  (INTP)
+     Schemer        ~3%  (ENTP)            Trailblazer    ~2%  (ENTJ: the rarest)
+   ISFJ and ESFJ have no type of their own. The Medic (quiet, loyal care)
+   and the Counselor (warm, organized care) are their closest fits.
    If you change points, re-check the mix stays close to this.
 
    ADDING A NEW CHAPTER
@@ -34,7 +36,7 @@
    ========================================================= */
 
 // ---------------------------------------------------------
-// The 12 personality types (short names for the meters)
+// The 13 personality types (short names for the meters)
 // ---------------------------------------------------------
 const TYPES = {
   scout:       "The Eagle Scout",
@@ -45,7 +47,8 @@ const TYPES = {
   bard:        "The Campfire Bard",
   mystic:      "The Mushroom Mystic",
   medic:       "The Field Medic",
-  tattletale:  "The Tattletale",
+  counselor:   "The Camp Counselor",
+  wanderer:    "The Wanderer",
   camper:      "The Happy Camper",
   glamper:     "The Glamper",
   schemer:     "The Schemer",
@@ -56,7 +59,7 @@ const TYPES = {
 // ---------------------------------------------------------
 const ANSWERS = {
   // ----- Page 1: which "Let's start" button? -----
-  // Every button gives +0.25 to 3 types, and the 4 buttons cover all 12
+  // Every button gives +0.25 to 3 or 4 types, and the 4 buttons cover all 13
   // types between them, so everyone starts with the same small head start.
   direct: {
     text: "Clicked the big button in the middle",
@@ -66,13 +69,13 @@ const ANSWERS = {
   },
   quirky: {
     text: "Clicked the small button in the top-right corner",
-    points: { bard: 0.25, lonewolf: 0.25, mystic: 0.25 },
+    points: { bard: 0.25, lonewolf: 0.25, mystic: 0.25, wanderer: 0.25 },
     outcome: "You show up humming, in a hat nobody asked for. Your friends pretend not to know you. The trail winds into the pines.",
     next: "page-name",
   },
   reliant: {
     text: "Found the tiny button next to the big one",
-    points: { nightwatch: 0.25, tattletale: 0.25, medic: 0.25 },
+    points: { nightwatch: 0.25, counselor: 0.25, medic: 0.25 },
     outcome: "Your friend planned everything, even the bear spray they tucked in your bag \"just in case.\" You follow the group into the pines.",
     next: "page-name",
   },
@@ -92,7 +95,7 @@ const ANSWERS = {
   },
   callround: {
     text: "Woke up at 5:45 to call everyone and make sure they were up",
-    points: { medic: 3 },
+    points: { counselor: 3 },
     next: "page2",
   },
   glowup: {
@@ -121,7 +124,7 @@ const ANSWERS = {
   },
   bark: {
     text: "Barked, and got your friends to bark too",
-    points: { bard: 2, trailblazer: 1 },
+    points: { counselor: 2, bard: 1 },
     outcome: "You bark. Your friends join in. The bear tilts its head. For one glorious second, it works. Then it charges.",
     next: "page2-5",
   },
@@ -147,7 +150,7 @@ const ANSWERS = {
   },
   right: {
     text: "Turned right",
-    points: { survivalist: 2, nightwatch: 1 },
+    points: { survivalist: 2 },
     outcome: "You run until the crashing fades. No bear. No friends either.",
     next: "page3",
   },
@@ -167,8 +170,20 @@ const ANSWERS = {
   },
   friends: {
     text: "Trusted that you could find your friends",
-    points: { medic: 2, trailblazer: 1 },
+    points: { counselor: 2, trailblazer: 1 },
     outcome: "You call their names for an hour. Nobody answers.",
+    next: "page-camp",
+  },
+  peptalk: {
+    text: "Gave yourself a pep talk out loud, coach voice and all",
+    points: { counselor: 3 },
+    outcome: "\"Okay, team. The team is me. The team is doing GREAT.\" You clap twice, pick a direction and march.",
+    next: "page-camp",
+  },
+  north: {
+    text: "Argued with yourself about which way was north, and won",
+    points: { schemer: 2, wanderer: 1 },
+    outcome: "Moss grows on the north side. Except when it doesn't. Ten minutes later you win the argument, two votes to one, and head that way.",
     next: "page-camp",
   },
 
@@ -193,7 +208,7 @@ const ANSWERS = {
   },
   stay: {
     text: "Stayed right where you were so you couldn't get more lost",
-    points: { scout: 2, tattletale: 1 },
+    points: { scout: 2, survivalist: 1 },
     outcome: "You sit on a rock. Technically, this is what the experts say to do.",
     next: "page-camp",
   },
@@ -207,7 +222,7 @@ const ANSWERS = {
   },
   iou: {
     text: "Borrowed one granola bar and left a sorry note",
-    points: { tattletale: 3 },
+    points: { medic: 2, counselor: 1 },
     outcome: "\"Sorry! I borrowed 1 granola bar (oat & honey).\" You tuck the note under a rock and keep walking.",
     next: "page5",
   },
@@ -227,7 +242,7 @@ const ANSWERS = {
   // ----- Page 5: the fallen tree -----
   leaves: {
     text: "Shed a single tear and gathered dry leaves for a cushion",
-    points: { camper: 2, glamper: 1 },
+    points: { camper: 2, medic: 1 },
     outcome: "Your leaf pile is cozy. Well, cozy-ish.",
     next: "page6",
   },
@@ -239,13 +254,13 @@ const ANSWERS = {
   },
   paws: {
     text: "Noticed the paw prints around the tree",
-    points: { nightwatch: 2, tattletale: 1 },
+    points: { nightwatch: 2, wanderer: 1 },
     outcome: "The paw prints are old. Probably. You sit where you can see anything coming.",
     next: "page6",
   },
   birdcall: {
     text: "Used your friend group's weird bird call: \"BAKAAAH BAKAAAH\"",
-    points: { bard: 2, medic: 1 },
+    points: { bard: 2, counselor: 1 },
     outcome: "Your bird call echoes through the trees. Nothing answers.",
     next: "page6",
   },
@@ -271,7 +286,7 @@ const ANSWERS = {
   },
   hoard: {
     text: "Secretly kept your trail mix to yourself",
-    points: { schemer: 2, survivalist: 1 },
+    points: { survivalist: 2, schemer: 1 },
     outcome: "You eat it one piece at a time so the bag doesn't crinkle. Nobody's here. Then you hear something.",
     next: "page7",
   },
@@ -279,7 +294,7 @@ const ANSWERS = {
   // ----- Page 6.5: the mushrooms kick in -----
   listen: {
     text: "Listened to what the trees had to say",
-    points: { bard: 2 },
+    points: { bard: 2, medic: 1 },
     outcome: "The trees mostly want to talk about you. Then, all at once, they go quiet.",
     next: "page7",
   },
@@ -289,15 +304,15 @@ const ANSWERS = {
     outcome: "You feel awful, but a bit more like yourself. Mostly.",
     next: "page7",
   },
-  carve: {
-    text: "Carved a note blaming the influencer",
-    points: { tattletale: 3 },
-    outcome: "Big, shaky letters. At least they'll know who to blame.",
+  patterns: {
+    text: "Sat down and studied the patterns the bark was making",
+    points: { wanderer: 3 },
+    outcome: "The swirls repeat every seven rings. You're sure it means something. You're one ring away from cracking it when, all at once, the pattern stops.",
     next: "page7",
   },
   more: {
     text: "Ate more mushrooms, for science",
-    points: { mystic: 3 },
+    points: { mystic: 2, wanderer: 1 },
     outcome: "The forest gets much, much louder.",
     next: "page7",
   },
@@ -311,7 +326,7 @@ const ANSWERS = {
   },
   freeze: {
     text: "Froze and gripped the bear spray",
-    points: { nightwatch: 2, survivalist: 1 },
+    points: { survivalist: 2, nightwatch: 1 },
     outcome: "Your thumb finds the trigger. The shapes don't move either.",
     next: "page8",
   },
@@ -323,7 +338,7 @@ const ANSWERS = {
   },
   pretend: {
     text: "Pretended to be asleep",
-    points: { schemer: 2, camper: 1 },
+    points: { schemer: 2 },
     outcome: "You count to five hundred and peek. The shapes are gone. Or somewhere you can't see.",
     next: "page10",
   },
@@ -331,13 +346,13 @@ const ANSWERS = {
   // ----- Page 8: the voice -----
   follow: {
     text: "Followed the voice that sounded like your friend",
-    points: { medic: 2, camper: 1 },
+    points: { medic: 2 },
     outcome: "The voice stays just ahead of you, then stops. You're alone, and your shelter is gone.",
     next: "page9",
   },
   question: {
     text: "Tested the voice with a question only your friend would know",
-    points: { schemer: 2, nightwatch: 1 },
+    points: { nightwatch: 2 },
     outcome: "\"What's our group chat called?\" Silence. Then, right behind your ear: \"Come here.\" You run.",
     next: "page9",
   },
@@ -363,13 +378,13 @@ const ANSWERS = {
   },
   water: {
     text: "Followed the sound of running water",
-    points: { survivalist: 2 },
+    points: { survivalist: 2, wanderer: 1 },
     outcome: "You slide down to a creek. The water is ice cold and perfect. On the bank, something twinkles in the moonlight.",
     next: "page-key",
   },
   climb: {
     text: "Climbed a tree to look around",
-    points: { nightwatch: 1, bard: 1 },
+    points: { wanderer: 2, nightwatch: 1 },
     outcome: "The branch cracks, and you slide back down. Something tiny falls out of a knot in the trunk and bonks you on the head.",
     next: "page-key",
   },
@@ -401,7 +416,7 @@ const ANSWERS = {
   },
   sos: {
     text: "Spelled out SOS with sticks and rocks",
-    points: { scout: 2, trailblazer: 1 },
+    points: { counselor: 2, scout: 1 },
     outcome: "Someone has added a tiny pebble smiley face next to your SOS. Beside it, something glints.",
     next: "page-key",
   },
@@ -416,13 +431,13 @@ const ANSWERS = {
   },
   fairywand: {
     text: "Knew it was a real fairy's key",
-    points: { bard: 2, mystic: 1 },
+    points: { bard: 2, medic: 1 },
     outcome: "You hold it up, and the ((star)) shines brighter, like it's happy to be found. You knew it.",
     next: "page-door",
   },
   evidence: {
     text: "Treated the star key as evidence",
-    points: { tattletale: 2, nightwatch: 1 },
+    points: { wanderer: 2, nightwatch: 1 },
     outcome: "You pinch it by the edges like a detective. Someone small dropped this. Then you spot the next clue.",
     next: "page-door",
   },
@@ -436,7 +451,7 @@ const ANSWERS = {
   // ----- Chapter 10: the tiny door -----
   tapwand: {
     text: "Tried the star key in the tiny door",
-    points: { mystic: 2 },
+    points: { mystic: 2, wanderer: 1 },
     outcome: "It fits. Click. The door swings open, and warm light spills out, along with the smell of cinnamon rolls.",
     next: "page-fairy",
   },
@@ -474,7 +489,7 @@ const ANSWERS = {
   },
   spell: {
     text: "Asked the fairy to teach you a spell",
-    points: { bard: 2, schemer: 1 },
+    points: { wanderer: 2, bard: 1 },
     outcome: "He teaches you a spell for finding lost things. You spin three times, feeling ridiculous, and stop facing a porch light. \"HEY! We've got one!\"",
     next: "page11",
   },
@@ -486,15 +501,15 @@ const ANSWERS = {
   },
 
   // ----- Page 11: rescued -----
-  blame: {
-    text: "Told the ranger the hike was your friend's idea",
-    points: { tattletale: 3, schemer: 1 },
-    outcome: "The ranger writes down your friend's name. Your friend, ten feet away, hears every word. You get a ride home and sleep for eleven hours.",
+  technically: {
+    text: "Argued with the ranger that, technically, you were never lost",
+    points: { schemer: 2 },
+    outcome: "\"I knew exactly where I was. I was here.\" The ranger opens her mouth, closes it, and writes \"not lost\" on her clipboard. You get a ride home and sleep for eleven hours.",
     next: "result",
   },
   askfriends: {
     text: "Asked if your friends were okay",
-    points: { medic: 3 },
+    points: { medic: 2, counselor: 1 },
     outcome: "\"They're fine. One of them cried a little.\" You get a ride home and sleep for eleven hours.",
     next: "result",
   },
@@ -506,7 +521,7 @@ const ANSWERS = {
   },
   food: {
     text: "Asked if there was any food",
-    points: { glamper: 2, camper: 1 },
+    points: { glamper: 2 },
     outcome: "She finds you a granola bar. You eat it in two bites and ask about a second one. You get a ride home and sleep for eleven hours.",
     next: "result",
   },
@@ -516,6 +531,10 @@ const ANSWERS = {
 // still have them, so they're quietly dropped instead of breaking the link.
 //   carousel, saga, timeline, nexttrip: the group chat (removed)
 const RETIRED_CHOICES = ["carousel", "saga", "timeline", "nexttrip"];
+
+// Answers that were swapped for a new one on the same page (when the
+// Tattletale was removed). Old share links get the new answer instead.
+const RENAMED_CHOICES = { carve: "patterns", blame: "technically" };
 
 // ---------------------------------------------------------
 // Extra story lines that depend on your WHOLE path, not just
@@ -589,7 +608,7 @@ const STORY_EXTRAS = {
 };
 
 // ---------------------------------------------------------
-// The 12 results
+// The 13 results
 //
 //   image:     a real photo (no AI) from Wikimedia Commons, saved in /images
 //   strengths: [title, detail] x6. Sincere, with one playful line.
@@ -674,28 +693,60 @@ const RESULTS = {
       credit: "Dick Daniels, CC BY-SA 3.0",
     },
     description:
-      "You see what other people miss: the change in someone's tone, the snapped branch, the detail that doesn't add up. You'd rather watch from the edge than charge in, and you take in a lot before you say a word. That makes you wiser than you get credit for. It also means you spend a lot of time living inside your own head, where every scenario plays out twice.",
+      "You figured out what was going on an hour ago, and you're already three steps into a plan nobody else knows about. You trust very few people, and to those few you're fiercely loyal. You'll be a little sneaky if it gets the job done, but there's always a principle behind it. Being the smartest one in the room keeps you safe. It also makes it a lonely room.",
     strengths: [
-      ["Highly observant", "You pick up on small details that everyone else walks right past."],
-      ["Reads people well", "\"You said 'I'm fine' with a period at the end. You are not fine.\""],
-      ["Thinks before acting", "You take in the whole situation before you make a move."],
-      ["A great listener", "People feel heard around you, so they tend to open up."],
+      ["Sees ten moves ahead", "While everyone panics about tonight, you've already planned for tomorrow."],
+      ["Fiercely loyal", "Your circle is tiny. Anyone in it has a bodyguard for life."],
       ["Hard to fool", "Fake smiles, sketchy deals, voices in the woods. You can tell when something's off."],
-      ["Deep thinker", "You don't settle for the surface answer. You want to understand why."],
+      ["Independent thinker", "You don't care what's popular. You care what's true."],
+      ["Calm under pressure", "You don't freak out. You assess, decide, and move."],
+      ["Quietly strategic", "You get what you want without making a scene. Most people never even notice how."],
     ],
     watchouts: [
-      ["Overthinking is your full-time job", "You've rehearsed conversations that will never happen and replayed ones from years ago. That's not insight. It's a loop."],
-      ["All thought, no action", "You figured out the answer an hour ago and said nothing. Being right in silence helps nobody."],
-      ["A little paranoid", "Not every pause in a text means something. Most people aren't thinking about you nearly as much as you think."],
-      ["Exhausted all the time", "You never switch off, and you're tired constantly. You call it \"just how I am.\" It doesn't have to be."],
-      ["Watching instead of living", "You stand at the edge of every party analyzing it. Life is happening, and you're taking notes on it."],
-      ["Seeing danger everywhere", "The scary shadow in your room was a coat rack. It is always a coat rack."],
+      ["Trusts no plan but yours", "Everyone else's ideas are \"interesting.\" You don't mean that as a compliment, and they know it."],
+      ["Cold when you think you're being efficient", "You call it \"just being honest.\" Other people call it brutal, and they've stopped coming to you with feelings."],
+      ["Intellectual snob", "You quietly rank everyone by how smart they are. They can feel which number they got."],
+      ["A little paranoid", "Not everyone is plotting something. Most people aren't thinking about you nearly as much as you think."],
+      ["Your grudges are filed and labeled", "You never yell. You just remember, forever, with dates."],
+      ["Lonely at the top of your own head", "You'd rather be right and alone than wrong with company. Lately, you've been very right."],
     ],
-    core: [["Insightful", "Perceptive", "Thoughtful"], "You have a strong sense for what's going on beneath the surface."],
-    drive: "Understanding. You observe before engaging, save your energy, and want to make sense of something before acting on it.",
-    wiring: "Curious and imaginative, and more sensitive to stress than most, which is partly why you notice so much.",
-    stress: "You withdraw and over-analyze. You go quiet, pull away from people, and build worst-case theories in the dark.",
-    need: "Permission to act before you're 100% sure. And a few people safe enough that you can stop scanning the room around them.",
+    core: [["Strategic", "Loyal", "Private"], "You see the whole board, keep your cards close, and protect your people."],
+    drive: "Being competent and staying in control of what happens next.",
+    wiring: "Analytical and independent, with very high standards for yourself and everyone around you.",
+    stress: "You shut down and trust no one. You go quiet, make secret backup plans, and start treating friends like suspects.",
+    need: "Permission to not have it all figured out. And a few people safe enough that you can stop watching the door around them.",
+  },
+  wanderer: {
+    name: "The Wanderer",
+    tagline: "Didn't get lost. Got distracted by a really interesting rock.",
+    image: {
+      src: "images/wanderer.jpg",
+      alt: "A fluffy great blue heron standing on one leg on a log in still water, alone and deep in thought",
+      credit: "The Modern Polymath, CC BY-SA 4.0",
+    },
+    description:
+      "You need quiet the way other people need air. Long walks, no plans, nobody talking: that's where your mind finally relaxes and starts noticing things, like the pattern in the bark or why the creek bends left. People think you're distant. Really, you care more than you let on. You just show it by remembering something someone said three months ago, or showing up with exactly the fact they needed.",
+    strengths: [
+      ["Notices patterns", "You spot the thing that repeats, connects or doesn't fit, long before anyone else does."],
+      ["Low-drama company", "Being around you is calm. No pressure, no performance, no small talk required."],
+      ["Surprisingly thoughtful", "\"You said you liked these. In March.\" You remember the little things, and people never see it coming."],
+      ["Fair-minded", "You hear every side before you decide anything, and you change your mind when the facts do."],
+      ["Endlessly curious", "Moss, stars, why people say \"bless you.\" Everything is worth looking into."],
+      ["Comfortable alone", "You don't need a crowd to have a good time. A trail and your own thoughts are enough."],
+    ],
+    watchouts: [
+      ["Your care is invisible", "You think you're showing it. Nobody can tell. People can't feel what you never say."],
+      ["Overthinking is your full-time job", "You've thought about it from nine angles and done nothing. That's not wisdom. It's a loop."],
+      ["Missing in action", "\"Recharging\" has quietly turned into three weeks of unanswered texts. Your friends think you're mad at them."],
+      ["Explains when people wanted a hug", "They're crying, and you're explaining why it happened. Nobody asked for the science."],
+      ["Random risk, no warning", "Totally calm for months, then you jump in a freezing lake to \"see what happens.\" Nobody saw it coming, including you."],
+      ["Drifts through plans", "You agreed to come. You got distracted on the way. You're still not there."],
+    ],
+    core: [["Analytical", "Curious", "Quietly caring"], "You need space to think, and you care about people more than you show."],
+    drive: "Room to think, and understanding how the world really works.",
+    wiring: "Very curious and introverted, with more feeling under the surface than you let anyone see.",
+    stress: "You disappear. You stop answering, sink into a project or a long walk, and wait until it all passes.",
+    need: "People who let you be quiet without taking it personally. And who can tell you care, even when you don't say it.",
   },
   trailblazer: {
     name: "The Trailblazer",
@@ -834,60 +885,60 @@ const RESULTS = {
       credit: "dbking, CC BY 2.0",
     },
     description:
-      "Your first thought in a crisis is \"Is everyone okay?\" You'd give away your last snack, or walk back toward danger, if it meant nobody got left behind. People feel safe around you. But a lot of your sense of worth is tied up in being needed, and you rarely let anyone take care of you in return.",
+      "You care quietly, and you care all the way. You'd walk back toward a bear for one friend, not because anyone's watching, but because leaving them would go against everything you believe. You have a strong set of values and a huge inner world that very few people get to see. You feel everything at full volume, and most of it you never say out loud.",
     strengths: [
-      ["Fiercely loyal", "When someone you care about needs you, you show up. No questions asked."],
-      ["Selfless and generous", "You share what you have without being asked and without keeping score."],
-      ["Makes people feel safe", "People can tell you anything, and they do. Constantly."],
+      ["Fiercely loyal", "When someone you love needs you, you show up. No questions asked."],
       ["Brave for others", "You'll face things that scare you if it means protecting someone else."],
-      ["Emotionally intelligent", "You notice when someone's hurting, often before they've admitted it to themselves."],
-      ["The glue", "Groups hold together better with you in them."],
+      ["Deep empathy", "You feel what other people are feeling, sometimes more strongly than they do."],
+      ["Lives by your values", "You'd rather lose than do something that feels wrong. People trust you because of it."],
+      ["Makes people feel seen", "One conversation with you and people feel understood, not just heard."],
+      ["Sees the good in people", "You find the best version of someone and believe in it, even when they can't."],
     ],
     watchouts: [
-      ["People-pleaser to the bone", "You say yes when you mean no, then wonder why you're exhausted and secretly resentful."],
-      ["Doormat", "People take advantage of how nice you are. Some of them know exactly what they're doing, and you keep letting them."],
-      ["Helping as a hiding spot", "Fixing everyone else's problems is a great way to never look at your own."],
+      ["Idealizes people, then gets crushed", "You fell for who you hoped they were, not who they actually are. Then you act surprised. Every time."],
+      ["Expects mind-reading", "You never say what's wrong, then feel betrayed that nobody noticed. Nobody can read a mind. Not even yours."],
+      ["Saving people who don't want saving", "You keep trying to fix someone who never asked to be fixed. That's not love. That's a project."],
+      ["Your values are a wall", "Disagree with your morals once, and you quietly drop that person forever. They never even find out why."],
       ["Way too trusting", "You'd follow a creepy voice into the woods because it sounded like a friend. You give fourth chances to people who didn't deserve a second."],
-      ["Needs to be needed", "When nobody needs you, you feel lost. That's not generosity. That's a hook."],
       ["Forgetting yourself", "You remembered everyone's water bottle except your own."],
     ],
-    core: [["Warm", "Protective", "Devoted"], "You'd do almost anything for the people you care about."],
-    drive: "Being there for others. You're generous and caring, and helping people is where you find meaning.",
-    wiring: "Kind, trusting and cooperative, and reliable enough that people know you'll actually show up.",
-    stress: "You overgive, then crash. You feel unappreciated and might snap at the very people you've been taking care of.",
-    need: "To be cared for without having to earn it. And to say \"no\" without a three-paragraph explanation.",
+    core: [["Idealistic", "Gentle", "Devoted"], "You're guided by your values, and you'd do almost anything for the few people you love."],
+    drive: "Living by what you believe in, and protecting the people who matter to you.",
+    wiring: "Very open and kind, with a lot of feeling under the surface. You're more introverted than people assume.",
+    stress: "You withdraw and take everything personally. You replay every hurt alone, then go cold on someone who has no idea what they did.",
+    need: "Someone who sees the real you without needing an explanation. And permission to be imperfect, just like the people you forgive.",
   },
-  tattletale: {
-    name: "The Tattletale",
-    tagline: "Survived the woods. Filed a full report.",
+  counselor: {
+    name: "The Camp Counselor",
+    tagline: "Got everyone lost. Kept morale at 100%.",
     image: {
-      src: "images/tattletale.jpg",
-      alt: "A meerkat standing up tall on sentry duty, keeping an eye on everything",
-      credit: "Mathias Appel (public domain, CC0)",
+      src: "images/counselor.jpg",
+      alt: "A Canada goose leading its fuzzy goslings along a pebbly lakeshore, while one gosling wanders off",
+      credit: "The High Fin Sperm Whale, CC BY-SA 3.0",
     },
     description:
-      "You believe rules exist for a reason, and when someone breaks one, somebody should know. In your mind it isn't snitching, it's accountability. Underneath is a harsh inner critic that holds you to the same impossible standard. You're not trying to get people in trouble. You're trying to make the world make sense.",
+      "You're the one everyone looks to when the story goes wrong. You see who people could become, then make a plan to get them there, with a group chat, a pep talk and a color-coded schedule. You read the room, rally the group and lead with your heart and a clipboard. The catch: you hold yourself responsible for everyone's happiness, and you're not sure who you are when nobody needs leading.",
     strengths: [
-      ["Strong sense of right and wrong", "You know where the line is, and you don't cross it."],
-      ["Remembers every detail", "\"Actually, on March 3rd at 4:15, you said...\" You have receipts. Sometimes literally."],
-      ["Holds people accountable", "Things run more smoothly when someone makes sure everyone does their part."],
-      ["Honest", "People can count on you to tell them the truth, even when it's hard to hear."],
-      ["Fair", "You want the same rules for everyone, including yourself."],
-      ["Makes things better", "You notice what's broken and push until it gets fixed."],
+      ["Inspires people", "One speech from you and a tired, cold, lost group is suddenly ready to keep going."],
+      ["Plans with your heart", "You make the plan and you care how everyone feels about it. That combination is rare."],
+      ["Reads the room", "You know who's about to cry, who's annoyed and who needs a snack, before they do."],
+      ["Keeps morale up", "In a crisis you're the one saying \"We've got this,\" and somehow people believe you."],
+      ["Brings out the best in people", "You see potential in everyone, and you won't stop until they see it too."],
+      ["Turns a group into a team", "Five random people and an hour with you, and they have roles, a name and a chant."],
     ],
     watchouts: [
-      ["It's snitching", "You call it accountability. Everyone else calls it snitching, and they've started keeping things from you."],
-      ["Blame first, fix later", "When something goes wrong, you're hunting for who's at fault while everyone else is putting out the fire."],
-      ["Self-righteous", "Being right matters more to you than being kind. You win the argument and lose the friend."],
-      ["Exhausting to be around", "People edit themselves around you so they don't get called out. That isn't respect. It's fear."],
-      ["Rigid", "\"That's not how we do it\" doesn't settle anything. Rules are tools, not commandments."],
-      ["Harshest on yourself", "The critic you aim at other people is twice as loud in your own head, and it never lets you off."],
+      ["Your friends are not your projects", "You have a five-step plan for their life. They never asked for it, and they're tired of the check-ins."],
+      ["Your help comes with strings", "You give great advice, then sulk when people don't take it. Help that needs a thank-you isn't really help."],
+      ["Approval addict", "A hundred people like you and one doesn't. Guess which one you think about all week."],
+      ["Toxic positivity", "\"Look on the bright side!\" Stop it. Sometimes it's just bad, and people need you to say so."],
+      ["Can't let a conflict breathe", "Two friends argue, and within the hour you've called a group meeting. Some things need a day, not a mediator."],
+      ["No idea who you are alone", "Take away the group, the plan and the people to look after, and you don't know what's left. That should scare you more than it does."],
     ],
-    core: [["Conscientious", "Principled", "Fair"], "You're very aware of the rules and want everyone to do the right thing."],
-    drive: "Doing things the right way. You have a strong inner critic and a sharp eye for what's wrong.",
-    wiring: "Highly organized and responsible, and it really bothers you when things are unfair or out of place.",
-    stress: "You get critical and controlling, nitpicking everything and everyone, yourself most of all.",
-    need: "To accept that \"good enough\" is sometimes good enough. And people who stay even when you're wrong.",
+    core: [["Charismatic", "Empathetic", "Organized"], "You see who people could become, and you can't help leading them there."],
+    drive: "Helping people grow and keeping the group together, headed somewhere better.",
+    wiring: "Very outgoing, warm and organized. You're a planner whose plans are mostly about people.",
+    stress: "You over-organize everyone's feelings: more check-ins, more meetings, more \"we need to talk.\" Then you burn out alone where nobody can see.",
+    need: "To be loved when you're not in charge. And to let the group stumble without it being your fault.",
   },
   camper: {
     name: "The Happy Camper",
@@ -955,35 +1006,35 @@ const RESULTS = {
   },
   schemer: {
     name: "The Schemer",
-    tagline: "Didn't bring snacks. Has everyone's snacks.",
+    tagline: "Didn't bring snacks. Has everyone's snacks. Will debate you about whose they were.",
     image: {
       src: "images/schemer.jpg",
       alt: "A fluffy baby red fox standing in the woods, glancing back at the camera",
       credit: "Tognopop's grandfather (public domain)",
     },
     description:
-      "You always have an angle. You read the room, work out what everyone wants, and somehow walk away with exactly what you came for, and people thank you for it. It isn't that you don't care about them. Somewhere along the way you learned that asking straight out gets you a no, so you stopped asking and started arranging. It works beautifully. The cost is that nobody, sometimes not even you, is sure when you're being real.",
+      "You always have an angle, and you'll argue for it until everyone else gives up. You read the room, find the weak spot in every plan, and walk away with exactly what you came for, and somehow people thank you for it. To you, a conversation is a sport: you'll take the other side just to see if you can win, poke holes in anything that sounds too sure of itself, and enjoy every comeback. It isn't that you don't care. Somewhere along the way you learned that winning the argument felt safer than admitting what you actually wanted. The cost is that nobody, sometimes not even you, knows which opinions are really yours.",
     strengths: [
-      ["Strategic", "You're three moves ahead while everyone else is still working out the first one."],
+      ["Wins any debate", "You find the loophole, the counterpoint and the technicality before the other person finishes their sentence."],
+      ["Pokes holes in bad ideas", "You spot the flaw in a plan before it costs everyone a night in the woods."],
       ["Charming", "You could talk a bear out of its lunch, then get it to carry the bag for you."],
-      ["Resourceful", "Whatever you need, you know who has it and exactly how to get it."],
       ["Reads people fast", "Five minutes after meeting someone, you know what they want and what they're afraid of."],
       ["Born negotiator", "Deals, trades, compromises. You find the version where everyone thinks they won."],
-      ["Gets things done through people", "You can't fix the car. But you know who can, and they'll do it for free."],
+      ["Quick on your feet", "Put on the spot, you always have a comeback, a plan B and a better argument."],
     ],
     watchouts: [
       ["It's manipulation", "You call it networking, or persuasion, or \"just helping things along.\" It's manipulation, and more people have noticed than you think."],
+      ["Devil's advocate nobody asked for", "Someone shares good news, and you find the flaw in it. You call it a debate. Everyone else hears an attack."],
+      ["You'd rather win than be right", "You'll defend a point you don't even believe just so you don't lose. People have stopped bringing things up around you."],
+      ["Arguing is not a personality", "You argued with the trail sign. You argued with the ranger. You'd argue with the bear if it held still long enough."],
+      ["Lawyer for yourself", "When it blows up, you have a ten-point case for why it wasn't your fault. It was your fault."],
       ["Everything's a transaction", "You keep a quiet tally of favors. Your friends have started to wonder if they're friends or assets."],
-      ["Hard to trust", "You've told so many convenient versions of the truth that people don't know which one is real."],
-      ["Never your fault", "When the plan blows up, it was somehow someone else's idea. It was not someone else's idea."],
-      ["Allergic to asking directly", "You'll spend an hour setting up the perfect situation instead of saying one honest sentence: \"Can I have that?\""],
-      ["Nobody really knows you", "If you're always playing an angle, people only ever meet the angle. That gets lonely."],
     ],
-    core: [["Clever", "Persuasive", "Resourceful"], "You see how things really work, and you use it to get what you want."],
-    drive: "Getting what you want without having to ask for it. Being outsmarted is your worst nightmare.",
-    wiring: "Sharp, social and strategic. You're always reading the room and quietly working out your next move.",
-    stress: "You scheme harder: more secrets, more spin, more playing people against each other, until the whole plan collapses on you.",
-    need: "To find out that just asking often works. And people you can be completely honest with, who stay anyway.",
+    core: [["Clever", "Persuasive", "Argumentative"], "You see how things really work, and you'll debate anyone who disagrees, for fun."],
+    drive: "Winning, whether it's the snacks or the argument. Being outsmarted is your worst nightmare.",
+    wiring: "Sharp, social and contrarian. You're always reading the room and loading your next counterpoint.",
+    stress: "You argue louder and scheme harder: more nitpicking, more technicalities, more playing people against each other, until you've won every argument and lost everyone in the room.",
+    need: "To learn that not every conversation is a match. And people you can lose an argument to without feeling like you lost yourself.",
   },
 };
 
@@ -1633,8 +1684,8 @@ const RELATIONS = {
   scout: {
     friends: [
       ["survivalist", "Finally, someone else who packed the backup batteries."],
-      ["medic", "You run the plan, they keep everyone in one piece. Dream team."],
-      ["tattletale", "Someone else who actually reads the trail rules sign."],
+      ["counselor", "You run the packing list, they run the morale. Dream team."],
+      ["nightwatch", "Someone else who made a backup plan for the backup plan."],
     ],
     foes: [
       ["mystic", "Every plan you make, they snack their way off of it."],
@@ -1657,13 +1708,25 @@ const RELATIONS = {
   nightwatch: {
     friends: [
       ["survivalist", "You notice the problem, they've already got a plan for it."],
-      ["tattletale", "Two sets of eyes that miss nothing. Nobody gets away with anything."],
-      ["medic", "They listen as well as you do, and they never push you to talk."],
+      ["wanderer", "Quiet, sharp, and never asks you to talk about your feelings."],
+      ["scout", "Finally, someone who also read the map before leaving the car."],
     ],
     foes: [
       ["bard", "You're trying to listen for footsteps. They're singing."],
-      ["trailblazer", "They charge ahead before you've finished reading the room."],
+      ["mystic", "Acts first, thinks never. You've had to plan around them three times today."],
       ["schemer", "You can see every string they're pulling. It's exhausting."],
+    ],
+  },
+  wanderer: {
+    friends: [
+      ["medic", "Two quiet hearts, zero small talk."],
+      ["nightwatch", "You both think before you speak. Sometimes for days."],
+      ["camper", "Happy to sit by the creek with you for hours, saying nothing."],
+    ],
+    foes: [
+      ["counselor", "Wants a group huddle. You want to be a tree."],
+      ["glamper", "Brought a speaker. To the woods. Where the birds were."],
+      ["trailblazer", "Keeps rushing you past the most interesting rock you've ever seen."],
     ],
   },
   trailblazer: {
@@ -1685,7 +1748,7 @@ const RELATIONS = {
       ["survivalist", "Self-sufficient and quiet. You trust that."],
     ],
     foes: [
-      ["tattletale", "You wander off for five minutes and they file a missing-person report."],
+      ["counselor", "You wander off for five minutes and they organize a search party with matching shirts."],
       ["scout", "They want a buddy system. You are the buddy system."],
       ["medic", "Keeps checking in on you. Please stop checking in on you."],
     ],
@@ -1698,7 +1761,7 @@ const RELATIONS = {
     ],
     foes: [
       ["nightwatch", "Shushes you right before the best part."],
-      ["tattletale", "Fact-checks your story while you're still telling it."],
+      ["schemer", "Argues with your story while you're still telling it."],
       ["survivalist", "Interrupts your ghost story to explain why that couldn't happen."],
     ],
   },
@@ -1711,31 +1774,31 @@ const RELATIONS = {
     foes: [
       ["scout", "Has a printed schedule. You have vibes."],
       ["survivalist", "Won't share snacks and hides the mushrooms from you."],
-      ["tattletale", "Wrote down everything you ate. For the medic. And for the record."],
+      ["nightwatch", "Watches you eat the mushroom like they're taking notes for the investigation."],
     ],
   },
   medic: {
     friends: [
-      ["scout", "They keep the group organized, you keep the group okay."],
+      ["wanderer", "Two quiet hearts, zero small talk."],
       ["camper", "Warm, gentle and kind, your kind of people."],
-      ["nightwatch", "Quiet and thoughtful, and they actually let you help."],
+      ["bard", "They say all the feelings out loud that you keep inside."],
     ],
     foes: [
       ["lonewolf", "Refuses help, then shows up with a sprained ankle."],
-      ["mystic", "You've treated them for \"just one bite\" three times this trip."],
+      ["nightwatch", "Calls your feelings \"inefficient.\" To your face."],
       ["schemer", "Knows exactly how nice you are, and runs a tab on it."],
     ],
   },
-  tattletale: {
+  counselor: {
     friends: [
-      ["nightwatch", "They see everything, and you make sure it gets reported."],
-      ["scout", "Finally, someone who respects the rules as much as you do."],
-      ["survivalist", "You both read the warning signs. Literally, every single one."],
+      ["bard", "Your hype person, and you're theirs. The campfire never stood a chance."],
+      ["scout", "You handle the people, they handle the packing list."],
+      ["medic", "You lead the group, they go back for whoever fell behind."],
     ],
     foes: [
-      ["lonewolf", "Breaks every rule, then disappears before you can write it down."],
-      ["bard", "That's not what happened and you both know it."],
-      ["schemer", "You know they did it. You just can't prove it. Yet."],
+      ["lonewolf", "Your group huddle is their worst nightmare."],
+      ["schemer", "Same charm, different motives. You can tell, and it bugs you."],
+      ["camper", "Won't come to the team meeting. Is napping during it."],
     ],
   },
   camper: {
@@ -1766,12 +1829,12 @@ const RELATIONS = {
     friends: [
       ["glamper", "You get them the nice things. They never ask where from."],
       ["mystic", "Says yes to every plan and never asks what's in it for you."],
-      ["camper", "Easygoing, never asks questions, always shares."],
+      ["camper", "Never argues back. You find this relaxing and also deeply boring."],
     ],
     foes: [
-      ["tattletale", "Writes down everything you say. Ruins everything."],
+      ["counselor", "Wants everyone to agree. You disagree for fun."],
       ["nightwatch", "Saw through your plan before you'd finished making it."],
-      ["trailblazer", "Two people trying to run the same group, and only one of you does it openly."],
+      ["trailblazer", "Two people who refuse to lose an argument. Somebody bring snacks, this will take a while."],
     ],
   },
 };
@@ -1960,7 +2023,10 @@ function shareLink() {
 function pathFromUrl() {
   const raw = new URLSearchParams(window.location.search).get("path");
   if (!raw) return null;
-  const keys = raw.split(".").filter((key) => !RETIRED_CHOICES.includes(key));
+  const keys = raw
+    .split(".")
+    .map((key) => RENAMED_CHOICES[key] || key)
+    .filter((key) => !RETIRED_CHOICES.includes(key));
   if (!keys.length) return null;
   if (!keys.every((key) => Object.prototype.hasOwnProperty.call(ANSWERS, key))) return null;
   if (ANSWERS[keys[keys.length - 1]].next !== "result") return null;

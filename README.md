@@ -75,7 +75,7 @@ The rescue scene is put together from your whole path (see `STORY_EXTRAS` in `sc
 - **Neither:** the shadows were "probably deer."
 - Little callbacks for starting a fire, rationing your granola bar, hiding trail mix and giving your snacks to the bear.
 
-## The 10 personality types
+## The 13 personality types
 
 Each type's results page shows a real photo (no AI images), its strengths and watch-outs, and a "What makes you tick" section. That section borrows ideas from MBTI, the Enneagram and the Big Five, but describes them in plain words instead of showing test labels, since a story quiz can't really measure things like introversion vs. extraversion.
 
@@ -83,14 +83,17 @@ Each type's results page shows a real photo (no AI images), its strengths and wa
 |---|---|---|
 | **The Eagle Scout** | organized planner | bald eagle chicks |
 | **The Survivalist** | prepared for the worst | chipmunk with stuffed cheeks |
-| **The Night Watch** | observant, on guard | barred owl |
+| **The Night Watch** | strategic, private, loyal to a few | barred owl |
+| **The Wanderer** | curious loner who quietly cares | heron standing on one leg |
 | **The Trailblazer** | bold leader | mountain goat kid |
 | **The Lone Wolf** | self-reliant, looks out for number one | howling wolf pup |
 | **The Campfire Bard** | creative storyteller | grasshopper (sings all summer instead of working) |
 | **The Mushroom Mystic** | adventurous, overconfident | snail on tiny mushrooms |
-| **The Field Medic** | loyal caretaker | Saint Bernard puppy |
-| **The Tattletale** | rule-follower, keeps the record straight | meerkat on sentry duty |
+| **The Field Medic** | quiet, values-driven protector | Saint Bernard puppy |
+| **The Camp Counselor** | warm leader who plans for everyone | goose leading its goslings |
 | **The Happy Camper** | easygoing, unbothered | lounging capybara |
+| **The Glamper** | comfort-loving, high standards | white kitten |
+| **The Schemer** | clever, persuasive, argues for fun | red fox pup |
 
 **Result = the type with the most points.** The second-highest is shown as your "streak." If two types tie, the one your most recent answers pointed to wins.
 
@@ -129,12 +132,13 @@ All photos are real photographs from [Wikimedia Commons](https://commons.wikimed
 | `scout.jpg` | Dave Menke, U.S. Fish & Wildlife Service | Public domain | [link](https://commons.wikimedia.org/wiki/File:Bald_eagle_chicks_-_DPLA_-_3b7711bbef7b06dc32fc138bf95e138a.jpg) |
 | `survivalist.jpg` | Ashley Lee | CC BY 4.0 | [link](https://commons.wikimedia.org/wiki/File:Chipmunk_with_Full_Cheeks.jpg) |
 | `nightwatch.jpg` | Dick Daniels | CC BY-SA 3.0 | [link](https://commons.wikimedia.org/wiki/File:Barred_Owl_(Strix_varia)_RWD.jpg) |
+| `wanderer.jpg` | The Modern Polymath | CC BY-SA 4.0 | [link](https://commons.wikimedia.org/wiki/File:Great_Blue_Heron_standing_on_one_leg.jpg) |
 | `trailblazer.jpg` | Charles J. Sharp | CC BY-SA 4.0 | [link](https://commons.wikimedia.org/wiki/File:Mountain_goat_(Oreamnos_americanus)_kid_Radium.jpg) |
 | `lonewolf.jpg` | U.S. Fish & Wildlife Service | Public domain | [link](https://commons.wikimedia.org/wiki/File:Mexican_wolf_pup_(6411046205).jpg) |
 | `bard.jpg` | Colette Gemmell | CC BY 4.0 | [link](https://commons.wikimedia.org/wiki/File:Grasshopper_in_Clover.jpg) |
 | `mystic.jpg` | Chainfoto | CC0 | [link](https://commons.wikimedia.org/wiki/File:Snail_and_mushroom.jpg) |
 | `medic.jpg` | dbking | CC BY 2.0 | [link](https://commons.wikimedia.org/wiki/File:St._Bernard_puppy.jpg) |
-| `tattletale.jpg` | Mathias Appel | CC0 | [link](https://commons.wikimedia.org/wiki/File:Meerkat_Standing.jpg) |
+| `counselor.jpg` | The High Fin Sperm Whale | CC BY-SA 3.0 | [link](https://commons.wikimedia.org/wiki/File:Canada_Goose_(Branta_canadensis)_with_goslings.JPG) |
 | `camper.jpg` | Wilfredor | CC0 | [link](https://commons.wikimedia.org/wiki/File:Hydrochoeris_hydrochaeris_in_Brazil_in_Petr%C3%B3polis,_Rio_de_Janeiro,_Brazil_09.jpg) |
 | `glamper.jpg` (white kitten) | Firman MPH (via Pixabay) | CC0 | [link](https://commons.wikimedia.org/wiki/File:A_white_kitten.jpg) |
 | `schemer.jpg` | Tognopop's grandfather | Public domain | [link](https://commons.wikimedia.org/wiki/File:Red_fox_pup_in_a_forest_of_Haute-Normandie.jpg) |
