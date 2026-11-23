@@ -1825,3 +1825,129 @@ a.restart-btn:focus-visible,
   0%, 100% { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 4px rgba(242, 209, 107, 0.6); }
   50%      { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 10px rgba(242, 209, 107, 1); }
 }
+
+/* ---------------------------------------------------------
+   BUY ME A COFFEE
+   - .bmc-badge: round cream mug badge, bottom-right of the start page.
+     Bobs gently; a speech bubble pops out on hover.
+   - .bmc-pill: cream "Buy me a coffee" pill at the bottom of the
+     result, all-personalities, details and friends/foes pages.
+   --------------------------------------------------------- */
+.bmc-badge,
+.bmc-pill {
+  color: var(--bark);
+  background: var(--cream);
+  text-decoration: none;
+  font-family: "Jua", "Henny Penny", sans-serif;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 0 3px rgba(242, 184, 75, 0.35);
+}
+
+.bmc-mug { display: block; overflow: visible; }
+
+/* Two little steam wisps that rise and fade */
+.bmc-steam path {
+  fill: none;
+  stroke: #a37b5c;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: 0;
+  animation: bmc-steam 2.2s ease-in-out infinite;
+}
+
+.bmc-steam path:nth-child(2) { animation-delay: 0.7s; }
+
+@keyframes bmc-steam {
+  0%   { opacity: 0;   transform: translateY(3px); }
+  40%  { opacity: 0.9; }
+  100% { opacity: 0;   transform: translateY(-4px); }
+}
+
+/* Round badge (start page) */
+.bmc-badge {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  z-index: 5;
+  animation: bmc-bob 3s ease-in-out infinite;
+}
+
+@keyframes bmc-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+/* Speech bubble to the left of the badge */
+.bmc-bubble {
+  position: absolute;
+  right: 64px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: max-content;
+  max-width: 220px;
+  padding: 0.45rem 0.8rem;
+  background: var(--cream);
+  color: var(--bark);
+  font-size: 0.85rem;
+  line-height: 1.3;
+  text-align: left;
+  border-radius: 12px 12px 2px 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 0 3px rgba(242, 184, 75, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, right 0.25s ease;
+}
+
+.bmc-badge:hover .bmc-bubble,
+.bmc-badge:focus-visible .bmc-bubble {
+  opacity: 1;
+  right: 68px;
+}
+
+.bmc-badge:focus-visible,
+.bmc-pill:focus-visible {
+  outline: 3px solid var(--sun);
+  outline-offset: 3px;
+}
+
+/* Pill (bottom of the other pages) */
+.bmc-footer {
+  text-align: center;
+  margin: 2rem 0 1rem;
+}
+
+.bmc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.1rem 0.5rem 0.8rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  transition: transform 0.2s ease;
+}
+
+@media (hover: hover) {
+  .bmc-pill:hover { transform: translateY(-2px) rotate(-2deg); }
+}
+
+/* Phones: slightly smaller badge, clear of the home-bar area */
+@media (max-width: 600px) {
+  .bmc-badge {
+    width: 48px;
+    height: 48px;
+    right: 1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .bmc-badge .bmc-mug { width: 28px; height: 28px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bmc-badge,
+  .bmc-steam path { animation: none; }
+  .bmc-steam path { opacity: 0.8; }
+}

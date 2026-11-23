@@ -222,6 +222,10 @@ const KO = {
     ".all-header h1": `모든 유형 모아 보기`,
     ".all-header .result-tagline": `여기서 길 잃어 본 사람들, 다 모였다.`,
     ".all-footer .restart-btn": `테스트 하러 가기`,
+
+    // Buy Me a Coffee (every page)
+    ".bmc-bubble": `내 다음 프로젝트에 연료 좀 넣어줄래? 여기 눌러줘 ☕`,
+    ".bmc-label": `커피 한 잔 쏴주라`,
   },
 
   // Result-page box headings, found by the id of something inside the box
