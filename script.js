@@ -177,13 +177,13 @@ const ANSWERS = {
     next: "page4",
   },
   friends: {
-    text: "Trusted that you could find your friends",
+    text: "Yelled for your friends, sure they'd yell back",
     points: { counselor: 2, trailblazer: 1 },
     outcome: "You call their names for an hour. Nobody answers.",
     next: "page-camp",
   },
   peptalk: {
-    text: "Gave yourself a pep talk out loud, coach voice and all",
+    text: "Gave yourself a pep talk out loud",
     points: { counselor: 3 },
     outcome: "\"Okay, team. The team is me. The team is doing GREAT.\" You clap twice, pick a direction and march.",
     next: "page-camp",
@@ -472,7 +472,7 @@ const ANSWERS = {
   decoration: {
     text: "Decided the tiny door was just a decoration",
     points: { scout: 2 },
-    outcome: "You leave it alone. Minutes later, a flashlight lands on your face. \"HEY! We've got one!\"",
+    outcome: "You leave it alone. Hours later, a flashlight lands on your face. \"HEY! We've got one!\"",
     next: "page11",
   },
   nope: {
@@ -586,14 +586,13 @@ const STORY_EXTRAS = {
     if (ateMushrooms()) {
       lines.push(t("extra.shapes.mushrooms", "She eyes the purple stains on your fingers. \"Did you eat the mushrooms? Okay. Medic's coming.\" The shapes in the trees? \"Buddy, those are trees.\""));
     } else if (visited("page8")) {
-      lines.push(t("extra.shapes.voice", "\"Your friends found the station hours ago.\" You ask who was calling your name out there. She stops smiling. \"Nobody from our team.\""));
+      lines.push(t("extra.shapes.voice", "\"Your friends found the station long ago.\" You ask who was calling your name out there. She stops smiling. \"Nobody from our team.\""));
     } else {
       lines.push(t("extra.shapes.deer", "The tall shapes in the trees? \"Probably deer,\" the ranger says. She doesn't sound sure."));
     }
 
     // Little callbacks
     if (picked("fire")) lines.push(t("extra.fire", "\"Also, please never start a fire out here again.\""));
-    if (picked("ration")) lines.push(t("extra.ration", "You offer the ranger your last third of granola bar. She declines."));
     if (picked("hoard")) lines.push(t("extra.hoard", "Your secret trail mix crinkles in your pocket. You say nothing."));
 
     // The empty campsite was the rangers' supply camp
@@ -874,8 +873,7 @@ const RESULTS = {
       ["Makes people feel less alone", "Your stories make people realize their weird experiences are normal."],
     ],
     watchouts: [
-      ["All starts, no finishes", "You have twelve brilliant ideas and zero finished ones. Starting is the fun part. Finishing is the part you skip."],
-      ["Procrastination royalty", "You call it \"waiting for inspiration.\" Everyone else calls it missing the deadline. Again."],
+      ["All starts, no finishes", "Twelve brilliant ideas, zero finished. You call it \"waiting for inspiration.\" Everyone else calls it a missed deadline."],
       ["Main character syndrome", "Every story somehow comes back to you. People love the show, but some of them would like a turn."],
       ["Misunderstood? Not as much as you think", "You feel like nobody really gets you. Honestly, most people get you more than you think."],
       ["Thin skin", "One lukewarm reaction to your idea and you're crushed for a week. Not everyone who disagrees with you is attacking you."],
@@ -1036,7 +1034,7 @@ const RESULTS = {
     watchouts: [
       ["Complaining is your cardio", "The bugs, the dirt, the cold, the bugs again. Everyone else is cold too. They're just not narrating it."],
       ["High maintenance", "You call it having standards. Your friends call it a daily nuisance."],
-      ["Rules for thee", "You gave your ex too many chances, while judging your friends for doing the exact same thing."],
+      ["Rules for thee", "You give your ex too many chances, while judging your friends for doing the exact same thing."],
       ["Bails when it gets hard", "The second things get ugly or uncomfortable, you want out. Most growth is uncomfortable, so you keep skipping it."],
       ["Your comfort, their problem", "Someone always ends up carrying your extra bag or giving up the good sleeping spot. You rarely notice who."],
       ["Judges in two seconds", "If a place, an outfit or a person doesn't pass your first glance, it's out. You've missed some good ones that way."],
@@ -1045,7 +1043,7 @@ const RESULTS = {
     drive: "Comfort and beauty. You want life to feel good and look good, and you secretly like being a little envied.",
     wiring: "Very tuned in to your senses: textures, smells, sounds, vibes. Easily delighted, and just as easily annoyed.",
     stress: "You get whiny and sulky, retreat to whatever comfort you can find, and make sure everyone knows how much you're suffering.",
-    need: "Proof that you can handle hard, unglamorous things and come out thriving, and that all your effort wasn't just \"luck.\" And friends who like you with bed hair and no filter.",
+    need: "Proof that you can handle hard, unglamorous things and come out thriving, and that all your effort wasn't just \"luck.\"",
   },
   schemer: {
     name: "The Schemer",
@@ -1068,8 +1066,7 @@ const RESULTS = {
     watchouts: [
       ["It's manipulation", "You call it networking, or persuasion, or \"just helping things along.\" It's manipulation, and more people have noticed than you think."],
       ["Devil's advocate nobody asked for", "Someone shares good news, and you find the flaw in it. You call it a debate. Everyone else hears an attack."],
-      ["Sometimes you'd rather win than be right", "You'll defend a point you don't even believe just so you don't lose. People have stopped bringing things up around you."],
-      ["Arguing is not a personality", "You argued with the trail sign. You argued with the ranger. You'd argue with the bear if it held still long enough."],
+      ["Sometimes you'd rather win than be right", "You argued with the trail sign, then the ranger. You'll defend a point you don't even believe just so you don't lose. People have stopped bringing things up around you."],
       ["Lawyer for yourself", "When it blows up, you have a ten-point case for why it wasn't your fault. It was your fault."],
       ["Everything's a transaction", "You keep a quiet tally of favors. Your friends have started to wonder if they're friends or assets."],
     ],
@@ -1077,7 +1074,7 @@ const RESULTS = {
     drive: "Winning, whether it's the snacks or the argument. Being outsmarted is your worst nightmare.",
     wiring: "Sharp, social and contrarian. You're always reading the room and loading your next counterpoint.",
     stress: "You argue louder and scheme harder: more nitpicking, more technicalities, more playing people against each other, until you've won every argument and lost everyone in the room.",
-    need: "To learn that not every conversation is a match. And people you can lose an argument to without feeling like you lost yourself.",
+    need: "To be understood and relied on. Arguing is just the one way you know to keep a conversation going without losing someone's attention. What you really want is people who stay even when there's nothing left to debate.",
   },
 };
 
