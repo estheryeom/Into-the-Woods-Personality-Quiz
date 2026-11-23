@@ -233,7 +233,7 @@ const ANSWERS = {
   north: {
     text: "Argued with yourself about which way was north, and won",
     points: { schemer: 2, wanderer: 1 },
-    outcome: "Moss grows on the north side. Except when it doesn't. Ten minutes later you win the argument, two votes to one, and head that way.",
+    outcome: "Moss grows on the north side. Except when it doesn't. Ten minutes later you win your own argument and head that way.",
     next: "page-camp",
   },
 
