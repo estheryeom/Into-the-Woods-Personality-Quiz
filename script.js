@@ -764,8 +764,8 @@ const RESULTS = {
     tagline: "Didn't get lost. Got distracted by a really interesting rock.",
     image: {
       src: "images/wanderer.jpg",
-      alt: "A baby elephant with fuzzy hair on its head, chewing on a fence rail and curling its trunk",
-      credit: "Shadow Ayush, CC BY-SA 4.0",
+      alt: "A tiny baby elephant wandering alone across a sandy clearing",
+      credit: "JosepMGracia, CC BY-SA 4.0",
     },
     description:
       "You need quiet the way other people need air. Long walks, no plans, nobody talking: that's where your mind finally relaxes and starts noticing things, like the pattern in the bark or why the creek bends left. You also overthink, a lot, and the overthinking turns into procrastination: you can't start until you've found the best way to start. People think you're distant, or even blunt. Really, you care more than you let on, and inside you're working hard to keep your feelings in balance. You just show it by remembering something someone said three months ago, or showing up with exactly the fact they needed.",
@@ -790,38 +790,6 @@ const RESULTS = {
     wiring: "Very curious and introverted, with more feeling under the surface than you let anyone see.",
     stress: "You go quiet. You don't fully disappear, you just stop answering, even though you've read every text. Then you sink into a project or a long walk and wait until it all passes.",
     need: "People who let you be quiet without taking it personally. And who can tell you care, without you having to say it or put on big gestures that would feel fake to you.",
-  },
-  trailblazer: {
-    name: "The Trailblazer",
-    tagline: "No path? Great. Now there is.",
-    image: {
-      src: "images/trailblazer.jpg",
-      alt: "A fluffy white mountain goat kid standing on a rocky slope",
-      credit: "Charles J. Sharp, CC BY-SA 4.0",
-    },
-    description:
-      "You don't wait for permission, and you don't wait for a plan. When everyone else freezes, you're already moving, and people follow because you look like you know where you're going. Underneath is a rule you made for yourself a long time ago: never look weak, never be the one who needs saving. You're easily misunderstood. People see the confidence and assume nothing gets to you. It does, more than you'd ever let them see. Your confidence is your biggest strength, and occasionally your biggest problem.",
-    strengths: [
-      ["Takes charge", "When nobody knows what to do, you step up and give the group a direction."],
-      ["Brave and decisive", "You order at a restaurant in four seconds. Your friends take twenty minutes and still pick wrong."],
-      ["Protective of your crew", "You stand up for your friends without being asked."],
-      ["Gets things moving", "You turn talk into action while everyone else is still debating."],
-      ["Resilient", "You bounce back from setbacks faster than almost anyone you know."],
-      ["Honest and direct", "People always know exactly where they stand with you."],
-    ],
-    watchouts: [
-      ["Steamroller", "Some might say your group follows you because reasoning with you is too much work."],
-      ["Can't admit you're wrong", "You weren't lost. You were \"taking the scenic route.\" For hours. Some people knew."],
-      ["Reckless", "You skip the risks because thinking about them feels slow. Other people pay for that more often than you do."],
-      ["Bad listener", "You're planning your answer while people are still talking. They've noticed."],
-      ["Everything is a competition", "Even game night. Even the hike. People want to hang out with you, but they might not want to compete with you."],
-      ["Allergic to feelings", "You'd rather be angry than sad, because angry feels strong. Your friends have no idea what's actually going on with you."],
-    ],
-    core: [["Bold", "Strategic", "Driven"], "You see the goal and go straight at it."],
-    drive: "Staying in control. You're strong-willed and protective, and you'd rather take charge than be told what to do.",
-    wiring: "Steady under pressure and hard to rattle. More focused on getting it done than on keeping everyone happy.",
-    stress: "You get louder, faster and more controlling. You push harder exactly when you should stop, and people get run over.",
-    need: "To learn that letting someone else lead isn't losing. And at least one person strong enough to tell you no.",
   },
   lonewolf: {
     name: "The Lone Wolf",
@@ -855,13 +823,45 @@ const RESULTS = {
     stress: "You cut people off and go fully solo. You stop answering texts and tell yourself nobody would notice anyway.",
     need: "One or two people you let all the way in. And to find out that being needed doesn't have to mean being trapped.",
   },
+  trailblazer: {
+    name: "The Trailblazer",
+    tagline: "No path? Great. Now there is.",
+    image: {
+      src: "images/trailblazer.jpg",
+      alt: "Two black baby goats scrambling up a rocky cliff",
+      credit: "Jody McIntyre, CC BY-SA 2.0",
+    },
+    description:
+      "You don't wait for permission, and you don't wait for a plan. When everyone else freezes, you're already moving, and people follow because you look like you know where you're going. Underneath is a rule you made for yourself a long time ago: never look weak, never be the one who needs saving. You're easily misunderstood. People see the confidence and assume nothing gets to you. It does, more than you'd ever let them see. Your confidence is your biggest strength, and occasionally your biggest problem.",
+    strengths: [
+      ["Takes charge", "When nobody knows what to do, you step up and give the group a direction."],
+      ["Brave and decisive", "You order at a restaurant in four seconds. Your friends take twenty minutes and still pick wrong."],
+      ["Protective of your crew", "You stand up for your friends without being asked."],
+      ["Gets things moving", "You turn talk into action while everyone else is still debating."],
+      ["Resilient", "You bounce back from setbacks faster than almost anyone you know."],
+      ["Honest and direct", "People always know exactly where they stand with you."],
+    ],
+    watchouts: [
+      ["Steamroller", "Some might say your group follows you because reasoning with you is too much work."],
+      ["Can't admit you're wrong", "You weren't lost. You were \"taking the scenic route.\" For hours. Some people knew."],
+      ["Reckless", "You skip the risks because thinking about them feels slow. Other people pay for that more often than you do."],
+      ["Bad listener", "You're planning your answer while people are still talking. They've noticed."],
+      ["Everything is a competition", "Even game night. Even the hike. People want to hang out with you, but they might not want to compete with you."],
+      ["Allergic to feelings", "You'd rather be angry than sad, because angry feels strong. Your friends have no idea what's actually going on with you."],
+    ],
+    core: [["Bold", "Strategic", "Driven"], "You see the goal and go straight at it."],
+    drive: "Staying in control. You're strong-willed and protective, and you'd rather take charge than be told what to do.",
+    wiring: "Steady under pressure and hard to rattle. More focused on getting it done than on keeping everyone happy.",
+    stress: "You get louder, faster and more controlling. You push harder exactly when you should stop, and people get run over.",
+    need: "To learn that letting someone else lead isn't losing. And at least one person strong enough to tell you no.",
+  },
   bard: {
     name: "The Campfire Bard",
     tagline: "Got lost in the woods. Got a great story out of it.",
     image: {
       src: "images/bard.jpg",
-      alt: "A baby bottlenose dolphin leaping out of the water, mid-splash",
-      credit: "caroline legg, CC BY 2.0",
+      alt: "A spinner dolphin floating in clear, bright blue water",
+      credit: "Alexander Vasenin, CC BY-SA 3.0",
     },
     description:
       "You turn every disaster into a story, and everyone wants to sit next to you at the campfire. You're affectionate, playful and all in on real emotional connection. You're also the class clown, the jester of the group, and that's the catch: it's hard for people to take you seriously. You're charming and a natural leader, so part of you wants to lead, and part of you just wants the laugh. And because you run on other people's validation, the laugh usually wins. Deep down, you want to be seen, really seen, for who you are. When people get you, you light up. When they don't, it hurts a lot more than you let on.",
