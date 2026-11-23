@@ -2241,7 +2241,10 @@ async function copyShareLink(successMessage) {
   status.textContent = ok ? successMessage : t("copyFallback", (link) => `Copy this link to share: ${link}`, url);
 }
 
-const isPhone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+// iPads (iPadOS 13+) pretend to be a Mac, so also count a "Mac" with a touch screen.
+const isPhone =
+  /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+  (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
 
 // Point each share option at the current result
 function fillShareOptions() {

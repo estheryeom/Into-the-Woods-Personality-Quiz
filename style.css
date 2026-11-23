@@ -394,6 +394,7 @@ html[lang="ko"] .title-font {
   align-items: center;
   justify-content: center;
   text-align: center;
+  padding-bottom: 5rem;        /* tablets too: the fixed back button never covers the last answer */
 }
 
 .chapter {
@@ -1169,6 +1170,12 @@ html[lang="ko"] .title-font {
   .subtitle {
     margin-bottom: 1rem;
   }
+
+  /* The big start button was desktop-sized and crowded the bottom one */
+  .start-big {
+    font-size: 1.6rem;
+    padding: 1rem 3rem;
+  }
 }
 
 /* ---------------------------------------------------------
@@ -1353,7 +1360,9 @@ a.restart-btn:focus-visible,
   display: block;
   width: auto;
   height: min(56vh, 560px);
-  height: min(56dvh, 560px);
+  /* Short screens (small iPhones, phones sideways): shrink the preview so
+     the Share / Save buttons still fit without scrolling inside the pop-up */
+  height: max(160px, min(56dvh, 560px, calc(100dvh - 21rem)));
   max-width: 100%;
   aspect-ratio: 9 / 16;
   object-fit: contain;
@@ -1540,6 +1549,7 @@ a.restart-btn:focus-visible,
   display: block;
   width: fit-content;
   text-align: left;
+  margin-bottom: 0.6rem;       /* breathing room above "Meet the personality" */
 }
 
 .page-details .kin-grid .result-box h3 {
