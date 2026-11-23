@@ -70,6 +70,21 @@
       </div>
     </section>
 
+    <!-- THE FORK — After the wake-up question, before the bear (everyone sees it).
+         Built to spot the rarer types: Trailblazer, Lookout, Wanderer, Wisp. -->
+    <section id="page-fork" class="page page-story" hidden>
+      <div class="story"></div>
+      <h2 class="question" tabindex="-1">
+        Twenty minutes in, the trail splits in two. The map is soggy, and your friends are arguing. What do you do?
+      </h2>
+      <div class="answers">
+        <button class="answer-btn" data-choice="takemap">Take the map. We're going left. I'll explain on the way.</button>
+        <button class="answer-btn" data-choice="trailreport">I already know. I read the trail reports three days ago.</button>
+        <button class="answer-btn" data-choice="whytwo">Sit on a rock and wonder why there are two trails in the first place.</button>
+        <button class="answer-btn" data-choice="quietfriend">Hang back with the quiet friend. They look miserable.</button>
+      </div>
+    </section>
+
     <!-- PAGE 2 — The bear -->
     <section id="page2" class="page page-story" hidden>
       <div class="story"></div>
@@ -77,7 +92,7 @@
         A bear steps onto the trail, thirty feet away. It's looking right at you. What do you do?
       </h2>
       <div class="answers">
-        <button class="answer-btn" data-choice="run">Run. My friends are on their own.</button>
+        <button class="answer-btn" data-choice="run">Run. I don't have to outrun the bear, just my friends.</button>
         <button class="answer-btn" data-choice="small">Make myself small. Maybe it won't see me.</button>
         <button class="answer-btn" data-choice="bark">Bark at it, and get my friends to bark too.</button>
         <button class="answer-btn" data-choice="snacks">Offer it my snacks. It isn't <em>that</em> big.</button>
@@ -94,7 +109,7 @@
         <button class="answer-btn" data-choice="straight">Straight ahead. No looking back.</button>
         <button class="answer-btn" data-choice="left">Left.</button>
         <button class="answer-btn" data-choice="right">Right.</button>
-        <button class="answer-btn" data-choice="help">Back to help my friends.</button>
+        <button class="answer-btn" data-choice="help">Back for my friends. Yes, toward the bear.</button>
       </div>
     </section>
 
@@ -133,10 +148,25 @@
         Through the trees, you spot a torn orange tent and a backpack hanging off a branch. Nobody's around. What do you do?
       </h2>
       <div class="answers">
-        <button class="answer-btn" data-choice="raid">Finders keepers. I'm taking the bag.</button>
+        <button class="answer-btn" data-choice="raid">Finders keepers. Whoever leaves a bag in bear country made their choice.</button>
         <button class="answer-btn" data-choice="iou">Borrow one granola bar and leave a sorry note.</button>
         <button class="answer-btn" data-choice="tentnap">The tent's shredded, but there's a pillow inside. A real one. It's mine now.</button>
         <button class="answer-btn" data-choice="backstory">Look through their stuff and figure out who lives here.</button>
+      </div>
+    </section>
+
+    <!-- THE LOGBOOK — After the campsite, before the fallen tree (everyone sees it).
+         Also built for the rarer types. (The fairy folk have been moving the markers.) -->
+    <section id="page-logbook" class="page page-story" hidden>
+      <div class="story"></div>
+      <h2 class="question" tabindex="-1">
+        A ranger's logbook is nailed to a post. The last entry says: "Something in these woods keeps moving the trail markers." What do you do?
+      </h2>
+      <div class="answers">
+        <button class="answer-btn" data-choice="ownmarkers">Build my own markers. I'm not trusting theirs.</button>
+        <button class="answer-btn" data-choice="readlog">Read every entry and find the pattern before dark.</button>
+        <button class="answer-btn" data-choice="writeback">Write back: "Whoever's moving them... are you okay?"</button>
+        <button class="answer-btn" data-choice="raccoons">Come up with a twenty-minute theory. It's raccoons. Organized raccoons.</button>
       </div>
     </section>
 
@@ -296,7 +326,7 @@
       </h2>
       <div class="answers">
         <button class="answer-btn" data-choice="wayhome">"Show me the way out."</button>
-        <button class="answer-btn" data-choice="findfriends">"Are my friends okay?"</button>
+        <button class="answer-btn" data-choice="findfriends">"What do <em>you</em> want? Nobody ever asks the fairy."</button>
         <button class="answer-btn" data-choice="spell">"Teach me one spell."</button>
         <button class="answer-btn" data-choice="stayhere">"Can I just stay here?"</button>
       </div>
@@ -313,6 +343,31 @@
         <button class="answer-btn" data-choice="askfriends">"Are my friends okay?"</button>
         <button class="answer-btn" data-choice="hush">Hug her. Then go quiet the whole ride home.</button>
         <button class="answer-btn" data-choice="food">"...Is there any food?"</button>
+      </div>
+    </section>
+
+    <!-- TIEBREAKER — Only shown when your top two types are neck and neck.
+         script.js shows just the two buttons for those types and hides the rest. -->
+    <section id="page-tiebreak" class="page page-story" hidden>
+      <div class="story"></div>
+      <h2 class="question" tabindex="-1">
+        A week later, you and your friends drive back to the ranger station with a box of donuts to say thanks. Sitting on the porch steps, you think back on that night. What felt the most like you?
+      </h2>
+      <div class="answers">
+        <button class="answer-btn" data-choice="tb_scout">I made a plan, and I stuck to it.</button>
+        <button class="answer-btn" data-choice="tb_survivalist">I was ready for the worst, so the worst never got me.</button>
+        <button class="answer-btn" data-choice="tb_lookout">I saw most of it coming before it happened.</button>
+        <button class="answer-btn" data-choice="tb_wisp">I could feel what everyone needed, even from far away.</button>
+        <button class="answer-btn" data-choice="tb_trailblazer">Someone had to take charge, so I did.</button>
+        <button class="answer-btn" data-choice="tb_lonewolf">Honestly? I was fine on my own.</button>
+        <button class="answer-btn" data-choice="tb_bard">It was terrible, and also the best story I'll ever tell.</button>
+        <button class="answer-btn" data-choice="tb_mystic">I said yes to everything the woods threw at me.</button>
+        <button class="answer-btn" data-choice="tb_medic">I kept wondering if everyone else was okay.</button>
+        <button class="answer-btn" data-choice="tb_counselor">All I wanted was to get the group back together.</button>
+        <button class="answer-btn" data-choice="tb_wanderer">I'm still thinking about the parts nobody can explain.</button>
+        <button class="answer-btn" data-choice="tb_camper">I made the best of it and didn't stress too much.</button>
+        <button class="answer-btn" data-choice="tb_glamper">I survived, but I deserved a hot shower way sooner.</button>
+        <button class="answer-btn" data-choice="tb_schemer">I found an angle, every single time.</button>
       </div>
     </section>
 
