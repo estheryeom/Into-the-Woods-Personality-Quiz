@@ -11,10 +11,20 @@
         - next:    which page to show next
    3. At the end we add up the points. The type with the most
       points is your result. The second-highest is your "streak".
+   4. If your top two types are neck and neck, one extra tiebreaker
+      question shows first (see TIEBREAK_MARGIN).
 
    POINTS: an answer only gives points to types it truly fits.
    It's fine if some types (like the Lone Wolf) come up rarely.
    Don't tack on a +1 just to even out the totals.
+
+   EVERY ANSWER ON A PAGE SHOULD BE EQUALLY TEMPTING. Real people don't
+   click at random: they lean toward the "nice" answer. So the more
+   obviously kind an answer is ("Are my friends okay?"), the FEWER points
+   it gives, and a kind answer should cost something ("Yes, toward the
+   bear"). Selfish answers should be fun to admit to ("I don't have to
+   outrun the bear, just my friends"). When this was ignored, almost
+   everyone got the Field Medic.
 
    HOW COMMON EACH TYPE SHOULD BE (roughly, if people answered at
    random). Based on how common the closest Myers-Briggs types are in
@@ -36,6 +46,11 @@
    ISFJ and ESFJ have no type of their own. The Medic (quiet, loyal care)
    and the Counselor (warm, organized care) are their closest fits.
    If you change points, re-check the mix stays close to this.
+   The Medic is kept a bit under its target on purpose (random clicking
+   gives ~11%), because real players pick its kind answers far more
+   often than random. Last check (Nov 2026, 30,000 random runs): every
+   type lands 3-13%; someone who picks their own type's answer 60% of
+   the time gets that type back 56-85% of the time.
 
    ADDING A NEW CHAPTER
    - Copy a <section> in index.html, give it a new id and new data-choice keys.
@@ -95,31 +110,58 @@ const ANSWERS = {
   },
 
   // ----- Wake-up question (no story, just a question about you) -----
-  // No outcome on purpose: page 2 still opens with the start button's story.
+  // No outcome on purpose: the fork page still opens with the start button's story.
   alarm5: {
     text: "Woke up at 5:00, with a backup alarm and a bag packed the night before",
     points: { scout: 2 },
-    next: "page2",
+    next: "page-fork",
   },
   callround: {
     text: "Woke up at 5:45 to call everyone and make sure they were up",
     points: { counselor: 3 },
-    next: "page2",
+    next: "page-fork",
   },
   glowup: {
     text: "Woke up at 6:00 for skincare, an outfit and an iced coffee",
     points: { glamper: 2 },
-    next: "page2",
+    next: "page-fork",
   },
   bandaids: {
     text: "Woke up at 6:15 to pack extra band-aids and snacks for whoever forgets theirs",
     points: { medic: 3 },
+    next: "page-fork",
+  },
+
+  // ----- The fork in the trail (everyone sees it) -----
+  // Gives the rarer types (Trailblazer, Lookout, Wanderer, Wisp) more chances.
+  takemap: {
+    text: "Took the map and led the group left",
+    points: { trailblazer: 2, scout: 1 },
+    outcome: "Nobody argues. You're not sure if that's respect or fear. The trail climbs, and the trees close in.",
+    next: "page2",
+  },
+  trailreport: {
+    text: "Already knew the way from the trail reports",
+    points: { scout: 2, lookout: 1 },
+    outcome: "\"Left. The right one washed out in March.\" Your friends stare at you. You shrug and lead the way into the trees.",
+    next: "page2",
+  },
+  whytwo: {
+    text: "Sat on a rock and wondered why there were two trails at all",
+    points: { camper: 2, wanderer: 1 },
+    outcome: "Was it deer? Settlers? A really indecisive hiker? By the time you look up, your friends picked left without you. You jog to catch up.",
+    next: "page2",
+  },
+  quietfriend: {
+    text: "Hung back with the friend who looked miserable",
+    points: { medic: 2, wisp: 1 },
+    outcome: "You don't ask what's wrong. You just walk next to them. Halfway up the hill, they say, \"Thanks.\" That's all. It's enough.",
     next: "page2",
   },
 
   // ----- Page 2: the bear -----
   run: {
-    text: "Ran away and left your friends behind",
+    text: "Ran: you only had to outrun your friends",
     points: { lonewolf: 2, survivalist: 2 },
     outcome: "You sprint until the yelling fades. No bear behind you. Also, no trail.",
     next: "page3",
@@ -163,8 +205,8 @@ const ANSWERS = {
     next: "page3",
   },
   help: {
-    text: "Turned around to help your friends",
-    points: { medic: 3 },
+    text: "Ran back toward the bear for your friends",
+    points: { medic: 2, wisp: 1 },
     outcome: "You blast the bear spray. Most of it hits the bear. Some hits you. When you can see again, everyone is gone.",
     next: "page3",
   },
@@ -223,27 +265,54 @@ const ANSWERS = {
 
   // ----- Page 4.5: the empty campsite -----
   raid: {
-    text: "Took the backpack, finders keepers",
+    text: "Took the backpack: finders keepers in bear country",
     points: { schemer: 2, lonewolf: 1 },
     outcome: "You yank the backpack off the branch. Inside: a sleeve of cookies and a headlamp. The headlamp is dead. The cookies are not. You keep walking.",
-    next: "page5",
+    next: "page-logbook",
   },
   iou: {
     text: "Borrowed one granola bar and left a sorry note",
-    points: { medic: 3 },
+    points: { medic: 2 },
     outcome: "\"Sorry! I borrowed 1 granola bar (oat & honey).\" You tuck the note under a rock and keep walking.",
-    next: "page5",
+    next: "page-logbook",
   },
   tentnap: {
     text: "Rescued a real pillow from the torn tent",
     points: { glamper: 2, camper: 1 },
     outcome: "The tent is a lost cause: ripped wide open and soaked through. But the pillow is dry. You hug it to your chest and keep walking.",
-    next: "page5",
+    next: "page-logbook",
   },
   backstory: {
     text: "Looked through their stuff to figure out who lives there",
     points: { bard: 2, mystic: 1 },
     outcome: "A crossword, three harmonicas and a photo of a goat in a sweater. You decide it belongs to a retired magician, and leave before he gets back.",
+    next: "page-logbook",
+  },
+
+  // ----- The logbook (everyone sees it) -----
+  // Also gives the rarer types more chances. (The fairy folk move the markers.)
+  ownmarkers: {
+    text: "Built your own trail markers",
+    points: { trailblazer: 1, lonewolf: 1 },
+    outcome: "You stack rocks into a big arrow pointing the way you came. When you look back, the arrow points somewhere else. You decide not to think about it. The sun is dropping fast.",
+    next: "page5",
+  },
+  readlog: {
+    text: "Read every entry to find the pattern",
+    points: { lookout: 2, survivalist: 1 },
+    outcome: "The markers only move on nights with a full moon. You check the sky. Full moon. Great. The sun is dropping fast.",
+    next: "page5",
+  },
+  writeback: {
+    text: "Wrote back to whoever was moving the markers",
+    points: { wisp: 2, bard: 1 },
+    outcome: "\"Whoever's moving them... are you okay?\" You underline it twice. Somewhere in the trees, something tiny sniffles. The sun is dropping fast.",
+    next: "page5",
+  },
+  raccoons: {
+    text: "Came up with a theory: organized raccoons",
+    points: { wanderer: 2, schemer: 1 },
+    outcome: "Raccoons have thumbs. Raccoons hold grudges. It checks out. You're so proud of the theory that you barely notice the sun dropping.",
     next: "page5",
   },
 
@@ -490,9 +559,9 @@ const ANSWERS = {
     next: "page11",
   },
   findfriends: {
-    text: "Asked the fairy to find your friends",
-    points: { counselor: 1, medic: 2 },
-    outcome: "He confers with a moth. \"They're fine. They're at the ranger station, eating your snacks.\" Glowing mushrooms light the way. \"HEY! We've got one!\"",
+    text: "Asked the fairy what HE wanted",
+    points: { medic: 2, wisp: 1 },
+    outcome: "He blinks. His eyes go shiny. \"Nobody's asked me that in three hundred years.\" It turns out he wants someone to hear his poem about moss. It's eleven minutes long. You tear up a little, and you're not sure why. Then glowing mushrooms light the way out. \"HEY! We've got one!\"",
     next: "page11",
   },
   spell: {
@@ -517,7 +586,7 @@ const ANSWERS = {
   },
   askfriends: {
     text: "Asked if your friends were okay",
-    points: { medic: 2, counselor: 1 },
+    points: { medic: 1, counselor: 1 },
     outcome: "\"They're fine. One of them cried a little.\" You get a ride home and sleep for eleven hours.",
     next: "result",
   },
@@ -534,6 +603,53 @@ const ANSWERS = {
     next: "result",
   },
 };
+
+// ---------------------------------------------------------
+// The tiebreaker: one extra question at the very end, ONLY when your
+// top two types are neck and neck (TIEBREAK_MARGIN points or less apart).
+// It shows two answers, one for each of those types, and your pick adds
+// TIEBREAK_POINTS to it. Each type has one answer (tb_scout, tb_medic...),
+// written so every one sounds just as good to admit to.
+// ---------------------------------------------------------
+const TIEBREAK_MARGIN = 0.5;
+const TIEBREAK_POINTS = 2;
+for (const type in TYPES) {
+  ANSWERS[`tb_${type}`] = {
+    text: `Tiebreaker: picked the ${TYPES[type]} answer`,
+    points: { [type]: TIEBREAK_POINTS },
+    next: "result",
+  };
+}
+
+function isTiebreak(choiceKey) {
+  return choiceKey.startsWith("tb_");
+}
+
+// Should the tiebreaker show before the result?
+function needsTiebreak() {
+  if (history.some(isTiebreak)) return false; // already answered it
+  const { scores, ranking } = calculateResult();
+  return scores[ranking[0]] - scores[ranking[1]] <= TIEBREAK_MARGIN;
+}
+
+// Show only the two answers for your top two types, in random order
+function setUpTiebreak() {
+  const page = document.getElementById("page-tiebreak");
+  const answers = page.querySelector(".answers");
+  // (Going "back" from the result pops the tiebreak answer first, so it's
+  // never in the history here.)
+  const [first, second] = calculateResult().ranking;
+
+  const shown = [first, second].sort(() => Math.random() - 0.5);
+  answers.querySelectorAll("[data-choice]").forEach((button) => {
+    button.hidden = true;
+  });
+  shown.forEach((type) => {
+    const button = answers.querySelector(`[data-choice="tb_${type}"]`);
+    button.hidden = false;
+    answers.appendChild(button); // move to the end, so the order is random
+  });
+}
 
 // Answers from pages that were taken out of the quiz. Old share links may
 // still have them, so they're quietly dropped instead of breaking the link.
@@ -1660,6 +1776,7 @@ function fillQuestion(pageId) {
 }
 
 function showPage(pageId) {
+  if (pageId === "page-tiebreak") setUpTiebreak();
   fillStory(pageId);
   fillQuestion(pageId);
 
@@ -1708,7 +1825,9 @@ function choose(choiceKey) {
 
   history.push(choiceKey);
 
-  if (answer.next === "result") {
+  if (answer.next === "result" && needsTiebreak()) {
+    showPage("page-tiebreak");
+  } else if (answer.next === "result") {
     showResult();
   } else {
     showPage(answer.next);
@@ -2600,7 +2719,7 @@ function showAllPersonalities(container) {
 
     const description = document.createElement("p");
     description.className = "type-card-description";
-    description.textContent = result.description;
+    description.textContent = shortDescription(result.description);
 
     const credit = document.createElement("p");
     credit.className = "type-card-credit";
@@ -2626,6 +2745,14 @@ function showAllPersonalities(container) {
     card.append(img, body);
     container.appendChild(card);
   }
+}
+
+// A teaser for the all-personalities cards: the first two sentences, ending
+// in "..." so it's clear there's more on the details page.
+function shortDescription(text) {
+  const sentences = text.trim().split(/(?<=[.!?…])\s+/);
+  const teaser = sentences.slice(0, 2).join(" ").replace(/[.…]+$/, "");
+  return teaser + "...";
 }
 
 // Carries your result (?path=...) and language from page to page, so the

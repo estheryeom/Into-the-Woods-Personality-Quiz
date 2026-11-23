@@ -1447,8 +1447,8 @@ a.restart-btn:focus-visible,
 
 .type-list {
   display: grid;
-  /* Four personalities per row on desktop */
-  grid-template-columns: repeat(4, 1fr);
+  /* Three personalities per row on desktop */
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.25rem;
 }
 
