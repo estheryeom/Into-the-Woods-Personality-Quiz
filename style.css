@@ -1035,10 +1035,27 @@ html[lang="ko"] .title-font {
   background: var(--sun);
   color: var(--forest-dark);
   cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
-.restart-btn:hover {
-  filter: brightness(1.08);
+/* Balloons up a little, same as the big "Let's start!" button.
+   Mouse: on hover. Touch screens: while the finger is pressing it. */
+@media (hover: hover) {
+  .restart-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  }
+}
+
+@media (hover: none) {
+  .restart-btn:active,
+  .start-btn:active {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  }
+  .start-medium:active {
+    transform: translateX(-50%) scale(1.05);
+  }
 }
 
 /* ---------------------------------------------------------
@@ -1902,10 +1919,48 @@ a.restart-btn:focus-visible,
   transition: opacity 0.25s ease, right 0.25s ease;
 }
 
-.bmc-badge:hover .bmc-bubble,
-.bmc-badge:focus-visible .bmc-bubble {
+/* .is-bubble-open is added by script.js on touch screens (first tap shows the bubble) */
+.bmc-badge:focus-visible .bmc-bubble,
+.bmc-badge.is-bubble-open .bmc-bubble {
   opacity: 1;
   right: 68px;
+}
+
+@media (hover: hover) {
+  .bmc-badge:hover .bmc-bubble {
+    opacity: 1;
+    right: 68px;
+  }
+}
+
+/* Pill version: bubble pops up above the pill, centered */
+.bmc-pill {
+  position: relative;
+}
+
+.bmc-pill .bmc-bubble {
+  right: auto;
+  left: 50%;
+  top: auto;
+  bottom: calc(100% + 6px);
+  transform: translateX(-50%);
+  max-width: min(240px, 80vw);
+  text-align: center;
+  border-radius: 12px;
+  transition: opacity 0.25s ease, bottom 0.25s ease;
+}
+
+.bmc-pill:focus-visible .bmc-bubble,
+.bmc-pill.is-bubble-open .bmc-bubble {
+  opacity: 1;
+  bottom: calc(100% + 12px);
+}
+
+@media (hover: hover) {
+  .bmc-pill:hover .bmc-bubble {
+    opacity: 1;
+    bottom: calc(100% + 12px);
+  }
 }
 
 .bmc-badge:focus-visible,

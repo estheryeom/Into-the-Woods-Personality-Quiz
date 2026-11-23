@@ -2998,3 +2998,31 @@ if (allPersonalities) {
     showResult();
   }
 }
+
+// ---------------------------------------------------------
+// TOUCH SCREENS
+// - An empty touchstart listener makes iOS Safari apply :active,
+//   so buttons "balloon up" while your finger presses them.
+// - Buy Me a Coffee: phones have no hover, so the first tap shows the
+//   speech bubble and a second tap opens the link. Tapping anywhere
+//   else hides the bubble again.
+// ---------------------------------------------------------
+document.addEventListener("touchstart", () => {}, { passive: true });
+
+if (window.matchMedia("(hover: none)").matches) {
+  const bmcLinks = document.querySelectorAll(".bmc-badge, .bmc-pill");
+  bmcLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      if (!link.classList.contains("is-bubble-open")) {
+        event.preventDefault();
+        bmcLinks.forEach((other) => other.classList.remove("is-bubble-open"));
+        link.classList.add("is-bubble-open");
+      }
+    });
+  });
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(".bmc-badge, .bmc-pill")) {
+      bmcLinks.forEach((link) => link.classList.remove("is-bubble-open"));
+    }
+  });
+}
