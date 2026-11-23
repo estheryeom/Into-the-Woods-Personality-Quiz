@@ -74,7 +74,7 @@ const KO = {
     "[data-choice='bandaids']": `6시 15분. 누구 하나는 꼭 까먹으니까 밴드랑 간식 넉넉하게 챙김.`,
 
     // The fork in the trail
-    "#page-fork .question": `걷기 시작한 지 20분, 길이 두 갈래로 나뉜다. 지도는 젖어서 흐물흐물하고, 친구들은 서로 싸우는 중. 어떡할래?`,
+    "#page-fork .question": `걷기 시작한 지 20분, 길이 두 갈래로 나뉜다. 지도는 젖어서 흐물흐물, 글씨도 거의 안 보이고, 친구들은 서로 싸우는 중. 어떡할래?`,
     "[data-choice='takemap']": `지도 뺏는다. 왼쪽으로 간다. 설명은 가면서 해 줌.`,
     "[data-choice='trailreport']": `난 이미 알아. 3일 전에 등산로 후기 다 읽고 옴.`,
     "[data-choice='whytwo']": `바위에 앉아서 애초에 길이 왜 두 개인지 고민한다.`,
