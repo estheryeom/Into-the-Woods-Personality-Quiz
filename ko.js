@@ -67,11 +67,11 @@ const KO = {
     "#name-form button": `출발!`,
 
     // Wake-up question (no story)
-    "#page-wake .question": `친구들이랑 아침 7시에 등산 가기로 했어. 몇 시에 일어날 거야?`,
-    "[data-choice='alarm5']": `5시. 알람 두 개 맞춰 놨고, 가방은 어젯밤에 이미 다 싸 놨지.`,
-    "[data-choice='callround']": `5시 45분. 다들 진짜 일어났는지 한 명씩 전화 돌려야 됨.`,
-    "[data-choice='glowup']": `6시. 스킨케어 하고, 옷 예쁘게 입고, 가는 길에 아아 하나.`,
-    "[data-choice='bandaids']": `6시 15분. 누구 하나는 꼭 까먹으니까 밴드랑 간식 넉넉하게 챙김.`,
+    "#page-wake .question": `친구들이랑 아침 7시에 등산 가기로 했어. 산은 집에서 겨우 15분 거리. 몇 시에 일어날 거야?`,
+    "[data-choice='alarm5']": `5시 45분. 가방은 어젯밤에 이미 다 싸 놨고, 아침이랑 커피는 제대로 챙겨 먹어야지.`,
+    "[data-choice='callround']": `6시. 다들 진짜 일어났는지 한 명씩 전화 돌려야 됨.`,
+    "[data-choice='bandaids']": `6시 15분. 누구 하나는 꼭 까먹으니까 밴드랑 모기약 넉넉하게 챙김.`,
+    "[data-choice='glowup']": `6시 40분. 가는 길에 아아 하나 사 갈 시간은 딱 됨.`,
 
     // The fork in the trail
     "#page-fork .question": `걷기 시작한 지 20분, 길이 두 갈래로 나뉜다. 젖은 지도는 그냥 파란 얼룩 덩어리. 친구들은 서로 싸우는 중. 어떡할래?`,

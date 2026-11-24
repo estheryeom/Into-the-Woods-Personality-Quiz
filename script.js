@@ -137,22 +137,22 @@ const ANSWERS = {
   // ----- Wake-up question (no story, just a question about you) -----
   // No outcome on purpose: the fork page still opens with the start button's story.
   alarm5: {
-    text: "Woke up at 5:00, with a backup alarm and a bag packed the night before",
+    text: "Woke up at 5:45 for breakfast and coffee, with the bag packed the night before",
     points: { scout: 2 },
     next: "page-fork",
   },
   callround: {
-    text: "Woke up at 5:45 to call everyone and make sure they were up",
+    text: "Woke up at 6:00 to call everyone and make sure they were up",
     points: { counselor: 3 },
     next: "page-fork",
   },
   glowup: {
-    text: "Woke up at 6:00 for skincare, an outfit and an iced coffee",
+    text: "Woke up at 6:40, just in time to grab an iced coffee",
     points: { glamper: 2 },
     next: "page-fork",
   },
   bandaids: {
-    text: "Woke up at 6:15 to pack extra band-aids and snacks for whoever forgets theirs",
+    text: "Woke up at 6:15 to pack extra band-aids and bug spray for whoever forgets theirs",
     points: { medic: 3 },
     next: "page-fork",
   },
