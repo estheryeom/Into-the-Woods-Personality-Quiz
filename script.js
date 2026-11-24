@@ -40,17 +40,27 @@
    Lookout vs. Wisp: both see what's coming. The Lookout THINKS
    it through (strategy, logic, control). The Wisp FEELS it (reads people,
    gives everything, then vanishes without warning).
-   Introverts vs. extroverts: answers about missing your friends, needing
-   them back, or calling out for them lean extroverted (Counselor, Bard).
-   Being fine on your own leans introverted.
+   Introverts vs. extroverts:
+     Extroverted types: Scout, Trailblazer, Bard, Mystic, Counselor,
+       Glamper, Schemer.
+     Introverted types: Survivalist, Lookout, Wisp, Lone Wolf, Medic,
+       Wanderer, Happy Camper.
+   EVERY PAGE NEEDS A SENSIBLE ANSWER FOR BOTH SIDES. If the only
+   extroverted answers are goofy (barking, bird calls), sensible
+   extroverts pick the "smart" answer instead and land on an introverted
+   type. That's how lots of extroverts ended up as the Lookout.
+   THE LOOKOUT IS PURE INTJ: cold, solo strategy. It only gets points on
+   answers a social person wouldn't pick, and never more than 2 on an
+   answer most people find "obviously smart" (like testing the voice).
    ISFJ and ESFJ have no type of their own. The Medic (quiet, loyal care)
    and the Counselor (warm, organized care) are their closest fits.
    If you change points, re-check the mix stays close to this.
-   The Medic is kept a bit under its target on purpose (random clicking
-   gives ~11%), because real players pick its kind answers far more
-   often than random. Last check (Nov 2026, 30,000 random runs): every
-   type lands 3-13%; someone who picks their own type's answer 60% of
-   the time gets that type back 56-85% of the time.
+   Last check (Nov 2026): 30,000 random runs put every type at 1.6-13%
+   (Lookout and Schemer are the rarest). A "sensible extrovert" (picks
+   the reasonable extroverted answer 75% of the time) gets the Lookout
+   0.1% of the time. Before the Nov 2026 rebalance, a sensible player of
+   any kind got the Lookout 15% of the time. Someone who picks their own
+   type's answer 60% of the time gets that type back 43-90% of the time.
 
    ADDING A NEW CHAPTER
    - Copy a <section> in index.html, give it a new id and new data-choice keys.
@@ -168,20 +178,20 @@ const ANSWERS = {
   },
   small: {
     text: "Made yourself small, hoping the bear wouldn't see you",
-    points: { wisp: 1, survivalist: 1 },
+    points: { wisp: 2 },
     outcome: "You hold your breath behind a bush. The bear huffs and wanders off. So, apparently, did your friends.",
     next: "page3",
   },
-  bark: {
-    text: "Barked, and got your friends to bark too",
-    points: { counselor: 2, bard: 1 },
-    outcome: "You bark. Your friends join in. The bear tilts its head. For one glorious second, it works. Then it charges.",
+  yell: {
+    text: "Made yourself big and got everyone yelling",
+    points: { counselor: 2, trailblazer: 1 },
+    outcome: "You throw your arms up and yell. Your friends yell too. The bear tilts its head. For one glorious second, it works. Then it charges.",
     next: "page2-5",
   },
-  snacks: {
-    text: "Offered the bear your snacks",
-    points: { camper: 2, schemer: 1 },
-    outcome: "The bear eats your gummy worms, bag and all. Then it looks at you like you're dessert.",
+  film: {
+    text: "Got your phone out and filmed the bear",
+    points: { glamper: 2, mystic: 1 },
+    outcome: "You get eleven seconds of shaky footage, mostly of your own thumb. Then the bear charges.",
     next: "page2-5",
   },
 
@@ -192,16 +202,16 @@ const ANSWERS = {
     outcome: "You run until your legs give out. Behind you: nothing but trees.",
     next: "page3",
   },
-  left: {
-    text: "Turned left",
-    points: { mystic: 2 },
-    outcome: "You crash through some ferns and tumble down a slope. Which way was up again?",
+  regroup: {
+    text: "Ran toward your friends' screaming to regroup",
+    points: { counselor: 2, bard: 1 },
+    outcome: "You run toward the screaming. By the time you get there, it's coming from somewhere else. Then from nowhere.",
     next: "page3",
   },
-  right: {
-    text: "Turned right",
-    points: { survivalist: 2 },
-    outcome: "You run until the crashing fades. No bear. No friends either.",
+  sprayfirst: {
+    text: "Sprayed the bear first, then ran",
+    points: { trailblazer: 2, mystic: 1 },
+    outcome: "Direct hit. The bear sneezes and crashes off into the trees. So does everyone else, in every other direction.",
     next: "page3",
   },
   help: {
@@ -226,14 +236,14 @@ const ANSWERS = {
   },
   peptalk: {
     text: "Gave yourself a pep talk out loud",
-    points: { counselor: 3 },
+    points: { bard: 2, glamper: 1 },
     outcome: "\"Okay, team. The team is me. The team is doing GREAT.\" You clap twice, pick a direction and march.",
     next: "page-camp",
   },
   north: {
-    text: "Argued with yourself about which way was north, and won",
-    points: { schemer: 2, wanderer: 1 },
-    outcome: "Moss grows on the north side. Except when it doesn't. Ten minutes later you win your own argument and head that way.",
+    text: "Sat down to think it through before moving",
+    points: { lookout: 2, survivalist: 1 },
+    outcome: "You sit on a rock and breathe. The sun is setting over there, so that's west. Ten minutes later, you have a plan. A decent one.",
     next: "page-camp",
   },
 
@@ -304,9 +314,9 @@ const ANSWERS = {
     next: "page5",
   },
   writeback: {
-    text: "Wrote back to whoever was moving the markers",
-    points: { wisp: 2, bard: 1 },
-    outcome: "\"Whoever's moving them... are you okay?\" You underline it twice. Somewhere in the trees, something tiny sniffles. The sun is dropping fast.",
+    text: "Signed the logbook with your name, the time and your direction",
+    points: { counselor: 2, scout: 1 },
+    outcome: "Name, time, \"heading downhill, please send snacks.\" You even draw a little smiley. Somehow, it makes you feel less alone. The sun is dropping fast.",
     next: "page5",
   },
   raccoons: {
@@ -318,8 +328,8 @@ const ANSWERS = {
 
   // ----- Page 5: the fallen tree -----
   leaves: {
-    text: "Shed a single tear and gathered dry leaves for a cushion",
-    points: { camper: 2, medic: 2 },
+    text: "Piled up dry leaves into a cozy bed",
+    points: { camper: 2, medic: 1 },
     outcome: "Your leaf pile is cozy. Well, cozy-ish.",
     next: "page6",
   },
@@ -331,14 +341,14 @@ const ANSWERS = {
   },
   paws: {
     text: "Noticed the paw prints around the tree",
-    points: { lookout: 2, wanderer: 1 },
+    points: { lookout: 1, wanderer: 1 },
     outcome: "The paw prints are old. Probably. You sit where you can see anything coming.",
     next: "page6",
   },
-  birdcall: {
-    text: "Used your friend group's weird bird call: \"BAKAAAH BAKAAAH\"",
-    points: { bard: 2, counselor: 1 },
-    outcome: "Your bird call echoes through the trees. Nothing answers.",
+  chatter: {
+    text: "Talked to yourself out loud the whole time, because silence is creepier",
+    points: { bard: 2, glamper: 1 },
+    outcome: "You narrate every stick like it's a cooking show. \"And now, a little twig for texture.\" It helps. Mostly.",
     next: "page6",
   },
 
@@ -363,7 +373,7 @@ const ANSWERS = {
   },
   hoard: {
     text: "Secretly kept your trail mix to yourself",
-    points: { survivalist: 2, schemer: 1 },
+    points: { schemer: 2, survivalist: 1 },
     outcome: "You eat it one piece at a time so the bag doesn't crinkle. Nobody's here. Then you hear something.",
     next: "page7",
   },
@@ -403,7 +413,7 @@ const ANSWERS = {
   },
   freeze: {
     text: "Froze and gripped the bear spray",
-    points: { survivalist: 2, lookout: 1 },
+    points: { survivalist: 2, lonewolf: 1 },
     outcome: "Your thumb finds the trigger. The shapes don't move either.",
     next: "page8",
   },
@@ -415,7 +425,7 @@ const ANSWERS = {
   },
   pretend: {
     text: "Pretended to be asleep",
-    points: { schemer: 1 },
+    points: { schemer: 1, camper: 1 },
     outcome: "You count to five hundred and peek. The shapes are gone. Or somewhere you can't see.",
     next: "page10",
   },
@@ -429,20 +439,20 @@ const ANSWERS = {
   },
   question: {
     text: "Tested the voice with a question only your friend would know",
-    points: { lookout: 3 },
+    points: { schemer: 2, lookout: 1 },
     outcome: "\"What's our group chat called?\" Silence. Then, right behind your ear: \"Come here.\" You run.",
     next: "page9",
   },
   nicetry: {
     text: "Told the voice \"Nice try\" and stayed put",
-    points: { lonewolf: 2, survivalist: 1 },
+    points: { lonewolf: 2, lookout: 1 },
     outcome: "It calls your name for an hour. Then it stops.",
     next: "page10",
   },
-  rocks: {
-    text: "Threw rocks at the voice",
-    points: { trailblazer: 2 },
-    outcome: "The second rock hits something with a soft thunk. The voice stops mid-word, and something big crashes away.",
+  yellback: {
+    text: "Yelled back: \"If that's really you, YOU come HERE\"",
+    points: { trailblazer: 2, counselor: 1 },
+    outcome: "A long silence. Then something big crashes away through the trees. Apparently, you win.",
     next: "page10",
   },
 
@@ -467,7 +477,7 @@ const ANSWERS = {
   },
   bolt: {
     text: "Ran blindly into the dark",
-    points: { lonewolf: 3 },
+    points: { mystic: 2, lonewolf: 1 },
     outcome: "A root trips you, face-first into the dirt. Something tiny and hard pokes your cheek.",
     next: "page-key",
   },
@@ -475,7 +485,7 @@ const ANSWERS = {
   // ----- Page 10: the longest night (each one finds the key) -----
   watch: {
     text: "Stayed up on watch all night",
-    points: { lookout: 3 },
+    points: { survivalist: 2, lookout: 1 },
     outcome: "Around 3 a.m., you spot something you've been staring past all night: a tiny glint by your foot.",
     next: "page-key",
   },
@@ -502,7 +512,7 @@ const ANSWERS = {
   // (Keys still say "wand" so old share links keep working.)
   toy: {
     text: "Decided the star key was from a dollhouse",
-    points: { scout: 2, survivalist: 1 },
+    points: { survivalist: 2, scout: 1 },
     outcome: "You pocket it. The star gives off a tiny spark. Static. Obviously.",
     next: "page-door",
   },
@@ -661,7 +671,12 @@ const RETIRED_CHOICES = ["carousel", "saga", "timeline", "nexttrip"];
 //   carve, blame: swapped when the Tattletale was removed
 //   omw: swapped for bandaids to make the Field Medic more common
 //   handled: swapped for hush when the Will-o'-the-Wisp was added
-const RENAMED_CHOICES = { carve: "patterns", blame: "technically", omw: "bandaids", handled: "hush" };
+//   bark, snacks, left, right, birdcall, rocks: swapped (Nov 2026) for
+//     more relatable answers, and to give extroverts grounded options
+const RENAMED_CHOICES = {
+  carve: "patterns", blame: "technically", omw: "bandaids", handled: "hush",
+  bark: "yell", snacks: "film", left: "regroup", right: "sprayfirst", birdcall: "chatter", rocks: "yellback",
+};
 
 // ---------------------------------------------------------
 // Extra story lines that depend on your WHOLE path, not just
@@ -670,11 +685,11 @@ const RENAMED_CHOICES = { carve: "patterns", blame: "technically", omw: "bandaid
 // ---------------------------------------------------------
 const STORY_EXTRAS = {
   page6: () => [
-    picked("snacks") && t("extra.snacks", "You miss your gummy worms. Worth it? Unclear."),
+    picked("film") && t("extra.film", "At least you got the bear video. It's mostly your thumb."),
   ],
 
   page8: () => [
-    picked("birdcall") && t("extra.birdcall", "Somewhere in the dark, something does your bird call. Perfectly. A little too perfectly."),
+    picked("chatter") && t("extra.chatter", "Somewhere in the dark, something repeats your cooking-show voice back to you. Perfectly. A little too perfectly."),
     ateMushrooms() && t("extra.treesListening", "The trees are breathing slower now, like they're listening too."),
   ],
 
