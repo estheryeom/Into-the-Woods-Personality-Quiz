@@ -362,7 +362,7 @@ const ANSWERS = {
 
   // ----- Page 6: hungry and thirsty -----
   ration: {
-    text: "Rationed the granola bar and water you packed",
+    text: "Packed extra, but still split the granola bar and water into thirds",
     points: { scout: 2, survivalist: 1 },
     outcome: "One third of a granola bar. Three sips of water. Then you hear something.",
     next: "page7",
@@ -374,15 +374,15 @@ const ANSWERS = {
     next: "page6-5",
   },
   gum: {
-    text: "Chewed your last piece of gum and called it dinner",
+    text: "Only had gum, so gum was dinner",
     points: { camper: 3 },
     outcome: "The gum stopped tasting like anything an hour ago. Then you hear something.",
     next: "page7",
   },
   hoard: {
-    text: "Secretly kept your trail mix to yourself",
-    points: { schemer: 2, survivalist: 1 },
-    outcome: "You eat it one piece at a time so the bag doesn't crinkle. Nobody's here. Then you hear something.",
+    text: "Ate your friend's trail mix, because technically it's yours now",
+    points: { schemer: 2 },
+    outcome: "You pick out all the chocolate first. They'd have wanted it this way. Then you hear something.",
     next: "page7",
   },
 
@@ -761,7 +761,7 @@ const STORY_EXTRAS = {
 
     // Little callbacks
     if (picked("fire")) lines.push(t("extra.fire", "\"Also, please never start a fire out here again.\""));
-    if (picked("hoard")) lines.push(t("extra.hoard", "Your secret trail mix crinkles in your pocket. You say nothing."));
+    if (picked("hoard")) lines.push(t("extra.hoard", "Your friend's empty trail mix bag crinkles in your pocket. Technically, it was yours. You say nothing."));
 
     // The empty campsite was the rangers' supply camp
     if (picked("sortpack")) lines.push(t("extra.sortpack", "\"Also, someone raided our emergency kit up the trail. Sorted it into neat little piles first. Weird.\" You say nothing."));
