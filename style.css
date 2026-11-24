@@ -372,6 +372,37 @@ a {
   }
 }
 
+/* "Last time: The Lookout →": under the language toggle, top-left.
+   A plain text link, so nobody mistakes it for one of the start buttons. */
+.last-result {
+  position: absolute;
+  top: 4rem;
+  left: 1.25rem;
+  max-width: 40vw;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--text-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  z-index: 1;
+}
+
+.last-result:hover {
+  color: var(--cream);
+}
+
+.last-result:focus-visible {
+  outline: 3px solid var(--sun);
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .last-result {
+    top: 3.6rem;
+    left: 1rem;
+  }
+}
+
 /* KOREAN: the storybook fonts have no Hangul, so use Jua (round and
    friendly) for titles, and don't break lines in the middle of a word. */
 html[lang="ko"] body {
@@ -833,6 +864,38 @@ html[lang="ko"] .title-font {
   color: var(--leaf);
   margin: -1rem 0 1.5rem;
   font-size: 0.95rem;
+}
+
+/* "Just for fun, not a real test": small print at the bottom */
+.disclaimer {
+  max-width: 34rem;
+  margin: 1.5rem auto 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-soft);
+  opacity: 0.8;
+  text-align: center;
+}
+
+/* "Only about 2% of campers end up here": a small pill under the streak */
+.result-rarity {
+  display: inline-block;
+  margin: -0.75rem 0 1.5rem;
+  padding: 0.3rem 0.9rem;
+  border: 1px solid var(--moss);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+.result-rarity:empty {
+  display: none;
+}
+
+/* Rare types get the gold treatment */
+.result-rarity.is-rare {
+  border-color: var(--sun);
+  color: var(--sun);
 }
 
 /* The cute photo for your type */
@@ -2005,4 +2068,75 @@ a.restart-btn:focus-visible,
   .bmc-badge,
   .bmc-steam path { animation: none; }
   .bmc-steam path { opacity: 0.8; }
+  .trail-walked,
+  .trail-boots { transition: none; }
+}
+
+/* ---------------------------------------------------------
+   PROGRESS TRAIL: a dotted path across the top of each question.
+   The solid part is how far you've walked; the boot prints sit at
+   the end of it, and the ranger cabin waits at the finish.
+   Positioned at the top of the page (not fixed), so it scrolls
+   away instead of covering the story on small screens.
+   --------------------------------------------------------- */
+.trail {
+  --trail-progress: 0;         /* 0 to 1, set by fillTrail in script.js */
+  position: absolute;
+  top: 0.9rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(420px, 70vw);
+  height: 24px;
+  opacity: 0.75;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.trail-path {
+  position: absolute;
+  left: 0;
+  right: 22px;                 /* stops at the cabin */
+  top: 50%;
+  border-top: 2px dotted rgba(201, 211, 195, 0.45);
+}
+
+.trail-walked {
+  position: absolute;
+  left: 0;
+  top: -2px;
+  height: 2px;
+  width: calc(var(--trail-progress) * 100%);
+  background: var(--leaf);
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+.trail-boots {
+  position: absolute;
+  top: 2px;
+  left: calc((100% - 22px) * var(--trail-progress));
+  width: 20px;
+  height: 17px;
+  margin-left: -10px;
+  fill: var(--cream);
+  transition: left 0.6s ease;
+}
+
+.trail-cabin {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 22px;
+  height: 22px;
+}
+
+.trail-cabin-roof { fill: var(--bark); }
+.trail-cabin-wall { fill: #8a6446; }
+.trail-cabin-window { fill: var(--sun); }
+
+@media (max-width: 600px) {
+  .trail {
+    top: 0.7rem;
+    width: 52vw;               /* leaves room for the corner buttons */
+  }
 }

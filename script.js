@@ -771,6 +771,34 @@ const STORY_EXTRAS = {
 //   stress:    what you turn into when things go badly
 //   need:      what would actually help you grow
 // ---------------------------------------------------------
+// ---------------------------------------------------------
+// How rare each type is: the "Only about 2% of campers end up here" line
+// on the result page. These are ESTIMATES: the % of 12,000 simulated runs
+// (random answers) that ended on each type. There is no real visitor data.
+// Re-run the simulation and update these whenever ANSWERS points change.
+// Last run: Nov 2026.
+// ---------------------------------------------------------
+const RARITY = {
+  survivalist: 13.1, counselor: 12.1, glamper: 11.5, scout: 10.3,
+  camper: 8.7, trailblazer: 8.5, medic: 8.4, bard: 8.1,
+  wanderer: 4.4, mystic: 4.3, lonewolf: 3.4, wisp: 3.2,
+  schemer: 2.5, lookout: 1.5,
+};
+const RARE_BELOW = 5;    // under this %: "Rare find"
+const COMMON_ABOVE = 10; // over this %: "One of the most common"
+
+function rarityLine(type) {
+  const value = RARITY[type];
+  const percent = value < 10 ? value.toFixed(1).replace(/\.0$/, "") : String(Math.round(value));
+  const kind = value < RARE_BELOW ? "rare" : value > COMMON_ABOVE ? "common" : "mid";
+  const english = {
+    rare: (p) => `Rare find: only about ${p}% of campers end up here.`,
+    mid: (p) => `About ${p}% of campers end up here.`,
+    common: (p) => `One of the most common: about ${p}% of campers end up here. You're in good company.`,
+  };
+  return t(`rarity.${kind}`, english[kind], percent);
+}
+
 const RESULTS = {
   scout: {
     name: "The Eagle Scout",
@@ -1801,8 +1829,52 @@ function fillQuestion(pageId) {
   heading.textContent = variant || heading.dataset.default;
 }
 
+// ---------------------------------------------------------
+// Progress trail (top of every question)
+// Paths have different lengths (14 to 19 questions), so we can't know
+// exactly how many are left. Instead: the MOST questions you could still
+// get from this page. That number drops by at least 1 with every answer,
+// so the boots only ever walk forward.
+// ---------------------------------------------------------
+const TRAIL_HIDDEN_ON = ["page1", "result"];
+const maxStepsLeft = {}; // pageId -> number (filled in as needed)
+
+// The pages one page can lead to
+function nextPages(pageId) {
+  if (pageId === "page-name") return ["page-wake"]; // the name form, not a button
+  const buttons = document.querySelectorAll(`#${CSS.escape(pageId)} [data-choice]`);
+  return [...new Set([...buttons].map((button) => ANSWERS[button.dataset.choice].next))];
+}
+
+// This page plus the longest run of questions after it
+function stepsLeft(pageId) {
+  if (pageId === "result") return 0;
+  if (maxStepsLeft[pageId] === undefined) {
+    maxStepsLeft[pageId] = 1; // (guards against a loop, if one ever sneaks in)
+    maxStepsLeft[pageId] = 1 + Math.max(0, ...nextPages(pageId).map(stepsLeft));
+  }
+  return maxStepsLeft[pageId];
+}
+
+function fillTrail(pageId) {
+  const trail = document.getElementById("trail");
+  if (!trail) return;
+  trail.hidden = TRAIL_HIDDEN_ON.includes(pageId);
+  if (trail.hidden) return;
+  // Answers so far. history[0] is the start button, which counts as the
+  // name page (the name page itself is the very start of the trail).
+  const done = pageId === "page-name" ? 0 : history.length;
+  const left = pageId === "page-tiebreak" ? 1 : stepsLeft(pageId);
+  const progress = done / (done + left);
+  trail.style.setProperty("--trail-progress", progress.toFixed(3));
+  trail.setAttribute("aria-valuenow", String(Math.round(progress * 100)));
+  trail.setAttribute("aria-label", t("trailLabel", "How far into the woods"));
+}
+
 function showPage(pageId) {
   if (pageId === "page-tiebreak") setUpTiebreak();
+  if (pageId === "page1") fillLastResultLink();
+  fillTrail(pageId);
   fillStory(pageId);
   fillQuestion(pageId);
 
@@ -1854,6 +1926,7 @@ function choose(choiceKey) {
   if (answer.next === "result" && needsTiebreak()) {
     showPage("page-tiebreak");
   } else if (answer.next === "result") {
+    saveLastResult(); // only here: you finished it yourself
     showResult();
   } else {
     showPage(answer.next);
@@ -2039,18 +2112,21 @@ const RELATIONS = {
 // ---------------------------------------------------------
 // Add up the points and rank the types
 // ---------------------------------------------------------
-function calculateResult() {
+// Scores your current run by default. Pass a saved path + habits to score
+// that instead (used for the "Last time" link on the start page).
+function calculateResult(path = history, how = habits) {
   const scores = {};
   for (const type in TYPES) scores[type] = 0;
 
-  history.forEach((choiceKey) => {
+  path.forEach((choiceKey) => {
     const points = ANSWERS[choiceKey].points;
     for (const type in points) scores[type] += points[type];
   });
 
   // Small nudges for HOW you answered (see SLOW_POINTS / BACK_POINTS)
-  for (const type in SLOW_POINTS) scores[type] += SLOW_POINTS[type] * slowCount();
-  if (isSecondGuesser()) {
+  const slow = Math.min(how.slow.size, MAX_SLOW_COUNTED);
+  for (const type in SLOW_POINTS) scores[type] += SLOW_POINTS[type] * slow;
+  if (how.back > BACK_LIMIT) {
     for (const type in BACK_POINTS) scores[type] += BACK_POINTS[type];
   }
 
@@ -2061,8 +2137,8 @@ function calculateResult() {
   // most recent answers pointed to wins (how you ended matters most).
   const tied = ranking.filter((type) => scores[type] === scores[ranking[0]]);
   if (tied.length > 1) {
-    for (let i = history.length - 1; i >= 0; i--) {
-      const points = ANSWERS[history[i]].points;
+    for (let i = path.length - 1; i >= 0; i--) {
+      const points = ANSWERS[path[i]].points;
       const best = tied.filter((type) => points[type]).sort((a, b) => points[b] - points[a])[0];
       if (best) {
         ranking.splice(ranking.indexOf(best), 1);
@@ -2073,6 +2149,26 @@ function calculateResult() {
   }
 
   return { scores, ranking };
+}
+
+// Whole-number percents that always add up to exactly 100
+// (rounding each one on its own can give 99 or 101)
+function mixPercents(values) {
+  const total = values.reduce((sum, n) => sum + n, 0);
+  if (!total) return values.map(() => 0);
+  const exact = values.map((n) => (n / total) * 100);
+  const result = exact.map(Math.floor);
+  let left = 100 - result.reduce((sum, n) => sum + n, 0);
+  exact
+    .map((n, i) => [n - Math.floor(n), i])
+    .sort((a, b) => b[0] - a[0])
+    .forEach(([, i]) => {
+      if (left > 0) {
+        result[i] += 1;
+        left -= 1;
+      }
+    });
+  return result;
 }
 
 // ---------------------------------------------------------
@@ -2086,6 +2182,9 @@ function showResult() {
   document.getElementById("result-name").textContent = result.name;
   document.getElementById("result-tagline").textContent = result.tagline;
   document.getElementById("result-runnerup").textContent = t("runnerUp", (name) => `with a streak of ${name}`, TYPES[ranking[1]]);
+  const rarity = document.getElementById("result-rarity");
+  rarity.textContent = rarityLine(topType);
+  rarity.classList.toggle("is-rare", RARITY[topType] < RARE_BELOW);
   document.getElementById("result-description").textContent = result.description;
 
   const photo = document.getElementById("result-photo");
@@ -2117,17 +2216,21 @@ function showResult() {
 
   fillHabits();
 
-  // Personality mix bars: your top 4 types
-  const total = Object.values(scores).reduce((sum, n) => sum + n, 0);
+  // Personality mix bars: your top 4 types.
+  // The percents are out of those 4 only (they add up to 100). Out of all
+  // 14 types, your top type was only ~17% on average, which read as "barely
+  // you". The bars are drawn against your top type, so its bar is full.
+  const top4 = ranking.slice(0, 4);
+  const percents = mixPercents(top4.map((type) => scores[type]));
   const meters = document.getElementById("result-meters");
   meters.innerHTML = "";
-  ranking.slice(0, 4).forEach((type) => {
-    const percent = Math.round((scores[type] / total) * 100);
+  top4.forEach((type, i) => {
+    const width = percents[0] ? Math.round((percents[i] / percents[0]) * 100) : 0;
     const meter = document.createElement("div");
     meter.className = type === topType ? "meter meter-top" : "meter";
     meter.innerHTML = `
-      <div class="meter-label"><span>${TYPES[type]}</span><span>${percent}%</span></div>
-      <div class="meter-track"><div class="meter-fill" style="width: ${percent}%"></div></div>
+      <div class="meter-label"><span>${TYPES[type]}</span><span>${percents[i]}%</span></div>
+      <div class="meter-track"><div class="meter-fill" style="width: ${width}%"></div></div>
     `;
     meters.appendChild(meter);
   });
@@ -2163,9 +2266,9 @@ function resultQuery() {
   return query;
 }
 
-// Read &slow=N&back=N from a shared link
-function habitsFromUrl() {
-  const params = new URLSearchParams(window.location.search);
+// Read &slow=N&back=N from a shared link (or a saved one, see LAST_RESULT_KEY)
+function habitsFromUrl(search = window.location.search) {
+  const params = new URLSearchParams(search);
   const count = (name) => Math.min(Math.max(parseInt(params.get(name), 10) || 0, 0), 50);
   const fake = (n) => new Set(Array.from({ length: n }, (_, i) => `shared-${i}`));
   return { slow: fake(count("slow")), back: count("back") };
@@ -2208,8 +2311,52 @@ function fillHabits() {
   box.hidden = notes.length === 0;
 }
 
+// ---------------------------------------------------------
+// Your last result, saved in this browser (localStorage).
+// Saved when you finish the quiz yourself (not when you open a friend's
+// link). The start page then shows a small "Last time: …" link.
+// Only the answers are saved (the same ?path=... as a share link), and
+// the type is worked out again from them, so the link always matches.
+// ---------------------------------------------------------
+const LAST_RESULT_KEY = "lastResult";
+
+function saveLastResult() {
+  try {
+    localStorage.setItem(LAST_RESULT_KEY, resultQuery());
+  } catch {
+    /* private mode / storage blocked: just don't save */
+  }
+}
+
+function loadLastResult() {
+  let query = null;
+  try {
+    query = localStorage.getItem(LAST_RESULT_KEY);
+  } catch {
+    return null;
+  }
+  if (!query) return null;
+  const path = pathFromUrl(`?${query}`);
+  if (!path) return null; // an old run that no longer fits the quiz
+  return { query, type: calculateResult(path, habitsFromUrl(`?${query}`)).ranking[0] };
+}
+
+function fillLastResultLink() {
+  const link = document.getElementById("last-result");
+  if (!link) return;
+  const last = loadLastResult();
+  link.hidden = !last;
+  if (!last) return;
+  link.href = `index.html?${last.query}&mine=1${langParam()}`;
+  link.textContent = t("lastResult", (name) => `Last time: ${name} →`, TYPES[last.type]);
+}
+
+// Shared links go through a tiny page per type (share/lookout.html?path=...)
+// that carries the link preview for that result, then forwards to the quiz.
+// See share/make-share-pages.ps1.
 function shareLink() {
-  const url = new URL(window.location.href);
+  const type = calculateResult().ranking[0];
+  const url = new URL(`share/${type}${LANG === "ko" ? "-ko" : ""}.html`, window.location.href);
   url.search = `?${resultQuery()}${langParam()}`;
   url.hash = "";
   return url.toString();
@@ -2217,8 +2364,8 @@ function shareLink() {
 
 // Read ?path=... from the address bar. Returns the list of answers only if
 // it's a real, complete run through the quiz; otherwise null.
-function pathFromUrl() {
-  const raw = new URLSearchParams(window.location.search).get("path");
+function pathFromUrl(search = window.location.search) {
+  const raw = new URLSearchParams(search).get("path");
   if (!raw) return null;
   const keys = raw
     .split(".")
@@ -3011,6 +3158,7 @@ if (allPersonalities) {
     option.addEventListener("click", onShareOption);
   });
   wireStoryPoster();
+  fillLastResultLink(); // the start page is already showing (it isn't hidden in the HTML)
 
   // Opened from a shared link (or "Back to my result")? Jump straight to that result.
   const sharedPath = pathFromUrl();

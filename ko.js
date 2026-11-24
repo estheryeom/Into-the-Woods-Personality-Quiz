@@ -223,6 +223,9 @@ const KO = {
     ".all-header .result-tagline": `여기서 길 잃어 본 사람들, 다 모였다.`,
     ".all-footer .restart-btn": `테스트 하러 가기`,
 
+    // Small print (result, details and all-personalities pages)
+    ".disclaimer": `그냥 재미로 하는 테스트임! MBTI, 에니어그램, 빅파이브에서 영감 받긴 했는데, 진짜 심리검사는 아니야 ㅎㅎ`,
+
     // Buy Me a Coffee (every page)
     ".bmc-bubble": `내 다음 프로젝트에 연료 좀 넣어줄래? 여기 눌러줘 ☕`,
     ".bmc-label": `커피 한 잔 쏴주라`,
@@ -417,6 +420,20 @@ const KO = {
 
     // Result page
     runnerUp: (name) => `+ ${name} 한 스푼`,
+    "rarity.rare": (p) => `레어템 등장! 이 유형 나오는 캠퍼 고작 ${p}%밖에 없음.`,
+    "rarity.mid": (p) => `캠퍼 중에 ${p}% 정도가 여기 도착함.`,
+    "rarity.common": (p) => `제일 흔한 유형 중 하나! 캠퍼 ${p}%가 여기 도착함. 외롭진 않겠네 ㅋㅋ`,
+
+    // Start page: your saved result from last time
+    lastResult: (name) => `지난번 결과: ${name} →`,
+
+    // Progress trail (for screen readers)
+    trailLabel: `숲속 얼마나 들어왔나`,
+
+    // Link previews (share/make-share-pages.ps1 reads these, not the website)
+    "preview.igot": `내 결과는…`,
+    "preview.cta": `너는 뭐 나올 것 같아? →`,
+    "preview.description": `짧은 이야기로 알아보는 성격 테스트. 한 걸음 한 걸음 다 중요함.`,
     photoCredit: (credit) => `사진: ${credit}`,
     youBadge: `나`,
     kinFriends: `찐친`,

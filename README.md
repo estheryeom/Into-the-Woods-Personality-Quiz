@@ -106,6 +106,29 @@ Each type's results page shows a real photo (no AI images), its strengths and wa
 
 Each result has 6 strengths and 6 watch-outs. The watch-outs are written to be blunt on purpose.
 
+### The result page
+
+- **Your personality mix:** your top 4 types, as a share of those 4 (they add up to 100%). The top type's bar is always full.
+- **Rarity:** "Rare find: only about 1.5% of campers end up here." The numbers live in `RARITY` in `script.js`. They're estimates from 12,000 simulated runs with random answers, not real visitor data. **Re-run the simulation and update them whenever answer points change.** Under 5% gets the gold "rare" style.
+- **Just for fun:** a small disclaimer at the bottom (also on the details and all-personalities pages).
+
+### Around the quiz
+
+- **Progress trail:** a dotted trail at the top of every question, with boot prints walking toward the ranger cabin. Paths are 14 to 19 questions long, so it measures against the longest path still possible from the current page. That way the boots only ever move forward.
+- **Last result:** finishing the quiz saves your answers in this browser (`localStorage`). Next time, the start page shows "Last time: The Lookout →" under the language toggle. Opening a friend's shared link doesn't overwrite it.
+
+### Link previews
+
+Pasting a link into KakaoTalk, iMessage or WhatsApp shows a preview card. Those previews are read by robots that don't run JavaScript, so a shared **result** links to a tiny page per type (`share/lookout.html?path=...`, or `share/lookout-ko.html` in Korean). That page carries the preview for that result and sends the visitor on to the quiz with the same `?path=...`. Plain links to the quiz use `share/images/quiz-en.jpg`.
+
+The pages and pictures are made by a script. Run it again after changing a type's name, tagline or photo:
+
+```
+powershell -ExecutionPolicy Bypass -File share\make-share-pages.ps1
+```
+
+The site's address is at the top of that script and in the `og:image` tags of the four main pages.
+
 ## Files
 
 - `index.html`: every page of the quiz
@@ -115,16 +138,15 @@ Each result has 6 strengths and 6 watch-outs. The watch-outs are written to be b
 - `details.html?type=scout`: one personality's full write-up, like the result page but not about you (no "You are…", score mix or sharing)
 - `friends.html?type=scout`: one personality's friends and foes
 - `images/`: one photo per personality type (credits below)
+- `share/`: link-preview pages and cards (made by `share/make-share-pages.ps1`, don't edit them by hand)
+- `favicon.svg`: the browser-tab icon
 
 ## Adding a chapter
 
 1. Copy a `<section>` in `index.html`, give it a new `id` and new `data-choice` keys.
 2. Add those keys to `ANSWERS` in `script.js` with `text`, `points`, `outcome` and `next`.
 3. Point an earlier answer's `next` at the new page.
-
-## Ideas for next steps
-
-- Save past results with `localStorage`
+4. Re-check the balance and update `RARITY` (see the top of `script.js`).
 
 ## Photo credits
 

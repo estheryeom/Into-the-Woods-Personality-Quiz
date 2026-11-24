@@ -4,11 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Into the Woods — A Personality Quiz</title>
+  <!-- Link preview (KakaoTalk, iMessage, WhatsApp...). Shared RESULTS use share/<type>.html instead. -->
+  <meta name="description" content="A personality quiz told as a short story… and every move counts. Get lost in the woods, survive the night, and find out which of 14 campers you are.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Into the Woods">
+  <meta property="og:title" content="Into the Woods: A Personality Quiz">
+  <meta property="og:description" content="A personality quiz told as a short story… and every move counts. Get lost in the woods, survive the night, and find out which of 14 campers you are.">
+  <meta property="og:image" content="https://only-yestherday.github.io/Into-the-Woods-Personality-Quiz/share/images/quiz-en.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <!-- Whimsical storybook font for the "Into the Woods" title -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Almendra:ital,wght@0,400;0,700;1,400&family=Henny+Penny&family=Jua&family=Macondo&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
   <main>
@@ -28,6 +39,10 @@
         <button type="button" class="lang-btn" data-lang="en" lang="en">EN</button>
         <button type="button" class="lang-btn" data-lang="ko" lang="ko">KR</button>
       </div>
+
+      <!-- "Last time: The Lookout →" — only if you finished the quiz before
+           in this browser (see LAST_RESULT_KEY in script.js) -->
+      <a id="last-result" class="last-result" href="#" hidden></a>
 
       <div class="start-center">
         <!-- The tiny button is pinned to the left of the big one, and the
@@ -385,6 +400,8 @@
       <h2 id="result-name" class="result-name" tabindex="-1"></h2>
       <p id="result-tagline" class="result-tagline"></p>
       <p id="result-runnerup" class="result-runnerup"></p>
+      <!-- "Only about 2% of campers end up here" (see RARITY in script.js) -->
+      <p id="result-rarity" class="result-rarity"></p>
 
       <!-- A real photo (no AI) for each type. Sources and licenses: see README -->
       <figure class="result-photo">
@@ -514,6 +531,8 @@
 
       <button id="restart-btn" class="restart-btn">Take the quiz again</button>
 
+      <p class="disclaimer">Just for fun! Inspired by MBTI, the Enneagram and the Big Five, but not a real psychological test.</p>
+
       <div class="bmc-footer">
         <a class="bmc-pill" href="https://buymeacoffee.com/only.yestherday" target="_blank" rel="noopener">
           <span class="bmc-bubble">If you'd like to fuel my next project, click this link ☕</span>
@@ -525,14 +544,31 @@
 
   </main>
 
+  <!-- Progress trail: boot prints walking toward the ranger cabin. Shown on
+       every question (not the start page or result). See fillTrail in script.js. -->
+  <div id="trail" class="trail" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="How far into the woods" hidden>
+    <div class="trail-path"><div class="trail-walked"></div></div>
+    <svg class="trail-boots" viewBox="0 0 24 20" aria-hidden="true">
+      <ellipse cx="6" cy="12" rx="2.6" ry="3.6" transform="rotate(-12 6 12)"/>
+      <ellipse cx="6.8" cy="18" rx="1.9" ry="1.6"/>
+      <ellipse cx="17" cy="5" rx="2.6" ry="3.6" transform="rotate(12 17 5)"/>
+      <ellipse cx="16.3" cy="11" rx="1.9" ry="1.6"/>
+    </svg>
+    <svg class="trail-cabin" viewBox="0 0 24 24" aria-hidden="true">
+      <path class="trail-cabin-roof" d="M2 12 L12 3 L22 12 Z"/>
+      <rect class="trail-cabin-wall" x="5" y="11" width="14" height="10" rx="1"/>
+      <rect class="trail-cabin-window" x="13.5" y="13.5" width="3.5" height="3.5" rx="0.6"/>
+    </svg>
+  </div>
+
   <!-- Back button: shown on every question after the first (see script.js) -->
   <button id="back-btn" class="back-btn" hidden>back</button>
 
   <!-- ko.js first: it swaps in the Korean text before lace.js draws around the buttons -->
-  <script src="ko.js?v=3"></script>
+  <script src="ko.js?v=4"></script>
   <script src="lace.js?v=2"></script>
   <script src="sparkle.js?v=2"></script>
   <script src="fairy.js?v=2"></script>
-  <script src="script.js?v=4"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>
