@@ -64,6 +64,36 @@ function Get-KoHtml([string]$selector) {
   return $m.Groups[1].Value
 }
 
+# Rarity sticker text, same as the story poster's ("Common: 15% of campers").
+# Reads RARITY, RARITY_TIERS and RARITY_TIER_NAMES from script.js and the
+# Korean "poster.<tier>" lines from ko.js.
+$rarityBlock = [regex]::Match($scriptJs, '(?s)const RARITY = \{(.*?)\};').Groups[1].Value
+$rarity = @{}
+foreach ($m in [regex]::Matches($rarityBlock, '(\w+): ([\d.]+)')) { $rarity[$m.Groups[1].Value] = [double]$m.Groups[2].Value }
+$tierBlock = [regex]::Match($scriptJs, '(?s)const RARITY_TIERS = \[(.*?)\n\];').Groups[1].Value
+$tiers = @()
+foreach ($m in [regex]::Matches($tierBlock, '\["(\w+)", (Infinity|[\d.]+)\]')) {
+  $below = if ($m.Groups[2].Value -eq "Infinity") { [double]::PositiveInfinity } else { [double]$m.Groups[2].Value }
+  $tiers += , @($m.Groups[1].Value, $below)
+}
+$tierNameBlock = [regex]::Match($scriptJs, '(?s)const RARITY_TIER_NAMES = \{(.*?)\};').Groups[1].Value
+$tierNames = @{}
+foreach ($m in [regex]::Matches($tierNameBlock, '(\w+): "([^"]*)"')) { $tierNames[$m.Groups[1].Value] = $m.Groups[2].Value }
+if ($rarity.Count -ne 14 -or $tiers.Count -lt 2) { throw "Couldn't read RARITY / RARITY_TIERS from script.js" }
+
+function Get-RarityText([string]$type, [string]$lang) {
+  $value = $rarity[$type]
+  # Same rounding as rarityPercent() in script.js
+  $percent = if ($value -lt 10) { ([Math]::Round($value, 1)).ToString("0.#", [Globalization.CultureInfo]::InvariantCulture) } else { [string][Math]::Round($value) }
+  $tier = ($tiers | Where-Object { $value -lt $_[1] } | Select-Object -First 1)[0]
+  if ($lang -eq "ko") {
+    $m = [regex]::Match($koJs, '"poster\.' + $tier + '": \(p\) => `([^`]*)`')
+    if (-not $m.Success) { throw "ko.js is missing poster.$tier" }
+    return $m.Groups[1].Value.Replace('${p}', $percent)
+  }
+  return "$($tierNames[$tier]): $percent% of campers"
+}
+
 # The "I got X... which one are you?" line, same as the quiz's share message
 $enShare = [regex]::Match($scriptJs, 'shareText", \(type\) => `([^`]*)`').Groups[1].Value
 $koShare = [regex]::Match($koJs, 'shareText: \(name\) => `([^`]*)`').Groups[1].Value
@@ -254,6 +284,27 @@ function Make-TypeCard([string]$type, [string]$lang) {
   $clip = Rounded-Path $px $py $pw $ph 28
   Draw-Cover $g $photos[$type] $px $py $pw $ph $clip
   $clip.Dispose()
+
+  # Rarity sticker on the photo's bottom edge, like the story poster
+  $rarityText = Get-RarityText $type $lang
+  $stickerFam = if ($lang -eq "ko") { $famKoBody } else { $famBody }
+  $stickerFont = New-Object System.Drawing.Font $stickerFam, 26, ([System.Drawing.FontStyle]::Bold), ([System.Drawing.GraphicsUnit]::Pixel)
+  $noWrap = New-Object System.Drawing.StringFormat
+  $noWrap.FormatFlags = [System.Drawing.StringFormatFlags]::NoWrap
+  $noWrap.Alignment = [System.Drawing.StringAlignment]::Center
+  $noWrap.LineAlignment = [System.Drawing.StringAlignment]::Center
+  $textSize = $g.MeasureString($rarityText, $stickerFont, (New-Object System.Drawing.PointF 0, 0), $noWrap)
+  $sw = $textSize.Width + 48; $sh = 50
+  $sx = $px + ($pw - $sw) / 2; $sy = $py + $ph - $sh / 2
+  $stickerShadow = Rounded-Path $sx ($sy + 5) $sw $sh ($sh / 2)
+  $shadowBrush = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(90, 0, 0, 0))
+  $g.FillPath($shadowBrush, $stickerShadow); $shadowBrush.Dispose(); $stickerShadow.Dispose()
+  $sticker = Rounded-Path $sx $sy $sw $sh ($sh / 2)
+  $sunBrush = New-Object System.Drawing.SolidBrush $sun
+  $g.FillPath($sunBrush, $sticker); $sunBrush.Dispose(); $sticker.Dispose()
+  $inkBrush = New-Object System.Drawing.SolidBrush (Color "#1f3a2b")
+  $g.DrawString($rarityText, $stickerFont, $inkBrush, (New-Object System.Drawing.RectangleF $sx, ($sy + 1), $sw, $sh), $noWrap)
+  $inkBrush.Dispose(); $stickerFont.Dispose(); $noWrap.Dispose()
 
   # The words
   $x = 650; $w = 500; $y = 88
