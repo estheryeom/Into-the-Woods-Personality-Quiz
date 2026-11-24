@@ -55,18 +55,22 @@
    ISFJ and ESFJ have no type of their own. The Medic (quiet, loyal care)
    and the Counselor (warm, organized care) are their closest fits.
    If you change points, re-check the mix stays close to this.
-   Last check (late Nov 2026, second rebalance): 12,000 random runs put
-   every type within 1.7 points of the targets above:
-     Counselor 16.6, Medic 16.3, Survivalist 10.9, Glamper 9.0,
-     Camper 8.9, Bard 8.5, Scout 7.8, Mystic 4.8, Lone Wolf 4.0,
-     Schemer 3.6, Trailblazer 2.7, Wisp 2.7, Wanderer 2.6, Lookout 1.7.
-   (Before it, the Trailblazer came up 8.6% of the time and the Medic
-   only 8%.) The Medic got its extra points from answers that AREN'T
-   obviously kind (the dollhouse key, rationing, throwing up the
-   mushrooms), per the rule above.
-   The price of rare types: someone who picks their own type's answer
-   60% of the time gets it back 30-44% of the time for the 2-3% types
-   (Wanderer, Lookout, Wisp, Trailblazer) and 57-91% for the rest.
+   ACCURACY COMES FIRST: every point must truly fit that type (check its
+   tagline and "core" in RESULTS). Never add a point just to move the
+   percentages. If a type is too rare, the fix is a new or rewritten
+   ANSWER that really is that type, not a stretched point.
+   (A Nov 2026 attempt hit every target by giving the Medic points for
+   rationing, throwing up the mushrooms and the dollhouse key. None of
+   those are Medic, so they were reverted.)
+   Last check (late Nov 2026): 12,000 random runs:
+     Counselor 15.3, Survivalist 15.1, Medic 10.3, Scout 8.9,
+     Camper 8.7, Bard 8.4, Glamper 8.1, Trailblazer 5.1, Mystic 4.7,
+     Lone Wolf 3.6, Schemer 3.4, Wisp 3.3, Wanderer 2.9, Lookout 2.3.
+   Known gap: the Medic is short (10 vs 18) and the Survivalist and
+   Trailblazer are high, because only a few pages have a true Medic
+   answer. Planned fix: rewrite a few answers into real Medic answers.
+   Someone who picks their own type's answer 60% of the time gets it
+   back 28-48% of the time for the rarest types and 52-93% for the rest.
    These numbers are also the RARITY table further down: update both.
    Earlier check: a "sensible extrovert" (picks the reasonable
    extroverted answer 75% of the time) got the Lookout 0.1% of the time.
@@ -173,7 +177,7 @@ const ANSWERS = {
   },
   quietfriend: {
     text: "Hung back with the friend who looked miserable",
-    points: { medic: 2 },
+    points: { medic: 2, wisp: 1 },
     outcome: "You don't ask what's wrong. You just walk next to them. Halfway up the hill, they say, \"Thanks.\" That's all. It's enough.",
     next: "page2",
   },
@@ -193,7 +197,7 @@ const ANSWERS = {
   },
   yell: {
     text: "Made yourself big and got everyone yelling",
-    points: { counselor: 2 },
+    points: { counselor: 2, trailblazer: 1 },
     outcome: "You throw your arms up and yell. Your friends yell too. The bear tilts its head. For one glorious second, it works. Then it charges.",
     next: "page2-5",
   },
@@ -225,7 +229,7 @@ const ANSWERS = {
   },
   help: {
     text: "Ran back toward the bear for your friends",
-    points: { medic: 2, wisp: 1 },
+    points: { medic: 3, wisp: 1 },
     outcome: "You blast the bear spray. Most of it hits the bear. Some hits you. When you can see again, everyone is gone. The can still sloshes. You hang on to it.",
     next: "page3",
   },
@@ -312,7 +316,7 @@ const ANSWERS = {
   // Also gives the rarer types more chances. (The fairy folk move the markers.)
   ownmarkers: {
     text: "Stacked your own rock arrows",
-    points: { lonewolf: 1, lookout: 1 },
+    points: { trailblazer: 1, lonewolf: 1 },
     outcome: "You stack rocks into a big arrow pointing the way you came. When you look back, the arrow points somewhere else. You decide not to think about it. The sun is dropping fast.",
     next: "page5",
   },
@@ -350,7 +354,7 @@ const ANSWERS = {
   },
   paws: {
     text: "Checked the paw prints, then picked a spot where you could see everything coming",
-    points: { lookout: 1, survivalist: 1 },
+    points: { lookout: 2, survivalist: 1 },
     outcome: "The paw prints are old. Probably. You sit where you can see anything coming.",
     next: "page6",
   },
@@ -364,7 +368,7 @@ const ANSWERS = {
   // ----- Page 6: hungry and thirsty -----
   ration: {
     text: "Rationed the granola bar and water you packed",
-    points: { scout: 2, medic: 1 },
+    points: { scout: 2, survivalist: 1 },
     outcome: "One third of a granola bar. Three sips of water. Then you hear something.",
     next: "page7",
   },
@@ -396,7 +400,7 @@ const ANSWERS = {
   },
   purge: {
     text: "Made yourself throw up the mushrooms",
-    points: { survivalist: 2, medic: 1 },
+    points: { survivalist: 2 },
     outcome: "You feel awful, but a bit more like yourself. Mostly.",
     next: "page7",
   },
@@ -521,7 +525,7 @@ const ANSWERS = {
   // (Keys still say "wand" so old share links keep working.)
   toy: {
     text: "Decided the star key was from a dollhouse",
-    points: { medic: 2, survivalist: 1 },
+    points: { survivalist: 2, scout: 1 },
     outcome: "You pocket it. The star gives off a tiny spark. Static. Obviously.",
     next: "page-door",
   },
@@ -788,10 +792,10 @@ const STORY_EXTRAS = {
 // Last run: Nov 2026.
 // ---------------------------------------------------------
 const RARITY = {
-  counselor: 16.6, medic: 16.3, survivalist: 10.9, glamper: 9.0,
-  camper: 8.9, bard: 8.5, scout: 7.8, mystic: 4.8,
-  lonewolf: 4.0, schemer: 3.6, trailblazer: 2.7, wisp: 2.7,
-  wanderer: 2.6, lookout: 1.7,
+  counselor: 15.3, survivalist: 15.1, medic: 10.3, scout: 8.9,
+  camper: 8.7, bard: 8.4, glamper: 8.1, trailblazer: 5.1,
+  mystic: 4.7, lonewolf: 3.6, schemer: 3.4, wisp: 3.3,
+  wanderer: 2.9, lookout: 2.3,
 };
 const RARE_BELOW = 5;    // under this %: "Rare find"
 const COMMON_ABOVE = 10; // over this %: "One of the most common"
