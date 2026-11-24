@@ -55,12 +55,21 @@
    ISFJ and ESFJ have no type of their own. The Medic (quiet, loyal care)
    and the Counselor (warm, organized care) are their closest fits.
    If you change points, re-check the mix stays close to this.
-   Last check (Nov 2026): 30,000 random runs put every type at 1.6-13%
-   (Lookout and Schemer are the rarest). A "sensible extrovert" (picks
-   the reasonable extroverted answer 75% of the time) gets the Lookout
-   0.1% of the time. Before the Nov 2026 rebalance, a sensible player of
-   any kind got the Lookout 15% of the time. Someone who picks their own
-   type's answer 60% of the time gets that type back 43-90% of the time.
+   Last check (late Nov 2026, second rebalance): 12,000 random runs put
+   every type within 1.7 points of the targets above:
+     Counselor 16.6, Medic 16.3, Survivalist 10.9, Glamper 9.0,
+     Camper 8.9, Bard 8.5, Scout 7.8, Mystic 4.8, Lone Wolf 4.0,
+     Schemer 3.6, Trailblazer 2.7, Wisp 2.7, Wanderer 2.6, Lookout 1.7.
+   (Before it, the Trailblazer came up 8.6% of the time and the Medic
+   only 8%.) The Medic got its extra points from answers that AREN'T
+   obviously kind (the dollhouse key, rationing, throwing up the
+   mushrooms), per the rule above.
+   The price of rare types: someone who picks their own type's answer
+   60% of the time gets it back 30-44% of the time for the 2-3% types
+   (Wanderer, Lookout, Wisp, Trailblazer) and 57-91% for the rest.
+   These numbers are also the RARITY table further down: update both.
+   Earlier check: a "sensible extrovert" (picks the reasonable
+   extroverted answer 75% of the time) got the Lookout 0.1% of the time.
 
    ADDING A NEW CHAPTER
    - Copy a <section> in index.html, give it a new id and new data-choice keys.
@@ -146,7 +155,7 @@ const ANSWERS = {
   // Gives the rarer types (Trailblazer, Lookout, Wanderer, Wisp) more chances.
   takemap: {
     text: "Grabbed the unreadable soggy map and led the group left anyway",
-    points: { trailblazer: 2, scout: 1 },
+    points: { trailblazer: 2, schemer: 1 },
     outcome: "You squint at the blue smear like it's telling you something, and point left. Nobody argues. You're not sure if that's respect or fear. The trail climbs, and the trees close in.",
     next: "page2",
   },
@@ -164,7 +173,7 @@ const ANSWERS = {
   },
   quietfriend: {
     text: "Hung back with the friend who looked miserable",
-    points: { medic: 2, wisp: 1 },
+    points: { medic: 2 },
     outcome: "You don't ask what's wrong. You just walk next to them. Halfway up the hill, they say, \"Thanks.\" That's all. It's enough.",
     next: "page2",
   },
@@ -184,7 +193,7 @@ const ANSWERS = {
   },
   yell: {
     text: "Made yourself big and got everyone yelling",
-    points: { counselor: 2, trailblazer: 1 },
+    points: { counselor: 2 },
     outcome: "You throw your arms up and yell. Your friends yell too. The bear tilts its head. For one glorious second, it works. Then it charges.",
     next: "page2-5",
   },
@@ -230,13 +239,13 @@ const ANSWERS = {
   },
   friends: {
     text: "Yelled for your friends, sure they'd yell back",
-    points: { counselor: 2, trailblazer: 1 },
+    points: { counselor: 2 },
     outcome: "You call their names for an hour. Nobody answers.",
     next: "page-camp",
   },
   peptalk: {
     text: "Gave yourself a pep talk out loud",
-    points: { bard: 2, glamper: 1 },
+    points: { bard: 2 },
     outcome: "\"Okay, team. The team is me. The team is doing GREAT.\" You clap twice, pick a direction and march.",
     next: "page-camp",
   },
@@ -262,7 +271,7 @@ const ANSWERS = {
   },
   retrace: {
     text: "Climbed something high to look for a road",
-    points: { trailblazer: 1, mystic: 1 },
+    points: { mystic: 1, lonewolf: 1 },
     outcome: "You scramble up a boulder. No road. But you think you saw a gap in the trees that way. You head for it.",
     next: "page-camp",
   },
@@ -303,7 +312,7 @@ const ANSWERS = {
   // Also gives the rarer types more chances. (The fairy folk move the markers.)
   ownmarkers: {
     text: "Stacked your own rock arrows",
-    points: { trailblazer: 1, lonewolf: 1 },
+    points: { lonewolf: 1, lookout: 1 },
     outcome: "You stack rocks into a big arrow pointing the way you came. When you look back, the arrow points somewhere else. You decide not to think about it. The sun is dropping fast.",
     next: "page5",
   },
@@ -335,19 +344,19 @@ const ANSWERS = {
   },
   fire: {
     text: "Started a fire, thanks to survival shows",
-    points: { mystic: 2, trailblazer: 1 },
+    points: { mystic: 2 },
     outcome: "Three blisters and a lot of swearing later, you have a small, [[smoky fire]].",
     next: "page6",
   },
   paws: {
     text: "Checked the paw prints, then picked a spot where you could see everything coming",
-    points: { lookout: 1, wanderer: 1 },
+    points: { lookout: 1, survivalist: 1 },
     outcome: "The paw prints are old. Probably. You sit where you can see anything coming.",
     next: "page6",
   },
   chatter: {
     text: "Talked to yourself out loud the whole time, because silence is creepier",
-    points: { bard: 2, glamper: 1 },
+    points: { bard: 2 },
     outcome: "You narrate every stick like it's a cooking show. \"And now, a little twig for texture.\" It helps. Mostly.",
     next: "page6",
   },
@@ -355,7 +364,7 @@ const ANSWERS = {
   // ----- Page 6: hungry and thirsty -----
   ration: {
     text: "Rationed the granola bar and water you packed",
-    points: { scout: 2, survivalist: 1 },
+    points: { scout: 2, medic: 1 },
     outcome: "One third of a granola bar. Three sips of water. Then you hear something.",
     next: "page7",
   },
@@ -387,7 +396,7 @@ const ANSWERS = {
   },
   purge: {
     text: "Made yourself throw up the mushrooms",
-    points: { survivalist: 2 },
+    points: { survivalist: 2, medic: 1 },
     outcome: "You feel awful, but a bit more like yourself. Mostly.",
     next: "page7",
   },
@@ -407,7 +416,7 @@ const ANSWERS = {
   // ----- Page 7: shadows -----
   callout: {
     text: "Called out to the shadows, hoping they were your friends",
-    points: { counselor: 1, bard: 1 },
+    points: { counselor: 2, bard: 1 },
     outcome: "Your voice cracks. The shapes don't move.",
     next: "page8",
   },
@@ -512,7 +521,7 @@ const ANSWERS = {
   // (Keys still say "wand" so old share links keep working.)
   toy: {
     text: "Decided the star key was from a dollhouse",
-    points: { survivalist: 2, scout: 1 },
+    points: { medic: 2, survivalist: 1 },
     outcome: "You pocket it. The star gives off a tiny spark. Static. Obviously.",
     next: "page-door",
   },
@@ -538,7 +547,7 @@ const ANSWERS = {
   // ----- Chapter 10: the tiny door -----
   tapwand: {
     text: "Tried the star key in the tiny door",
-    points: { mystic: 2, wanderer: 1 },
+    points: { mystic: 2 },
     outcome: "It fits. Click. The door swings open, and warm light spills out, along with the smell of cinnamon rolls.",
     next: "page-fairy",
   },
@@ -564,7 +573,7 @@ const ANSWERS = {
   // ----- Chapter 10½: the fairy's favor -----
   wayhome: {
     text: "Asked the fairy for the way out",
-    points: { scout: 2, trailblazer: 1 },
+    points: { scout: 2 },
     outcome: "He snaps his fingers, and glowing mushrooms pop up in a path. It's a very short walk. A flashlight hits your face. \"HEY! We've got one!\"",
     next: "page11",
   },
@@ -779,10 +788,10 @@ const STORY_EXTRAS = {
 // Last run: Nov 2026.
 // ---------------------------------------------------------
 const RARITY = {
-  survivalist: 13.1, counselor: 12.1, glamper: 11.5, scout: 10.3,
-  camper: 8.7, trailblazer: 8.5, medic: 8.4, bard: 8.1,
-  wanderer: 4.4, mystic: 4.3, lonewolf: 3.4, wisp: 3.2,
-  schemer: 2.5, lookout: 1.5,
+  counselor: 16.6, medic: 16.3, survivalist: 10.9, glamper: 9.0,
+  camper: 8.9, bard: 8.5, scout: 7.8, mystic: 4.8,
+  lonewolf: 4.0, schemer: 3.6, trailblazer: 2.7, wisp: 2.7,
+  wanderer: 2.6, lookout: 1.7,
 };
 const RARE_BELOW = 5;    // under this %: "Rare find"
 const COMMON_ABOVE = 10; // over this %: "One of the most common"
