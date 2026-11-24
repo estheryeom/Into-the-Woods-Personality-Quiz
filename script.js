@@ -2596,6 +2596,11 @@ function onShareOption(event) {
     return;
   }
 
+  if (event.currentTarget.dataset.share === "download") {
+    downloadPoster();
+    return;
+  }
+
   const messages = {
     copy: "Link copied! Paste it to your friends.",
     sms: "Link copied! Opening your messages…",
@@ -3021,6 +3026,28 @@ async function makeStoryPoster() {
   } catch {
     return canvasToBlob(await drawStoryPoster({})); // same poster, without the photos
   }
+}
+
+// "Download poster" share option: saves the poster straight to the device
+async function downloadPoster() {
+  const status = document.getElementById("share-status");
+  status.textContent = t("story.making", "Making your poster…");
+  let blob;
+  try {
+    blob = await makeStoryPoster();
+  } catch {
+    status.textContent = t("story.failed", "Couldn't make the poster on this browser. Try a screenshot instead!");
+    return;
+  }
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `into-the-woods-${calculateResult().ranking[0]}.png`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+  status.textContent = t("share.download", "Poster downloaded! Check your downloads or photos.");
 }
 
 function storyFile() {

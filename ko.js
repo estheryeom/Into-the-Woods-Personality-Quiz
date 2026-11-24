@@ -245,6 +245,7 @@ const KO = {
   // The words under each share icon (the icon itself stays)
   shareLabels: {
     copy: `링크 복사`,
+    download: `포스터 저장`,
     sms: `문자`,
     kakaotalk: `카카오톡`,
     whatsapp: `왓츠앱`,
@@ -483,6 +484,7 @@ const KO = {
     "story.tipShare": `링크 복사해 놨어! 공유 누르고 인스타 → 스토리 골라. 링크 스티커 붙이고 붙여 넣으면 친구들이 바로 테스트하러 올 수 있음.`,
     "story.tipSave": `링크 복사해 놨어! 이미지 저장해서 인스타 스토리에 올리고, 링크 스티커에 붙여 넣어 줘.`,
     "story.failed": `이 브라우저에선 포스터가 안 만들어지네 ㅠ 그냥 캡처해서 올려 줘!`,
+    "share.download": `포스터 저장 완료! 다운로드 폴더나 사진첩 확인해 봐.`,
     "poster.kicker": `숲에서 탈출한 나는…`,
     "poster.pros": `장점`,
     "poster.cons": `단점`,

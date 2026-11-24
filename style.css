@@ -1382,6 +1382,7 @@ a.restart-btn:focus-visible,
 }
 
 .share-icon-copy { background: var(--moss); }
+.share-icon-download { background: var(--sun); }
 .share-icon-sms { background: #34c759; }
 .share-icon-kakaotalk { background: #fee500; border-radius: 10px; }
 .share-icon-whatsapp { background: #25d366; }
