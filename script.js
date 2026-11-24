@@ -806,10 +806,11 @@ const RARITY = {
   mystic: 4.6, lonewolf: 4.1, schemer: 3.5, wisp: 3.5,
   lookout: 2.4, wanderer: 2.2,
 };
-// Rarity tiers on the story poster's sticker: [tier, under this %].
-// With the Nov 2026 numbers: Ultra Rare = lookout, wanderer;
-// Super Rare = schemer, wisp; Rare = trailblazer, mystic, lonewolf;
-// Uncommon = camper, scout, glamper, bard; Common = medic, counselor, survivalist.
+// Rarity tiers, used on the result page and the story poster's sticker:
+// [tier, under this %]. With the Nov 2026 numbers:
+//   Ultra Rare = lookout, wanderer        Super Rare = schemer, wisp
+//   Rare = trailblazer, mystic, lonewolf  Uncommon = camper, scout, glamper, bard
+//   Common = medic, counselor, survivalist
 const RARITY_TIERS = [
   ["ultraRare", 3],
   ["superRare", 4],
@@ -820,19 +821,27 @@ const RARITY_TIERS = [
 const RARITY_TIER_NAMES = {
   ultraRare: "Ultra Rare", superRare: "Super Rare", rare: "Rare", uncommon: "Uncommon", common: "Common",
 };
-const RARE_BELOW = 5;    // under this %: "Rare find"
-const COMMON_ABOVE = 10; // over this %: "One of the most common"
+const GOLD_TIERS = ["ultraRare", "superRare", "rare"]; // get the gold look on the result page
+
+function rarityTier(type) {
+  return RARITY_TIERS.find(([, below]) => RARITY[type] < below)[0];
+}
+
+function rarityPercent(type) {
+  const value = RARITY[type];
+  return value < 10 ? value.toFixed(1).replace(/\.0$/, "") : String(Math.round(value));
+}
 
 function rarityLine(type) {
-  const value = RARITY[type];
-  const percent = value < 10 ? value.toFixed(1).replace(/\.0$/, "") : String(Math.round(value));
-  const kind = value < RARE_BELOW ? "rare" : value > COMMON_ABOVE ? "common" : "mid";
+  const tier = rarityTier(type);
   const english = {
-    rare: (p) => `Rare find: only about ${p}% of campers end up here.`,
-    mid: (p) => `About ${p}% of campers end up here.`,
-    common: (p) => `One of the most common: about ${p}% of campers end up here. You're in good company.`,
+    ultraRare: (p) => `Ultra Rare: only about ${p}% of campers end up here. Practically a legend.`,
+    superRare: (p) => `Super Rare: only about ${p}% of campers end up here.`,
+    rare: (p) => `Rare: only about ${p}% of campers end up here.`,
+    uncommon: (p) => `Uncommon: about ${p}% of campers end up here.`,
+    common: (p) => `Common: about ${p}% of campers end up here. You're in good company.`,
   };
-  return t(`rarity.${kind}`, english[kind], percent);
+  return t(`rarity.${tier}`, english[tier], rarityPercent(type));
 }
 
 const RESULTS = {
@@ -2300,7 +2309,7 @@ function showResult() {
   document.getElementById("result-runnerup").textContent = t("runnerUp", (name) => `with a streak of ${name}`, TYPES[ranking[1]]);
   const rarity = document.getElementById("result-rarity");
   rarity.textContent = rarityLine(topType);
-  rarity.classList.toggle("is-rare", RARITY[topType] < RARE_BELOW);
+  rarity.classList.toggle("is-rare", GOLD_TIERS.includes(rarityTier(topType)));
   document.getElementById("result-description").textContent = result.description;
 
   const photo = document.getElementById("result-photo");
@@ -2708,10 +2717,8 @@ function fitText(ctx, text, { size, minSize = size, maxLines, weight = "400", st
 
 // "15% of campers", or "Rare: 2.2% of campers" for the rare types
 function posterRarity(type) {
-  const value = RARITY[type];
-  const percent = value < 10 ? value.toFixed(1).replace(/\.0$/, "") : String(Math.round(value));
-  const [tier] = RARITY_TIERS.find(([, below]) => value < below);
-  return t(`poster.${tier}`, (p) => `${RARITY_TIER_NAMES[tier]}: ${p}% of campers`, percent);
+  const tier = rarityTier(type);
+  return t(`poster.${tier}`, (p) => `${RARITY_TIER_NAMES[tier]}: ${p}% of campers`, rarityPercent(type));
 }
 
 // Draw `img` inside a box like CSS object-fit: cover (focused a bit above center)

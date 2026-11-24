@@ -420,9 +420,11 @@ const KO = {
 
     // Result page
     runnerUp: (name) => `+ ${name} 한 스푼`,
-    "rarity.rare": (p) => `레어템 등장! 이 유형 나오는 캠퍼 고작 ${p}%밖에 없음.`,
-    "rarity.mid": (p) => `캠퍼 중에 ${p}% 정도가 여기 도착함.`,
-    "rarity.common": (p) => `제일 흔한 유형 중 하나! 캠퍼 ${p}%가 여기 도착함. 외롭진 않겠네 ㅋㅋ`,
+    "rarity.ultraRare": (p) => `울트라 레어! 이 유형 나오는 캠퍼 고작 ${p}%. 거의 전설급임.`,
+    "rarity.superRare": (p) => `슈퍼 레어! 이 유형 나오는 캠퍼 고작 ${p}%밖에 없음.`,
+    "rarity.rare": (p) => `레어! 캠퍼 중에 ${p}%만 여기 도착함.`,
+    "rarity.uncommon": (p) => `언커먼! 캠퍼 중에 ${p}% 정도가 여기 도착함.`,
+    "rarity.common": (p) => `커먼! 캠퍼 ${p}%가 여기 도착함. 외롭진 않겠네 ㅋㅋ`,
 
     // Start page: your saved result from last time
     lastResult: (name) => `지난번 결과: ${name} →`,
