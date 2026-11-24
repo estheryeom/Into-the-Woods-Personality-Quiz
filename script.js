@@ -2605,6 +2605,7 @@ function fillShareOptions() {
 async function shareResult() {
   fillShareOptions();
   document.getElementById("share-options").hidden = false;
+  getPoster(); // start drawing the poster now, so "Download poster" is instant
   await copyShareLink(t("share.copied", "Link copied! Paste it anywhere, or pick an app below."));
 }
 
@@ -2640,7 +2641,7 @@ function onShareOption(event) {
   }
 
   if (event.currentTarget.dataset.share === "download") {
-    downloadPoster();
+    downloadPoster(event.currentTarget);
     return;
   }
 
@@ -3071,69 +3072,177 @@ async function makeStoryPoster() {
   }
 }
 
-// "Download poster" share option: saves the poster straight to the device
-async function downloadPoster() {
-  const status = document.getElementById("share-status");
-  status.textContent = t("story.making", "Making your poster…");
-  let blob;
-  try {
-    blob = await makeStoryPoster();
-  } catch {
-    status.textContent = t("story.failed", "Couldn't make the poster on this browser. Try a screenshot instead!");
-    return;
+// iPhones and iPads (iPads pretend to be a Mac, so also a "Mac" with a touch screen)
+const isIOS =
+  /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+  (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+
+// The poster for the current result, made once and reused. It starts
+// drawing as soon as the share options open (see shareResult), so it's
+// ready by the time someone taps "Download poster". That matters on
+// iPhone: the share sheet only opens straight from a tap, not after
+// waiting a second or two for the poster to draw.
+let posterCache = { key: null, promise: null, blob: null };
+function getPoster() {
+  const key = `${LANG}:${resultQuery()}`;
+  if (posterCache.key !== key) {
+    const entry = { key, promise: makeStoryPoster(), blob: null };
+    entry.promise.then((blob) => { entry.blob = blob; }, () => {});
+    posterCache = entry;
   }
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `into-the-woods-${calculateResult().ranking[0]}.png`;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 10000);
-  status.textContent = t("share.download", "Poster downloaded! Check your downloads or photos.");
+  return posterCache;
 }
 
-function storyFile() {
-  return new File([storyBlob], "into-the-woods-story.png", { type: "image/png" });
+function posterFile(blob) {
+  return new File([blob], `into-the-woods-${calculateResult().ranking[0]}.png`, { type: "image/png" });
 }
 
-function canShareImage() {
+function canShareFile(blob) {
   try {
-    return !!(navigator.canShare && navigator.canShare({ files: [storyFile()] }));
+    return !!(navigator.canShare && navigator.canShare({ files: [posterFile(blob)] }));
   } catch {
     return false;
   }
 }
 
-async function openStoryPoster(opener) {
+// "Download poster" share option: copies the share link (with the
+// "I got ___" message) and saves your type's poster as a picture.
+// - iPhone / iPad: a normal download lands in the Files app, so instead
+//   we open the share sheet, where "Save Image" puts it in Photos.
+//   If that can't open, a preview pops up with a "Save to Photos" button
+//   (and you can also press and hold the picture to save it).
+// - Android / computers: a normal download (Android's Photos / Gallery
+//   app shows downloaded pictures).
+async function downloadPoster(opener) {
+  const status = document.getElementById("share-status");
+  const url = shareLink();
+  // Start copying right away, while the tap still counts as a click:
+  // some browsers (Safari) refuse the clipboard after a slow await.
+  const copying = copyText(`${shareText()} ${url}`);
+  const poster = getPoster();
+
+  if (isIOS && poster.blob && canShareFile(poster.blob)) {
+    savePosterToPhotos(poster.blob, copying, opener);
+    return;
+  }
+
+  status.textContent = t("story.making", "Making your poster…");
+  let blob;
+  try {
+    blob = await poster.promise;
+  } catch {
+    const copied = await copying;
+    status.textContent = copied
+      ? t("share.downloadFailed", "Link copied! But the poster couldn't be made on this browser. Try a screenshot instead!")
+      : t("story.failed", "Couldn't make the poster on this browser. Try a screenshot instead!");
+    return;
+  }
+
+  if (isIOS) {
+    // Too late to open the share sheet from this tap: show the preview,
+    // whose "Save to Photos" button is a fresh tap.
+    showPosterModal("photos", blob, opener);
+    status.textContent = t("share.photosReady", "Poster ready! Your link is copied too.");
+    return;
+  }
+
+  const posterUrl = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = posterUrl;
+  link.download = posterFile(blob).name;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(posterUrl), 10000);
+  status.textContent = (await copying)
+    ? t("share.download", "Link copied and poster downloaded! Check your downloads or photos.")
+    : t("share.downloadNoCopy", (link) => `Poster downloaded! Copy this link to share: ${link}`, url);
+}
+
+// iPhone: open the share sheet with just the picture ("Save Image" -> Photos)
+function savePosterToPhotos(blob, copying, opener) {
+  const status = document.getElementById("share-status");
+  status.textContent = t("share.photosTip", 'Link copied! Tap "Save Image" to put the poster in your photos.');
+  navigator
+    .share({ files: [posterFile(blob)] })
+    .then(async () => {
+      status.textContent = (await copying)
+        ? t("share.photosDone", "Poster saved! Your link is copied too.")
+        : t("share.downloadNoCopy", (link) => `Poster downloaded! Copy this link to share: ${link}`, shareLink());
+    })
+    .catch((err) => {
+      if (err && err.name === "AbortError") return; // they closed the sheet
+      showPosterModal("photos", blob, opener); // couldn't open it: show the preview instead
+    });
+}
+
+// ---------------------------------------------------------
+// The poster preview pop-up. Two modes:
+//   "igstory": Instagram Story poster (Share to Instagram / Save image)
+//   "photos":  iPhone "Download poster" fallback (Save to Photos)
+// ---------------------------------------------------------
+let storyMode = "igstory";
+
+function storyFile() {
+  return posterFile(storyBlob);
+}
+
+function canShareImage() {
+  return canShareFile(storyBlob);
+}
+
+function showPosterModal(mode, blob, opener) {
+  storyMode = mode;
   storyOpener = opener;
-  const modal = document.getElementById("story-modal");
+  storyBlob = blob;
+  if (storyBlobUrl) URL.revokeObjectURL(storyBlobUrl);
+  storyBlobUrl = URL.createObjectURL(blob);
+
+  const shareBtn = document.getElementById("story-share-btn");
+  const saveBtn = document.getElementById("story-save-btn");
+  const tip = document.getElementById("story-modal-tip");
+  const shareable = canShareImage();
+  document.getElementById("story-preview").src = storyBlobUrl;
+  saveBtn.href = storyBlobUrl;
+  saveBtn.download = posterFile(blob).name;
+  shareBtn.hidden = !shareable;
+
+  if (mode === "photos") {
+    document.getElementById("story-modal-title").textContent = t("photos.title", "Your poster");
+    shareBtn.textContent = t("photos.save", "Save to Photos");
+    saveBtn.hidden = true; // on iPhone this would go to the Files app
+    tip.textContent = shareable
+      ? t("photos.tipShare", 'Your link is copied! Tap Save to Photos, then "Save Image". Or press and hold the poster.')
+      : t("photos.tipHold", 'Your link is copied! Press and hold the poster, then tap "Save to Photos".');
+  } else {
+    document.getElementById("story-modal-title").textContent = t("story.title", "Your Instagram Story poster");
+    shareBtn.textContent = t("story.shareBtn", "Share to Instagram");
+    saveBtn.hidden = false;
+    tip.textContent = shareable
+      ? t("story.tipShare", "Your link is copied! Tap Share, pick Instagram, then Story. Add a Link sticker and paste the link so friends can tap straight to the quiz.")
+      : t("story.tipSave", "Your link is copied! Save the image, post it to your Instagram Story, then add a Link sticker and paste the link.");
+  }
+
+  document.getElementById("story-modal").hidden = false;
+  (shareable ? shareBtn : mode === "photos" ? document.getElementById("story-close-btn") : saveBtn).focus();
+}
+
+async function openStoryPoster(opener) {
   const status = document.getElementById("share-status");
   status.textContent = t("story.making", "Making your poster…");
 
   // The link goes on Instagram's Link sticker, so copy it now
   copyText(`${shareText()} ${shareLink()}`);
 
+  let blob;
   try {
-    storyBlob = await makeStoryPoster();
+    blob = await getPoster().promise;
   } catch {
     status.textContent = t("story.failed", "Couldn't make the poster on this browser. Try a screenshot instead!");
     return;
   }
-  if (storyBlobUrl) URL.revokeObjectURL(storyBlobUrl);
-  storyBlobUrl = URL.createObjectURL(storyBlob);
-
-  document.getElementById("story-preview").src = storyBlobUrl;
-  document.getElementById("story-save-btn").href = storyBlobUrl;
-  const shareable = canShareImage();
-  document.getElementById("story-share-btn").hidden = !shareable;
-  document.getElementById("story-modal-tip").textContent = shareable
-    ? t("story.tipShare", "Your link is copied! Tap Share, pick Instagram, then Story. Add a Link sticker and paste the link so friends can tap straight to the quiz.")
-    : t("story.tipSave", "Your link is copied! Save the image, post it to your Instagram Story, then add a Link sticker and paste the link.");
-
+  showPosterModal("igstory", blob, opener);
   status.textContent = t("share.igstory", "Poster ready! Link copied for your Link sticker.");
-  modal.hidden = false;
-  document.getElementById(shareable ? "story-share-btn" : "story-save-btn").focus();
 }
 
 function closeStoryPoster() {
@@ -3146,12 +3255,20 @@ function closeStoryPoster() {
 async function shareStoryPoster() {
   const status = document.getElementById("share-status");
   try {
-    // Image only: Instagram leaves itself out of the share sheet when text is added
+    // Image only: Instagram leaves itself out of the share sheet when text
+    // is added, and "Save Image" only shows up for a picture on its own.
     await navigator.share({ files: [storyFile()] });
     closeStoryPoster();
-    status.textContent = t("share.done", "Shared!");
+    status.textContent = storyMode === "photos"
+      ? t("share.photosDone", "Poster saved! Your link is copied too.")
+      : t("share.done", "Shared!");
   } catch (err) {
     if (err && err.name === "AbortError") return; // they closed the sheet
+    if (storyMode === "photos") {
+      document.getElementById("story-modal-tip").textContent =
+        t("photos.tipHold", 'Your link is copied! Press and hold the poster, then tap "Save to Photos".');
+      return;
+    }
     document.getElementById("story-save-btn").click(); // couldn't share: save it instead
   }
 }
