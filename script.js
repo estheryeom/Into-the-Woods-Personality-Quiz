@@ -3121,8 +3121,13 @@ async function downloadPoster(opener) {
   const copying = copyText(`${shareText()} ${url}`);
   const poster = getPoster();
 
-  if (isIOS && poster.blob && canShareFile(poster.blob)) {
-    savePosterToPhotos(poster.blob, copying, opener);
+  // iPhone: websites can't save into Photos by themselves (Apple only
+  // allows it through the share sheet's "Save Image", or press-and-hold).
+  // Show the poster right away so there's always something on screen,
+  // and open the share sheet on top of it in the same tap.
+  if (isIOS && poster.blob) {
+    showPosterModal("photos", poster.blob, opener);
+    if (canShareFile(poster.blob)) savePosterToPhotos(poster.blob, copying);
     return;
   }
 
@@ -3159,20 +3164,23 @@ async function downloadPoster(opener) {
     : t("share.downloadNoCopy", (link) => `Poster downloaded! Copy this link to share: ${link}`, url);
 }
 
-// iPhone: open the share sheet with just the picture ("Save Image" -> Photos)
-function savePosterToPhotos(blob, copying, opener) {
+// iPhone: open the share sheet with just the picture ("Save Image" -> Photos).
+// The poster preview is already showing underneath, so if the sheet is
+// closed or can't open, they can still tap "Save to Photos" or press and
+// hold the poster.
+function savePosterToPhotos(blob, copying) {
   const status = document.getElementById("share-status");
   status.textContent = t("share.photosTip", 'Link copied! Tap "Save Image" to put the poster in your photos.');
   navigator
     .share({ files: [posterFile(blob)] })
     .then(async () => {
+      closeStoryPoster();
       status.textContent = (await copying)
         ? t("share.photosDone", "Poster saved! Your link is copied too.")
         : t("share.downloadNoCopy", (link) => `Poster downloaded! Copy this link to share: ${link}`, shareLink());
     })
-    .catch((err) => {
-      if (err && err.name === "AbortError") return; // they closed the sheet
-      showPosterModal("photos", blob, opener); // couldn't open it: show the preview instead
+    .catch(() => {
+      /* closed the sheet, or it couldn't open: the preview is still up */
     });
 }
 
@@ -3217,10 +3225,14 @@ function showPosterModal(mode, blob, opener) {
   } else {
     document.getElementById("story-modal-title").textContent = t("story.title", "Your Instagram Story poster");
     shareBtn.textContent = t("story.shareBtn", "Share to Instagram");
-    saveBtn.hidden = false;
+    // On iPhone a download link only offers Safari's "View / Download"
+    // prompt, which goes to the Files app, so leave it out there.
+    saveBtn.hidden = isIOS;
     tip.textContent = shareable
       ? t("story.tipShare", "Your link is copied! Tap Share, pick Instagram, then Story. Add a Link sticker and paste the link so friends can tap straight to the quiz.")
-      : t("story.tipSave", "Your link is copied! Save the image, post it to your Instagram Story, then add a Link sticker and paste the link.");
+      : isIOS
+        ? t("photos.tipHold", 'Your link is copied! Press and hold the poster, then tap "Save to Photos".')
+        : t("story.tipSave", "Your link is copied! Save the image, post it to your Instagram Story, then add a Link sticker and paste the link.");
   }
 
   document.getElementById("story-modal").hidden = false;
@@ -3264,7 +3276,7 @@ async function shareStoryPoster() {
       : t("share.done", "Shared!");
   } catch (err) {
     if (err && err.name === "AbortError") return; // they closed the sheet
-    if (storyMode === "photos") {
+    if (storyMode === "photos" || isIOS) {
       document.getElementById("story-modal-tip").textContent =
         t("photos.tipHold", 'Your link is copied! Press and hold the poster, then tap "Save to Photos".');
       return;
