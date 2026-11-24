@@ -214,15 +214,16 @@ const ANSWERS = {
 
   // ----- Page 2.5: which way do you run? -----
   straight: {
-    text: "Ran straight ahead without looking back",
+    text: "Ran straight ahead while the bear was looking at your friends",
+    // (The spray stays in the bag, so the ending says "bottom of your bag".)
     points: { survivalist: 2, lonewolf: 1 },
     outcome: "You run until your legs give out. Behind you: nothing but trees.",
     next: "page3",
   },
   regroup: {
-    text: "Ran toward your friends' screaming to regroup",
+    text: "Got everyone backing up slowly together",
     points: { counselor: 2, bard: 1 },
-    outcome: "You run toward the screaming. By the time you get there, it's coming from somewhere else. Then from nowhere.",
+    outcome: "You all back away together, slow and steady. It works, until someone steps on a branch. Everyone scatters. By the time it's quiet, you're alone.",
     next: "page3",
   },
   sprayfirst: {
@@ -232,7 +233,7 @@ const ANSWERS = {
     next: "page3",
   },
   help: {
-    text: "Ran back toward the bear for your friends",
+    text: "Threw yourself between the bear and your friends",
     points: { medic: 3, wisp: 1 },
     outcome: "You blast the bear spray. Most of it hits the bear. Some hits you. When you can see again, everyone is gone. The can still sloshes. You hang on to it.",
     next: "page3",
@@ -751,8 +752,6 @@ const STORY_EXTRAS = {
       lines.push(t("extra.spray.used", "The ranger sniffs. \"Is that bear spray? On you?\" You hand her the half-empty can. \"Long story.\""));
     } else if (picked("freeze")) {
       lines.push(t("extra.spray.gripped", "Your hand is still locked around the bear spray. The ranger gently pries it loose. \"You can let go now.\""));
-    } else if (visited("page2-5")) {
-      lines.push(t("extra.spray.pocket", "The bear spray is still in your pocket, safety clip on. You never used it once."));
     } else {
       lines.push(t("extra.spray.unused", "The bear spray is still at the bottom of your bag, safety clip on. You never used it once."));
     }
