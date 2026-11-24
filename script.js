@@ -65,14 +65,21 @@
    Then two Survivalist answers were rewritten as real Medic answers
    (page 4: "Find my friends before I find the road. I'm the one with
    the bear spray." and page 9: "Toward the crying. It sounds like
-   someone is hurt."). Last check (late Nov 2026): 12,000 random runs:
-     Medic 15.0, Counselor 15.0, Survivalist 11.1, Camper 9.1,
-     Scout 9.0, Glamper 8.3, Bard 7.7, Trailblazer 4.6, Mystic 4.6,
-     Lone Wolf 4.1, Schemer 3.5, Wisp 3.5, Lookout 2.4, Wanderer 2.2.
-   Known gap: the Trailblazer is high (4.6 vs 2), because the story has
-   lots of bold choices. Fix it with a rewritten answer, not points.
-   Someone who picks their own type's answer 60% of the time gets it
-   back 34-44% of the time for the rarest types and 51-92% for the rest.
+   someone is hurt.").
+   Nov 24, 2026: the ranger's logbook page was removed (story too long)
+   and the campsite rewritten to take over its Lookout, Wanderer and
+   Counselor answers. The Wisp and Trailblazer were about twice their
+   targets, so two of their answers now share a point with the Lone Wolf
+   (the silent ride home, and walking at the shadows with a stick).
+   Last check (Nov 24, 2026): 40,000 random runs:
+     Medic 17.8, Counselor 13.9, Survivalist 10.3, Bard 9.5, Scout 9.0,
+     Camper 8.3, Glamper 8.1, Lone Wolf 6.4, Mystic 4.0, Schemer 3.6,
+     Wanderer 3.2, Wisp 2.5, Trailblazer 1.9, Lookout 1.7.
+   Known gaps: the Survivalist and Counselor are a bit low and the Bard
+   and Lone Wolf a bit high. Fix them with rewritten answers, not points.
+   (Older check: someone who picks their own type's answer 60% of the
+   time got it back 34-44% of the time for the rarest types and 51-92%
+   for the rest. Not re-run since the logbook was removed.)
    These numbers are also the RARITY table further down: update both.
    Earlier check: a "sensible extrovert" (picks the reasonable
    extroverted answer 75% of the time) got the Lookout 0.1% of the time.
@@ -298,51 +305,31 @@ const ANSWERS = {
     text: "Took the backpack: finders keepers in bear country",
     points: { schemer: 2, lonewolf: 1 },
     outcome: "You yank the backpack down. Inside: cookies and a headlamp. The headlamp is dead. The cookies are not. You keep walking.",
-    next: "page-logbook",
-  },
-  iou: {
-    text: "Borrowed one granola bar and left a sorry note",
-    points: { medic: 2 },
-    outcome: "\"Sorry! I borrowed 1 granola bar (oat & honey).\" You tuck the note under a rock and keep walking.",
-    next: "page-logbook",
-  },
-  tentnap: {
-    text: "Rescued a real pillow from the torn tent",
-    points: { glamper: 2, camper: 1 },
-    outcome: "The tent is ripped and soaked, but the pillow is dry. You hug it to your chest and keep walking.",
-    next: "page-logbook",
-  },
-  backstory: {
-    text: "Looked through their stuff to figure out who lives there",
-    points: { bard: 2, mystic: 1 },
-    outcome: "A crossword, three harmonicas and a photo of a goat in a sweater. You decide it belongs to a retired magician, and leave before he gets back.",
-    next: "page-logbook",
-  },
-
-  // ----- The logbook (everyone sees it) -----
-  // Also gives the rarer types more chances. (The fairy folk move the markers.)
-  ownmarkers: {
-    text: "Stacked your own rock arrows",
-    points: { trailblazer: 1, lonewolf: 1 },
-    outcome: "You stack rocks into an arrow pointing the way you came. When you look back, it points somewhere else. You decide not to think about it. The sun is dropping fast.",
     next: "page5",
   },
-  readlog: {
-    text: "Read every entry to find the pattern",
-    points: { lookout: 2, survivalist: 1 },
-    outcome: "The markers only move on nights with a full moon. You check the sky. Full moon. Great. The sun is dropping fast.",
+  // (Rewritten Nov 2026 when the logbook was removed: every answer here
+  // gives two types, and it took over the logbook's Lookout and Wanderer
+  // answers.)
+  // Bard: makes up a whole story. Glamper +1: the sequins.
+  lounge: {
+    text: "Found a sequined hat and made up a life story for its owner",
+    points: { bard: 2, glamper: 1 },
+    outcome: "A sequined hat, a tube of glitter and a postcard from Las Vegas. She was a lounge singer, obviously. Retired, tragic and still fabulous. You put on the hat for her and keep walking.",
     next: "page5",
   },
-  writeback: {
-    text: "Signed the logbook with your name, the time and your direction",
-    points: { counselor: 2, scout: 1 },
-    outcome: "Name, time, \"heading downhill, please send snacks,\" plus a little smiley. Somehow, you feel less alone. The sun is dropping fast.",
+  // Medic: quiet care that costs you (your own food), Counselor: looking
+  // out for people you haven't even met.
+  leavesnacks: {
+    text: "Left half your snacks in the tent in case its owner came back hungry",
+    points: { medic: 2, counselor: 1 },
+    outcome: "One granola bar and half a bag of gummies, tucked neatly inside. Your stomach growls. You feel good anyway. You keep walking.",
     next: "page5",
   },
-  raccoons: {
-    text: "Came up with a theory: organized raccoons",
-    points: { wanderer: 2, schemer: 1 },
-    outcome: "Raccoons have thumbs. Raccoons hold grudges. It checks out. You're so proud of the theory that you barely notice the sun dropping.",
+  // Wanderer: gets lost in a theory. Lookout: notices the detail nobody else does.
+  tenttheory: {
+    text: "Sat down to work out why the tent was torn from the inside",
+    points: { wanderer: 2, lookout: 1 },
+    outcome: "Theory one: a bear. Theory two: the campers panicked. Theory three: something in these woods doesn't like tents. You're on theory eight when you notice the sun dropping.",
     next: "page5",
   },
 
@@ -439,7 +426,8 @@ const ANSWERS = {
   },
   stick: {
     text: "Grabbed a stick and walked straight at the shadows",
-    points: { trailblazer: 3 },
+    // Lone Wolf +1: walking into danger alone, no backup.
+    points: { trailblazer: 2, lonewolf: 1 },
     outcome: "You march at them, stick raised. Nothing there. And now you can't see your shelter.",
     next: "page9",
   },
@@ -623,9 +611,10 @@ const ANSWERS = {
     next: "result",
   },
   hush: {
-    text: "Hugged the ranger, then didn't say a word the whole ride home",
-    points: { wisp: 3 },
-    outcome: "You hug her like you've known her for years. Then hood up, not one more word. Your friends text \"are you ok??\" You leave them on read. You get home and sleep for eleven hours.",
+    text: "Gave the ranger a sheepish smile, then didn't say a word the whole ride home",
+    // Lone Wolf +1: going silent and leaving your friends on read.
+    points: { wisp: 2, lonewolf: 1 },
+    outcome: "You give her a sheepish, slightly sad smile. Then hood up, not one word. Your friends text \"are you ok??\" You leave them on read. You get home and sleep for eleven hours.",
     next: "result",
   },
   food: {
@@ -686,7 +675,12 @@ function setUpTiebreak() {
 // Answers from pages that were taken out of the quiz. Old share links may
 // still have them, so they're quietly dropped instead of breaking the link.
 //   carousel, saga, timeline, nexttrip: the group chat (removed)
-const RETIRED_CHOICES = ["carousel", "saga", "timeline", "nexttrip"];
+//   ownmarkers, readlog, writeback, raccoons: the ranger's logbook
+//     (removed Nov 2026 to shorten the story)
+const RETIRED_CHOICES = [
+  "carousel", "saga", "timeline", "nexttrip",
+  "ownmarkers", "readlog", "writeback", "raccoons",
+];
 
 // Answers that were swapped for a new one on the same page. Old share
 // links get the new answer instead.
@@ -697,7 +691,10 @@ const RETIRED_CHOICES = ["carousel", "saga", "timeline", "nexttrip"];
 //     more relatable answers, and to give extroverts grounded options
 //   stay, water: swapped (Nov 2026) for findthem and crying, two real
 //     Field Medic answers (the Medic was too rare)
+//   tentnap, iou, backstory: swapped (Nov 2026) for lounge, leavesnacks and
+//     tenttheory when the logbook was removed and the campsite rewritten
 const RENAMED_CHOICES = {
+  tentnap: "lounge", iou: "leavesnacks", backstory: "tenttheory",
   carve: "patterns", blame: "technically", omw: "bandaids", handled: "hush",
   bark: "yell", snacks: "film", left: "regroup", right: "sprayfirst", birdcall: "chatter", rocks: "yellback",
   stay: "findthem", water: "crying",
@@ -762,8 +759,8 @@ const STORY_EXTRAS = {
 
     // The empty campsite was the rangers' supply camp
     if (picked("raid")) lines.push(t("extra.raid", "\"Also, someone cleaned out our supply camp up the trail. Cookies, a headlamp...\" You chew very, very quietly."));
-    if (picked("iou")) lines.push(t("extra.iou", "\"And whoever left a sorry note at our supply camp over one granola bar: very polite. We appreciated it.\""));
-    if (picked("tentnap")) lines.push(t("extra.tentnap", "\"Weird thing. Somebody dug through our wrecked supply tent just to take the pillow.\" The pillow is under your arm right now."));
+    if (picked("lounge")) lines.push(t("extra.lounge", "\"Weird thing. Somebody took the sequined hat from our supply tent.\" It's on your head right now."));
+    if (picked("leavesnacks")) lines.push(t("extra.leavesnacks", "\"And whoever left snacks in our supply tent: that was really sweet. We ate them.\""));
 
     // The tiny door: a little surprise, or a little regret
     if (openedDoor) {
@@ -802,15 +799,15 @@ const STORY_EXTRAS = {
 // Last run: Nov 2026.
 // ---------------------------------------------------------
 const RARITY = {
-  medic: 15.0, counselor: 15.0, survivalist: 11.1, camper: 9.1,
-  scout: 9.0, glamper: 8.3, bard: 7.7, trailblazer: 4.6,
-  mystic: 4.6, lonewolf: 4.1, schemer: 3.5, wisp: 3.5,
-  lookout: 2.4, wanderer: 2.2,
+  medic: 17.8, counselor: 13.9, survivalist: 10.3, bard: 9.5,
+  scout: 9.0, camper: 8.3, glamper: 8.1, lonewolf: 6.4,
+  mystic: 4.0, schemer: 3.6, wanderer: 3.2, wisp: 2.5,
+  trailblazer: 1.9, lookout: 1.7,
 };
 // Rarity tiers, used on the result page and the story poster's sticker:
-// [tier, under this %]. With the Nov 2026 numbers:
-//   Ultra Rare = lookout, wanderer        Super Rare = schemer, wisp
-//   Rare = trailblazer, mystic, lonewolf  Uncommon = camper, scout, glamper, bard
+// [tier, under this %]. With the Nov 24, 2026 numbers:
+//   Ultra Rare = lookout, trailblazer, wisp   Super Rare = schemer, wanderer
+//   Rare = mystic, lonewolf                   Uncommon = bard, scout, camper, glamper
 //   Common = medic, counselor, survivalist
 const RARITY_TIERS = [
   ["ultraRare", 3],
