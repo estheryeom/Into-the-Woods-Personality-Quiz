@@ -310,11 +310,12 @@ const ANSWERS = {
   // (Rewritten Nov 2026 when the logbook was removed: every answer here
   // gives two types, and it took over the logbook's Lookout and Wanderer
   // answers.)
-  // Bard: makes up a whole story. Glamper +1: the sequins.
-  lounge: {
-    text: "Found a sequined hat and made up a life story for its owner",
+  // Bard: performs for nobody. Glamper +1: fun first, even when lost.
+  // (The batteries are weak, so the dark scenes later still work.)
+  flashmic: {
+    text: "Took the flashlight and sang into it like a microphone first",
     points: { bard: 2, glamper: 1 },
-    outcome: "A sequined hat, a tube of glitter and a postcard from Las Vegas. She was a lounge singer, obviously. Retired, tragic and still fabulous. You put on the hat for her and keep walking.",
+    outcome: "You belt one chorus into the flashlight for an audience of zero trees. Standing ovation (in your head). Then you click it on. It flickers. Weak batteries. Better than nothing. You keep walking.",
     next: "page5",
   },
   // Medic: quiet care that costs you (your own food), Counselor: looking
@@ -691,10 +692,11 @@ const RETIRED_CHOICES = [
 //     more relatable answers, and to give extroverts grounded options
 //   stay, water: swapped (Nov 2026) for findthem and crying, two real
 //     Field Medic answers (the Medic was too rare)
-//   tentnap, iou, backstory: swapped (Nov 2026) for lounge, leavesnacks and
+//   tentnap, iou, backstory: swapped (Nov 2026) for flashmic, leavesnacks and
 //     tenttheory when the logbook was removed and the campsite rewritten
+//   lounge: the sequined hat (live for a day), swapped for flashmic
 const RENAMED_CHOICES = {
-  tentnap: "lounge", iou: "leavesnacks", backstory: "tenttheory",
+  tentnap: "flashmic", lounge: "flashmic", iou: "leavesnacks", backstory: "tenttheory",
   carve: "patterns", blame: "technically", omw: "bandaids", handled: "hush",
   bark: "yell", snacks: "film", left: "regroup", right: "sprayfirst", birdcall: "chatter", rocks: "yellback",
   stay: "findthem", water: "crying",
@@ -759,7 +761,7 @@ const STORY_EXTRAS = {
 
     // The empty campsite was the rangers' supply camp
     if (picked("raid")) lines.push(t("extra.raid", "\"Also, someone cleaned out our supply camp up the trail. Cookies, a headlamp...\" You chew very, very quietly."));
-    if (picked("lounge")) lines.push(t("extra.lounge", "\"Weird thing. Somebody took the sequined hat from our supply tent.\" It's on your head right now."));
+    if (picked("flashmic")) lines.push(t("extra.flashmic", "\"Weird thing. Somebody took the flashlight from our supply tent.\" It's in your hand right now. Batteries dead."));
     if (picked("leavesnacks")) lines.push(t("extra.leavesnacks", "\"And whoever left snacks in our supply tent: that was really sweet. We ate them.\""));
 
     // The tiny door: a little surprise, or a little regret
