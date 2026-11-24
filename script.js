@@ -145,9 +145,9 @@ const ANSWERS = {
   // ----- The fork in the trail (everyone sees it) -----
   // Gives the rarer types (Trailblazer, Lookout, Wanderer, Wisp) more chances.
   takemap: {
-    text: "Took the map and led the group left",
+    text: "Grabbed the unreadable soggy map and led the group left anyway",
     points: { trailblazer: 2, scout: 1 },
-    outcome: "Nobody argues. You're not sure if that's respect or fear. The trail climbs, and the trees close in.",
+    outcome: "You squint at the blue smear like it's telling you something, and point left. Nobody argues. You're not sure if that's respect or fear. The trail climbs, and the trees close in.",
     next: "page2",
   },
   trailreport: {
@@ -211,21 +211,21 @@ const ANSWERS = {
   sprayfirst: {
     text: "Sprayed the bear first, then ran",
     points: { trailblazer: 2, mystic: 1 },
-    outcome: "Direct hit. The bear sneezes and crashes off into the trees. So does everyone else, in every other direction.",
+    outcome: "Direct hit. The bear sneezes and crashes off into the trees. So does everyone else, in every other direction. You shake the can: still about half left. You keep it in your hand.",
     next: "page3",
   },
   help: {
     text: "Ran back toward the bear for your friends",
     points: { medic: 2, wisp: 1 },
-    outcome: "You blast the bear spray. Most of it hits the bear. Some hits you. When you can see again, everyone is gone.",
+    outcome: "You blast the bear spray. Most of it hits the bear. Some hits you. When you can see again, everyone is gone. The can still sloshes. You hang on to it.",
     next: "page3",
   },
 
   // ----- Page 3: lost in the woods -----
   phone: {
-    text: "Kept using your dying phone to find a way out",
+    text: "Used your last 1% to try to find yourself on the map",
     points: { lonewolf: 2, glamper: 1 },
-    outcome: "The screen {{flickers}}, shows 1%, and goes black.",
+    outcome: "You open the map app. The blue dot spins and spins. The screen {{flickers}}, shows 1%, and goes black.",
     next: "page4",
   },
   friends: {
@@ -261,9 +261,9 @@ const ANSWERS = {
     next: "page-camp",
   },
   retrace: {
-    text: "Retraced your steps, trusting your sense of direction",
+    text: "Climbed something high to look for a road",
     points: { trailblazer: 1, mystic: 1 },
-    outcome: "You're sure you came this way. Pretty sure.",
+    outcome: "You scramble up a boulder. No road. But you think you saw a gap in the trees that way. You head for it.",
     next: "page-camp",
   },
   stay: {
@@ -302,7 +302,7 @@ const ANSWERS = {
   // ----- The logbook (everyone sees it) -----
   // Also gives the rarer types more chances. (The fairy folk move the markers.)
   ownmarkers: {
-    text: "Built your own trail markers",
+    text: "Stacked your own rock arrows",
     points: { trailblazer: 1, lonewolf: 1 },
     outcome: "You stack rocks into a big arrow pointing the way you came. When you look back, the arrow points somewhere else. You decide not to think about it. The sun is dropping fast.",
     next: "page5",
@@ -340,7 +340,7 @@ const ANSWERS = {
     next: "page6",
   },
   paws: {
-    text: "Noticed the paw prints around the tree",
+    text: "Checked the paw prints, then picked a spot where you could see everything coming",
     points: { lookout: 1, wanderer: 1 },
     outcome: "The paw prints are old. Probably. You sit where you can see anything coming.",
     next: "page6",
@@ -470,9 +470,9 @@ const ANSWERS = {
     next: "page-key",
   },
   climb: {
-    text: "Climbed a tree to look around",
+    text: "Stopped and listened for a road",
     points: { wanderer: 2, lookout: 1 },
-    outcome: "The branch cracks, and you slide back down. Something tiny falls out of a knot in the trunk and bonks you on the head.",
+    outcome: "You stand still for a long time. No cars. Just a tiny, tinkly sound, like a wind chime made of glass. You follow it to a glint in the moss.",
     next: "page-key",
   },
   bolt: {
@@ -720,6 +720,17 @@ const STORY_EXTRAS = {
       lines.push(t("extra.shapes.voice", "\"Your friends found the station long ago.\" You ask who was calling your name out there. She stops smiling. \"Nobody from our team.\""));
     } else {
       lines.push(t("extra.shapes.deer", "The tall shapes in the trees? \"Probably deer,\" the ranger says. She doesn't sound sure."));
+    }
+
+    // The bear spray (everyone has it, so it never just vanishes)
+    if (picked("help") || picked("sprayfirst")) {
+      lines.push(t("extra.spray.used", "The ranger sniffs. \"Is that bear spray? On you?\" You hand her the half-empty can. \"Long story.\""));
+    } else if (picked("freeze")) {
+      lines.push(t("extra.spray.gripped", "Your hand is still locked around the bear spray. The ranger gently pries it loose. \"You can let go now.\""));
+    } else if (visited("page2-5")) {
+      lines.push(t("extra.spray.pocket", "The bear spray you grabbed when the bear charged is still in your pocket, safety clip on. You never used it once."));
+    } else {
+      lines.push(t("extra.spray.unused", "The bear spray is still at the bottom of your bag, safety clip on. You never used it once."));
     }
 
     // Little callbacks
