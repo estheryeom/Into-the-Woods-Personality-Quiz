@@ -279,10 +279,12 @@ const ANSWERS = {
     outcome: "You scramble up a boulder. No road. But you think you saw a gap in the trees that way. You head for it.",
     next: "page-camp",
   },
-  stay: {
-    text: "Stopped and replayed every turn you took, looking for anything familiar",
-    points: { survivalist: 2, scout: 1 },
-    outcome: "Left at the mossy stump. Right at the... other mossy stump. You sit on a rock and replay it again. Technically, staying put is what the experts say to do anyway.",
+  // Medic: sounds like the logical answer (you have the spray, they
+  // don't), but it means putting your friends' safety ahead of yours.
+  findthem: {
+    text: "Went to find your friends before the road, since you have the bear spray",
+    points: { medic: 2 },
+    outcome: "You call their names every few steps. Nobody answers yet. You keep going anyway, a little faster.",
     next: "page-camp",
   },
 
@@ -476,10 +478,12 @@ const ANSWERS = {
     outcome: "The light bobs and drifts like no firefly should. Then it winks out, and something glints in the moss where it was.",
     next: "page-key",
   },
-  water: {
-    text: "Followed the sound of running water",
-    points: { survivalist: 2, wanderer: 1 },
-    outcome: "You slide down to a creek. The water is ice cold and perfect. On the bank, something twinkles in the moonlight.",
+  // Medic: walking toward an unknown cry in the dark costs something,
+  // and it's the Medic's tagline ("Ran toward the bear. For a friend.").
+  crying: {
+    text: "Went toward the crying, because it sounded like someone was hurt",
+    points: { medic: 3 },
+    outcome: "You shove through the bushes, heart pounding. What if the bear got one of your friends? \"I'm here, I'm here!\" It's... a fox pup, paw stuck under a branch, crying like a person. You lift the branch. It bolts without so much as a thank-you. Where it was lying, something twinkles in the moonlight.",
     next: "page-key",
   },
   climb: {
@@ -686,9 +690,12 @@ const RETIRED_CHOICES = ["carousel", "saga", "timeline", "nexttrip"];
 //   handled: swapped for hush when the Will-o'-the-Wisp was added
 //   bark, snacks, left, right, birdcall, rocks: swapped (Nov 2026) for
 //     more relatable answers, and to give extroverts grounded options
+//   stay, water: swapped (Nov 2026) for findthem and crying, two real
+//     Field Medic answers (the Medic was too rare)
 const RENAMED_CHOICES = {
   carve: "patterns", blame: "technically", omw: "bandaids", handled: "hush",
   bark: "yell", snacks: "film", left: "regroup", right: "sprayfirst", birdcall: "chatter", rocks: "yellback",
+  stay: "findthem", water: "crying",
 };
 
 // ---------------------------------------------------------

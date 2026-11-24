@@ -46,7 +46,7 @@ Page 7: shadows at the edge of the trees
    ├── Walk at them with a stick ─► Page 9
    └── Pretend to sleep ─► Page 10
 
-Page 9: out in the dark (light to the right / water / climb a tree / run)
+Page 9: out in the dark (light to the right / toward the crying / listen for a road / run)
 Page 10: the longest night (keep watch / sing / sleep / spell SOS)
                                                 │
 Chapter 9: everyone finds a thumbnail-sized key with a star that shines in the moonlight (dollhouse key / fairy key / evidence / cheeseburger wish)
