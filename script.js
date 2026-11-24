@@ -301,36 +301,36 @@ const ANSWERS = {
   },
 
   // ----- Page 4.5: the empty campsite -----
-  raid: {
-    text: "Took the backpack: finders keepers in bear country",
-    points: { schemer: 2, lonewolf: 1 },
-    outcome: "You yank the backpack down. Inside: cookies and a headlamp. The headlamp is dead. The cookies are not. You keep walking.",
+  // (Rewritten again Nov 24, 2026 to feed the types that were below
+  // target: Survivalist, Counselor, Glamper and Happy Camper.)
+  // Survivalist: takes what's needed and organizes it, no guilt.
+  // Scout +1: does it by the book, in neat categories.
+  sortpack: {
+    text: "Took the backpack and sorted it into food, water and light",
+    points: { survivalist: 2, scout: 1 },
+    outcome: "Food: cookies. Water: half a bottle. Light: a headlamp. It's dead. Two out of three isn't bad. You repack everything neatly and keep walking.",
     next: "page5",
   },
-  // (Rewritten Nov 2026 when the logbook was removed: every answer here
-  // gives two types, and it took over the logbook's Lookout and Wanderer
-  // answers.)
-  // Bard: performs for nobody. Glamper +1: fun first, even when lost.
-  // (The batteries are weak, so the dark scenes later still work.)
-  flashmic: {
-    text: "Took the flashlight and sang into it like a microphone first",
-    points: { bard: 2, glamper: 1 },
-    outcome: "You belt one chorus into the flashlight for an audience of zero trees. Standing ovation (in your head). Then you click it on. It flickers. Weak batteries. Better than nothing. You keep walking.",
+  // Counselor: checks for people first, out loud. Glamper +1: then gets
+  // nosy, and has fun doing it.
+  hellotent: {
+    text: "Yelled \"HELLO? Anyone here?\", then went through the tent",
+    points: { counselor: 2, glamper: 1 },
+    outcome: "\"HELLO?\" Your voice bounces off the trees. Nothing. You count to ten, just to be polite. Then you unzip the tent: a sleeping bag, a crossword with one word filled in, and a granola bar. You take the granola bar. You keep walking.",
     next: "page5",
   },
-  // Medic: quiet care that costs you (your own food), Counselor: looking
-  // out for people you haven't even met.
-  leavesnacks: {
-    text: "Left half your snacks in the tent in case its owner came back hungry",
-    points: { medic: 2, counselor: 1 },
-    outcome: "One granola bar and half a bag of gummies, tucked neatly inside. Your stomach growls. You feel good anyway. You keep walking.",
+  // Glamper: comfort first, even when lost. Camper +1: happy to just sit.
+  campchair: {
+    text: "Sat in the camping chair for five minutes to rest your legs",
+    points: { glamper: 2, camper: 1 },
+    outcome: "It's a really good chair. It has a cup holder. Five minutes turns into fifteen. When you finally get up, your legs feel brand new, and the sun is noticeably lower.",
     next: "page5",
   },
-  // Wanderer: gets lost in a theory. Lookout: notices the detail nobody else does.
-  tenttheory: {
-    text: "Sat down to work out why the tent was torn from the inside",
-    points: { wanderer: 2, lookout: 1 },
-    outcome: "Theory one: a bear. Theory two: the campers panicked. Theory three: something in these woods doesn't like tents. You're on theory eight when you notice the sun dropping.",
+  // Happy Camper: fully in the moment, finds the good part of being lost.
+  breathe: {
+    text: "Closed your eyes and breathed in the forest",
+    points: { camper: 2 },
+    outcome: "A bird lands on the tent pole and chirps right at you. You chirp back. It does not seem impressed. You open your eyes feeling weirdly calm, and keep walking.",
     next: "page5",
   },
 
@@ -695,8 +695,12 @@ const RETIRED_CHOICES = [
 //   tentnap, iou, backstory: swapped (Nov 2026) for flashmic, leavesnacks and
 //     tenttheory when the logbook was removed and the campsite rewritten
 //   lounge: the sequined hat (live for a day), swapped for flashmic
+//   raid, flashmic, leavesnacks, tenttheory (and the older keys above):
+//     swapped (Nov 24, 2026) for sortpack, hellotent, campchair and
+//     breathe, to feed the types that were below target
 const RENAMED_CHOICES = {
-  tentnap: "flashmic", lounge: "flashmic", iou: "leavesnacks", backstory: "tenttheory",
+  raid: "sortpack", flashmic: "campchair", leavesnacks: "hellotent", tenttheory: "breathe",
+  tentnap: "breathe", lounge: "campchair", iou: "hellotent", backstory: "breathe",
   carve: "patterns", blame: "technically", omw: "bandaids", handled: "hush",
   bark: "yell", snacks: "film", left: "regroup", right: "sprayfirst", birdcall: "chatter", rocks: "yellback",
   stay: "findthem", water: "crying",
@@ -760,9 +764,10 @@ const STORY_EXTRAS = {
     if (picked("hoard")) lines.push(t("extra.hoard", "Your secret trail mix crinkles in your pocket. You say nothing."));
 
     // The empty campsite was the rangers' supply camp
-    if (picked("raid")) lines.push(t("extra.raid", "\"Also, someone cleaned out our supply camp up the trail. Cookies, a headlamp...\" You chew very, very quietly."));
-    if (picked("flashmic")) lines.push(t("extra.flashmic", "\"Weird thing. Somebody took the flashlight from our supply tent.\" It's in your hand right now. Batteries dead."));
-    if (picked("leavesnacks")) lines.push(t("extra.leavesnacks", "\"And whoever left snacks in our supply tent: that was really sweet. We ate them.\""));
+    if (picked("sortpack")) lines.push(t("extra.sortpack", "\"Also, someone raided our emergency kit up the trail. Sorted it into neat little piles first. Weird.\" You say nothing."));
+    if (picked("hellotent")) lines.push(t("extra.hellotent", "\"Someone yelled HELLO at our supply camp so loud, the crew on the next ridge radioed us.\" That was you."));
+    if (picked("campchair")) lines.push(t("extra.campchair", "\"And someone left our camp chair facing the sunset.\" She shrugs. \"Honestly? Respect.\""));
+    if (picked("breathe")) lines.push(t("extra.breathe", "The ranger squints at you. \"You look weirdly relaxed for someone who was lost all day.\""));
 
     // The tiny door: a little surprise, or a little regret
     if (openedDoor) {
