@@ -2113,11 +2113,12 @@ a.restart-btn:focus-visible,
 
 .trail-boots {
   position: absolute;
-  top: 2px;
+  top: -0.24px;                /* centers the prints on the path */
   left: calc((100% - 22px) * var(--trail-progress));
-  width: 20px;
-  height: 17px;
-  margin-left: -10px;
+  width: 28.8px;
+  height: 24.48px;
+  margin-left: -14.4px;
+  transform: rotate(90deg);    /* toes point right, toward the cabin */
   fill: var(--cream);
   transition: left 0.6s ease;
 }

@@ -21,7 +21,8 @@ Get-ChildItem $here -Filter *.jpg | ForEach-Object {
   $type = $_.BaseName
   $src = [System.Drawing.Image]::FromFile($_.FullName)
   # Same crop as the website: fill the 4:3 box, focused a bit above center
-  $scale = [Math]::Max($W / $src.Width, $H / $src.Height)
+  # [double]: without it PowerShell rounds the zoom down to a whole number (1.2 -> 1), leaving black bars
+  $scale = [Math]::Max([double]$W / $src.Width, [double]$H / $src.Height)
   $dw = $src.Width * $scale; $dh = $src.Height * $scale
   $bmp = New-Object System.Drawing.Bitmap $W, $H
   $g = [System.Drawing.Graphics]::FromImage($bmp)

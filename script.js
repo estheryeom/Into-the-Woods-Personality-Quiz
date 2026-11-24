@@ -112,7 +112,7 @@ const ANSWERS = {
   direct: {
     text: "Clicked the big button in the middle",
     points: { scout: 0.25, survivalist: 0.25, trailblazer: 0.25 },
-    outcome: "Saturday, 7 a.m. The second everyone's at the trailhead, you're already walking. Your friends hurry to keep up as the trail climbs into the pines.",
+    outcome: "Saturday, 7 a.m. The second everyone arrives, you're already walking. Your friends hurry after you into the pines.",
     next: "page-name",
   },
   quirky: {
@@ -130,7 +130,7 @@ const ANSWERS = {
   carefree: {
     text: "Clicked the medium button at the bottom",
     points: { camper: 0.25, glamper: 0.25, schemer: 0.25 },
-    outcome: "Saturday morning. You meet up with your friends at the trailhead. Whatever you forgot to pack, you'll figure it out. The sky is blue, the air smells like pine. What a beautiful day.",
+    outcome: "Saturday morning at the trailhead. Whatever you forgot to pack, you'll figure it out. Blue sky, pine air. What a beautiful day.",
     next: "page-name",
   },
 
@@ -162,7 +162,7 @@ const ANSWERS = {
   takemap: {
     text: "Grabbed the unreadable soggy map and led the group left anyway",
     points: { trailblazer: 2, schemer: 1 },
-    outcome: "You squint at the blue smear like it's telling you something, and point left. Nobody argues. You're not sure if that's respect or fear. The trail climbs, and the trees close in.",
+    outcome: "You squint at the blue smear like it means something, and point left. Nobody argues. Respect or fear? Hard to say. The trees close in.",
     next: "page2",
   },
   trailreport: {
@@ -174,7 +174,7 @@ const ANSWERS = {
   whytwo: {
     text: "Sat on a rock and wondered why there were two trails at all",
     points: { camper: 2, wanderer: 1 },
-    outcome: "Was it deer? Settlers? A really indecisive hiker? By the time you look up, your friends picked left without you. You jog to catch up.",
+    outcome: "Was it deer? Settlers? A really indecisive hiker? When you look up, your friends have gone left without you. You jog to catch up.",
     next: "page2",
   },
   quietfriend: {
@@ -226,7 +226,7 @@ const ANSWERS = {
   sprayfirst: {
     text: "Sprayed the bear first, then ran",
     points: { trailblazer: 2, mystic: 1 },
-    outcome: "Direct hit. The bear sneezes and crashes off into the trees. So does everyone else, in every other direction. You shake the can: still about half left. You keep it in your hand.",
+    outcome: "Direct hit. The bear sneezes and crashes off into the trees. So does everyone else, in every other direction. The can's still half full. You keep it in your hand.",
     next: "page3",
   },
   help: {
@@ -294,7 +294,7 @@ const ANSWERS = {
   raid: {
     text: "Took the backpack: finders keepers in bear country",
     points: { schemer: 2, lonewolf: 1 },
-    outcome: "You yank the backpack off the branch. Inside: a sleeve of cookies and a headlamp. The headlamp is dead. The cookies are not. You keep walking.",
+    outcome: "You yank the backpack down. Inside: cookies and a headlamp. The headlamp is dead. The cookies are not. You keep walking.",
     next: "page-logbook",
   },
   iou: {
@@ -306,7 +306,7 @@ const ANSWERS = {
   tentnap: {
     text: "Rescued a real pillow from the torn tent",
     points: { glamper: 2, camper: 1 },
-    outcome: "The tent is a lost cause: ripped wide open and soaked through. But the pillow is dry. You hug it to your chest and keep walking.",
+    outcome: "The tent is ripped and soaked, but the pillow is dry. You hug it to your chest and keep walking.",
     next: "page-logbook",
   },
   backstory: {
@@ -321,7 +321,7 @@ const ANSWERS = {
   ownmarkers: {
     text: "Stacked your own rock arrows",
     points: { trailblazer: 1, lonewolf: 1 },
-    outcome: "You stack rocks into a big arrow pointing the way you came. When you look back, the arrow points somewhere else. You decide not to think about it. The sun is dropping fast.",
+    outcome: "You stack rocks into an arrow pointing the way you came. When you look back, it points somewhere else. You decide not to think about it. The sun is dropping fast.",
     next: "page5",
   },
   readlog: {
@@ -333,7 +333,7 @@ const ANSWERS = {
   writeback: {
     text: "Signed the logbook with your name, the time and your direction",
     points: { counselor: 2, scout: 1 },
-    outcome: "Name, time, \"heading downhill, please send snacks.\" You even draw a little smiley. Somehow, it makes you feel less alone. The sun is dropping fast.",
+    outcome: "Name, time, \"heading downhill, please send snacks,\" plus a little smiley. Somehow, you feel less alone. The sun is dropping fast.",
     next: "page5",
   },
   raccoons: {
@@ -411,7 +411,7 @@ const ANSWERS = {
   patterns: {
     text: "Sat down and studied the patterns the bark was making",
     points: { wanderer: 3 },
-    outcome: "The swirls repeat every seven rings. You're sure it means something. You're one ring away from cracking it when, all at once, the pattern stops.",
+    outcome: "The swirls repeat every seven rings. It means something. You're one ring from cracking it when, all at once, the pattern stops.",
     next: "page7",
   },
   more: {
@@ -485,13 +485,13 @@ const ANSWERS = {
   crying: {
     text: "Went toward the crying, because it sounded like someone was hurt",
     points: { medic: 3 },
-    outcome: "You shove through the bushes, heart pounding. What if the bear got one of your friends? \"I'm here, I'm here!\" It's... a fox pup, paw stuck under a branch, crying like a person. You lift the branch. It bolts without so much as a thank-you. Where it was lying, something twinkles in the moonlight.",
+    outcome: "You shove through the bushes, heart pounding. \"I'm here, I'm here!\" It's... a fox pup, paw stuck under a branch, crying like a person. You lift the branch. It bolts without a thank-you. Where it lay, something twinkles in the moonlight.",
     next: "page-key",
   },
   climb: {
     text: "Stopped and listened for a road",
     points: { wanderer: 2, lookout: 1 },
-    outcome: "You stand still for a long time. No cars. Just a tiny, tinkly sound, like a wind chime made of glass. You follow it to a glint in the moss.",
+    outcome: "You stand still a long time. No cars. Just a tiny tinkle, like a glass wind chime. You follow it to a glint in the moss.",
     next: "page-key",
   },
   bolt: {
@@ -590,7 +590,7 @@ const ANSWERS = {
   findfriends: {
     text: "Asked the fairy what HE wanted",
     points: { medic: 2, wisp: 1 },
-    outcome: "He blinks. His eyes go shiny. \"Nobody's asked me that in three hundred years.\" It turns out he wants someone to hear his poem about moss. It's eleven minutes long. You tear up a little, and you're not sure why. Then glowing mushrooms light the way out. \"HEY! We've got one!\"",
+    outcome: "His eyes go shiny. \"Nobody's asked me that in three hundred years.\" He just wants someone to hear his poem about moss. It's eleven minutes long. You tear up a little, not sure why. Then glowing mushrooms light the way out. \"HEY! We've got one!\"",
     next: "page11",
   },
   spell: {
@@ -622,7 +622,7 @@ const ANSWERS = {
   hush: {
     text: "Hugged the ranger, then didn't say a word the whole ride home",
     points: { wisp: 3 },
-    outcome: "You hug her like you've known her for years. Then you pull your hood up, and that's it: not one more word. Your friends text \"are you ok??\" You leave them on read. You get home and sleep for eleven hours.",
+    outcome: "You hug her like you've known her for years. Then hood up, not one more word. Your friends text \"are you ok??\" You leave them on read. You get home and sleep for eleven hours.",
     next: "result",
   },
   food: {
@@ -711,7 +711,7 @@ const STORY_EXTRAS = {
   ],
 
   page8: () => [
-    picked("chatter") && t("extra.chatter", "Somewhere in the dark, something repeats your cooking-show voice back to you. Perfectly. A little too perfectly."),
+    picked("chatter") && t("extra.chatter", "Somewhere in the dark, something repeats your cooking-show voice back. Perfectly. Too perfectly."),
     ateMushrooms() && t("extra.treesListening", "The trees are breathing slower now, like they're listening too."),
   ],
 
@@ -726,7 +726,7 @@ const STORY_EXTRAS = {
     } else if (picked("lightright")) {
       lines.push(t("extra.station.light", "The ranger points at a porch light through the trees: the ranger station, forty feet away. \"You were headed right for it.\""));
     } else if (visited("page9")) {
-      lines.push(t("extra.station.wandered", "Right behind your fallen tree, through the branches, is the ranger station's porch light. Forty feet away. If only you'd gone right."));
+      lines.push(t("extra.station.wandered", "Through the branches behind your fallen tree: the ranger station's porch light. Forty feet away. If only you'd gone right."));
     } else {
       lines.push(t("extra.station.stayed", "Past your fallen tree, a porch light glows: the ranger station, forty feet away. \"Staying put was the right call,\" the ranger says."));
     }
@@ -750,7 +750,7 @@ const STORY_EXTRAS = {
     } else if (picked("freeze")) {
       lines.push(t("extra.spray.gripped", "Your hand is still locked around the bear spray. The ranger gently pries it loose. \"You can let go now.\""));
     } else if (visited("page2-5")) {
-      lines.push(t("extra.spray.pocket", "The bear spray you grabbed when the bear charged is still in your pocket, safety clip on. You never used it once."));
+      lines.push(t("extra.spray.pocket", "The bear spray is still in your pocket, safety clip on. You never used it once."));
     } else {
       lines.push(t("extra.spray.unused", "The bear spray is still at the bottom of your bag, safety clip on. You never used it once."));
     }
@@ -768,9 +768,9 @@ const STORY_EXTRAS = {
     if (openedDoor) {
       if (ateMushrooms()) lines.push(t("extra.fairyTold", "You tell the ranger about the fairy. She looks at your purple fingers. \"Sure, bud.\""));
       if (picked("pick")) {
-        lines.push(t("extra.note.kicked", "In your pocket, where the key was, there's a note smaller than a stamp: \"Thanks for the key. You owe me a door. — F.\""));
+        lines.push(t("extra.note.kicked", "In your pocket, where the key was, is a stamp-sized note: \"Thanks for the key. You owe me a door. — F.\""));
       } else {
-        lines.push(t("extra.note.thanks", "In your pocket, where the key was, there's a note smaller than a stamp: \"Thanks for the key. I haven't seen a human dance in a while. — F.\""));
+        lines.push(t("extra.note.thanks", "In your pocket, where the key was, is a stamp-sized note: \"Thanks for the key. I haven't seen a human dance in a while. — F.\""));
       }
     } else {
       lines.push(t("extra.door.wave", "As you leave, the tiny door opens a crack. A fairy with a lantern gives you a small, disappointed wave. He could have walked you out hours ago."));
@@ -805,6 +805,20 @@ const RARITY = {
   scout: 9.0, glamper: 8.3, bard: 7.7, trailblazer: 4.6,
   mystic: 4.6, lonewolf: 4.1, schemer: 3.5, wisp: 3.5,
   lookout: 2.4, wanderer: 2.2,
+};
+// Rarity tiers on the story poster's sticker: [tier, under this %].
+// With the Nov 2026 numbers: Ultra Rare = lookout, wanderer;
+// Super Rare = schemer, wisp; Rare = trailblazer, mystic, lonewolf;
+// Uncommon = camper, scout, glamper, bard; Common = medic, counselor, survivalist.
+const RARITY_TIERS = [
+  ["ultraRare", 3],
+  ["superRare", 4],
+  ["rare", 7],
+  ["uncommon", 10],
+  ["common", Infinity],
+];
+const RARITY_TIER_NAMES = {
+  ultraRare: "Ultra Rare", superRare: "Super Rare", rare: "Rare", uncommon: "Uncommon", common: "Common",
 };
 const RARE_BELOW = 5;    // under this %: "Rare find"
 const COMMON_ABOVE = 10; // over this %: "One of the most common"
@@ -1839,7 +1853,7 @@ function dropLeaves(pageId) {
 const QUESTION_VARIANTS = {
   "page-fairy": () =>
     picked("pick") &&
-    t("question.fairyKicked", "A tiny fairy stands in the splintered doorway, in an acorn cap and a maple-leaf cardigan, holding what's left of his hinge. \"That was my DOOR.\" Then he spots the star key in your pocket, and his glare wobbles. \"...You found my key. Thank you, I suppose.\" He crosses his arms. \"Rules are rules. I still owe you one favor. Don't be weird about it.\" What do you ask for?"),
+    t("question.fairyKicked", "A tiny fairy in an acorn cap and a maple-leaf cardigan stands in the splintered doorway, holding what's left of his hinge. \"That was my DOOR.\" Then he spots the star key in your pocket, and his glare wobbles. \"...You found my key. Thank you, I suppose. Rules are rules: I still owe you one favor. Don't be weird about it.\" What do you ask for?"),
 };
 
 function fillQuestion(pageId) {
@@ -2128,6 +2142,86 @@ const RELATIONS = {
       ["lookout", "Saw through your plan before you'd finished making it."],
       ["trailblazer", "Two people who refuse to lose an argument. Somebody bring snacks, this will take a while."],
     ],
+  },
+};
+
+// ---------------------------------------------------------
+// Story poster text (the picture you share, see drawStoryPoster).
+//   summary: one sentence about the type
+//   pros / cons: 4 short words each, squeezed from strengths / watchouts
+// "What you actually need" on the poster is RESULTS[type].need, word for word.
+// Korean versions: KO.poster in ko.js.
+// ---------------------------------------------------------
+const POSTER = {
+  scout: {
+    summary: "Keeps everyone calm, organized and on schedule, with a backup plan for the backup plan.",
+    pros: ["Always prepared", "Calm in a crisis", "Dependable", "Follows through"],
+    cons: ["Control freak", "Silent scorekeeper", "Can't rest", "Plan police"],
+  },
+  survivalist: {
+    summary: "Hopes for the best, packs for the worst, and would walk through fire for their people.",
+    pros: ["Ready for anything", "Resourceful", "Hard to fool", "Fiercely loyal"],
+    cons: ["Worries nonstop", "Fun-killer", "Trust is a test", "Hoards \"just in case\""],
+  },
+  lookout: {
+    summary: "Sees ten moves ahead, trusts almost no one, and guards their tiny circle for life.",
+    pros: ["Ten moves ahead", "Hard to fool", "Calm under pressure", "Loyal bodyguard"],
+    cons: ["Brutally honest", "Low-key snob", "A little paranoid", "Case closed, forever"],
+  },
+  wisp: {
+    summary: "Reads everyone in two seconds, gives them everything, and keeps the real self behind glass.",
+    pros: ["Reads people instantly", "Deeply caring", "Scary-good gut", "Lives by values"],
+    cons: ["The door slam", "Silence as punishment", "Impossible to know", "Ghosts, doesn't talk"],
+  },
+  wanderer: {
+    summary: "Quietly curious about everything, and cares way more than anyone can tell.",
+    pros: ["Spots patterns", "Low-drama company", "Remembers little things", "Endlessly curious"],
+    cons: ["Care is invisible", "Analysis paralysis", "Goes MIA", "Explains, doesn't hug"],
+  },
+  lonewolf: {
+    summary: "Figures it out alone, stays cool in chaos, and values freedom above almost everything.",
+    pros: ["Self-reliant", "Cool under pressure", "No approval needed", "Hands-on fixer"],
+    cons: ["Saves self first", "Emotionally unavailable", "Too proud for help", "Lonely, calls it freedom"],
+  },
+  trailblazer: {
+    summary: "Sees the goal, makes the path, and drags everyone along for the win.",
+    pros: ["Takes charge", "Brave and decisive", "Protective", "Bounces back fast"],
+    cons: ["Steamroller", "Never admits wrong", "Reckless", "Everything's a contest"],
+  },
+  bard: {
+    summary: "Turns every disaster into a story, and every story into a song.",
+    pros: ["Wildly creative", "Lifts the mood", "Born storyteller", "Emotionally honest"],
+    cons: ["All starts, no finishes", "Main character", "Thin skin", "Dodges the boring stuff"],
+  },
+  mystic: {
+    summary: "Tries everything once, learns by doing, and turns any day into an adventure.",
+    pros: ["Adapts fast", "Fearless about new things", "Brings the energy", "Optimistic"],
+    cons: ["Confidently wrong", "Acts first, Googles later", "Flaky", "Bored in two weeks"],
+  },
+  medic: {
+    summary: "Quiet on the outside, feels everything on the inside, and would run toward a bear for a friend.",
+    pros: ["Fiercely loyal", "Brave for others", "Deep empathy", "Sees the good"],
+    cons: ["Way too trusting", "Expects mind-reading", "Silent grudges", "Forgets self"],
+  },
+  counselor: {
+    summary: "Sees who everyone could become, and can't help leading them there.",
+    pros: ["Inspires people", "Reads the room", "Keeps morale up", "Includes everyone"],
+    cons: ["Friends aren't projects", "Help with strings", "Approval addict", "Toxic positivity"],
+  },
+  camper: {
+    summary: "Calm in any chaos, easy to be around, and happy wherever the night ends up.",
+    pros: ["Calm in chaos", "Easy to be around", "The peacemaker", "Accepting"],
+    cons: ["Lazy, calls it chill", "Can't decide", "Avoids conflict", "\"Later\" forever"],
+  },
+  glamper: {
+    summary: "Makes the world a little prettier, and is the best company once comfy.",
+    pros: ["Fun and bold", "Sets the vibe", "Perfect gift-giver", "Self-care pro"],
+    cons: ["Complains a lot", "High maintenance", "Bails when it's hard", "Judges in 2 seconds"],
+  },
+  schemer: {
+    summary: "Finds the loophole, wins the debate, and somehow ends up with everyone's snacks.",
+    pros: ["Wins any debate", "Spots bad ideas", "Charming", "Reads people fast"],
+    cons: ["Manipulative", "Devil's advocate", "Would rather win", "Keeps a favor tally"],
   },
 };
 
@@ -2542,25 +2636,6 @@ function wrapText(ctx, text, maxWidth) {
   return lines;
 }
 
-// Draw wrapped, centered text. Shrinks the font (down to `minSize`) so it
-// fits in `maxLines`. Returns the y just below the last line.
-function drawWrapped(ctx, text, { y, size, minSize = size, maxLines = 3, weight = "400", style = "normal", family, color, lineHeight = 1.25, maxWidth = 900 }) {
-  let lines;
-  for (;;) {
-    ctx.font = `${style} ${weight} ${size}px ${family}`;
-    lines = wrapText(ctx, text, maxWidth);
-    if (lines.length <= maxLines || size <= minSize) break;
-    size -= 4;
-  }
-  ctx.fillStyle = color;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "top";
-  lines.slice(0, maxLines).forEach((line, i) => {
-    ctx.fillText(line, POSTER_W / 2, y + i * size * lineHeight);
-  });
-  return y + Math.min(lines.length, maxLines) * size * lineHeight;
-}
-
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
   ctx.moveTo(x + r, y);
@@ -2584,12 +2659,12 @@ function drawSparkle(ctx, x, y, r, color) {
 }
 
 // A row of pine trees along the bottom edge
-function drawTrees(ctx) {
+function drawTrees(ctx, size = 1) {
   // Back row (lighter, shorter) then front row (darker, taller)
   [["#183022", 0.75, 70], ["#0c1711", 1, 0]].forEach(([shade, scale, shift]) => {
     ctx.fillStyle = shade;
     for (let x = -30 + shift; x < POSTER_W + 80; x += 140) {
-      const h = (150 + ((x * 7 + shift) % 70)) * scale;
+      const h = (150 + ((x * 7 + shift) % 70)) * scale * size;
       const w = h * 0.42;
       const base = POSTER_H - 20;
       ctx.fillRect(x - w * 0.08, base - 4, w * 0.16, 30); // trunk
@@ -2618,13 +2693,51 @@ function loadImage(src) {
   });
 }
 
-async function drawStoryPoster(photo) {
+// Wrap text and shrink the font (down to `minSize`) until it fits in
+// `maxLines`. Returns { lines, size } without drawing anything.
+function fitText(ctx, text, { size, minSize = size, maxLines, weight = "400", style = "normal", family, maxWidth }) {
+  let lines;
+  for (;;) {
+    ctx.font = `${style} ${weight} ${size}px ${family}`;
+    lines = wrapText(ctx, text, maxWidth);
+    if (lines.length <= maxLines || size <= minSize) break;
+    size -= 2;
+  }
+  return { lines: lines.slice(0, maxLines), size };
+}
+
+// "15% of campers", or "Rare: 2.2% of campers" for the rare types
+function posterRarity(type) {
+  const value = RARITY[type];
+  const percent = value < 10 ? value.toFixed(1).replace(/\.0$/, "") : String(Math.round(value));
+  const [tier] = RARITY_TIERS.find(([, below]) => value < below);
+  return t(`poster.${tier}`, (p) => `${RARITY_TIER_NAMES[tier]}: ${p}% of campers`, percent);
+}
+
+// Draw `img` inside a box like CSS object-fit: cover (focused a bit above center)
+function drawCover(ctx, img, x, y, w, h) {
+  const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+  const dw = img.naturalWidth * scale;
+  const dh = img.naturalHeight * scale;
+  ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) * 0.4, dw, dh);
+}
+
+// Poster layout (1080x1920): title, photo + rarity sticker, name, one-line
+// summary, pros / cons, "what you actually need", friends / foes, footer.
+// photos = { [type]: Image or null } for your type and its friends and foes.
+async function drawStoryPoster(photos) {
   const { ranking } = calculateResult();
-  const topType = ranking[0];
-  const result = RESULTS[topType];
+  const type = ranking[0];
+  const result = RESULTS[type];
+  const poster = POSTER[type];
+  const kin = RELATIONS[type];
   const ko = LANG === "ko";
   const body = '"Segoe UI", system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif';
   const display = ko ? '"Jua", sans-serif' : '"Henny Penny", fantasy, cursive';
+  const GREEN = "#a8dd7f";
+  const PINK = "#ff9e9e";
+  const GOLD = "#f2b84b";
+  const CREAM = "#f4efe2";
 
   // Wait for the storybook fonts, or the canvas falls back to plain ones
   if (document.fonts && document.fonts.load) {
@@ -2638,28 +2751,25 @@ async function drawStoryPoster(photo) {
   canvas.width = POSTER_W;
   canvas.height = POSTER_H;
   const ctx = canvas.getContext("2d");
+  const W = POSTER_W;
+  const PAD = 70;
+  const inner = W - PAD * 2;
 
   // Same forest glow as the website
   const bg = ctx.createRadialGradient(540, 420, 60, 540, 700, 1500);
-  bg.addColorStop(0, "#2a4a37");
+  bg.addColorStop(0, "#2f5440");
   bg.addColorStop(0.45, "#1f3a2b");
   bg.addColorStop(1, "#0f1c15");
   ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, POSTER_W, POSTER_H);
+  ctx.fillRect(0, 0, W, POSTER_H);
 
-  // Doodles only in the margins, so they never sit on the words:
-  // little stars along the top edge and down both sides
-  const stars = [
-    [90, 70, 14], [230, 120, 8], [400, 60, 10], [700, 95, 9], [830, 150, 11], [1040, 190, 8],
-    [45, 380, 10], [1035, 460, 12], [40, 760, 8], [1040, 900, 9], [48, 1150, 12], [1030, 1300, 9],
-    [42, 1480, 9], [1036, 1620, 11],
-  ];
-  stars.forEach(([x, y, r]) => drawSparkle(ctx, x, y, r, "rgba(255, 236, 170, 0.75)"));
-  // Crescent moon in the top-right corner (a circle with a bite cut out)
+  // Little stars in the margins, and a crescent moon top right
+  [[95, 75, 15], [230, 140, 9], [70, 430, 11], [998, 572, 13], [48, 888, 8], [1035, 1010, 9]]
+    .forEach(([x, y, r]) => drawSparkle(ctx, x, y, r, "rgba(255, 236, 170, 0.8)"));
   const moon = document.createElement("canvas");
   moon.width = moon.height = 120;
   const m = moon.getContext("2d");
-  m.fillStyle = "rgba(255, 244, 205, 0.9)";
+  m.fillStyle = "rgba(255, 244, 205, 0.95)";
   m.beginPath();
   m.arc(60, 60, 44, 0, Math.PI * 2);
   m.fill();
@@ -2667,90 +2777,201 @@ async function drawStoryPoster(photo) {
   m.beginPath();
   m.arc(82, 46, 40, 0, Math.PI * 2);
   m.fill();
-  ctx.drawImage(moon, 900, 40);
-  drawTrees(ctx);
+  ctx.drawImage(moon, 900, 50);
+  drawTrees(ctx, 0.55);
 
-  const title = document.querySelector("#page1 .title").textContent.trim();
-  const chapter = document.querySelector("#result > .chapter").textContent.trim();
+  const center = (text, y, font, color) => {
+    ctx.font = font;
+    ctx.fillStyle = color;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.fillText(text, W / 2, y);
+  };
+  const drawLines = (fit, { x = W / 2, y, color, weight = "400", style = "normal", family = body, lineHeight = 1.3 }) => {
+    ctx.font = `${style} ${weight} ${fit.size}px ${family}`;
+    ctx.fillStyle = color;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    fit.lines.forEach((line, i) => ctx.fillText(line, x, y + i * fit.size * lineHeight));
+    return y + fit.lines.length * fit.size * lineHeight;
+  };
 
-  // Title, then "You made it out. You are…"
+  // Measure the parts that change length first, so the photo can shrink a
+  // little when the summary or the "need" text runs long.
+  const nameFit = fitText(ctx, result.name, { size: 86, minSize: 60, maxLines: 1, weight: "800", family: ko ? display : body, maxWidth: inner });
+  const summaryFit = fitText(ctx, poster.summary, { size: 34, minSize: 28, maxLines: 3, style: "italic", family: body, maxWidth: 880 });
+  const needFit = fitText(ctx, result.need, { size: 34, minSize: 26, maxLines: 4, family: body, maxWidth: inner - 70 });
+  const extra = (summaryFit.lines.length - 2) * summaryFit.size * 1.3 + (needFit.lines.length - 3) * needFit.size * 1.3;
+  const photoH = Math.round(Math.max(330, Math.min(420, 420 - extra)));
+  const photoW = Math.round((photoH * 4) / 3);
+
+  // Title + "I made it out as…"
   ctx.shadowColor = "rgba(255, 236, 170, 0.45)";
-  ctx.shadowBlur = 30;
-  let y = drawWrapped(ctx, title, { y: 210, size: 96, maxLines: 1, family: display, color: "#f4efe2" });
+  ctx.shadowBlur = 24;
+  center(document.querySelector("#page1 .title").textContent.trim(), 70, `400 56px ${display}`, CREAM);
   ctx.shadowBlur = 0;
-  y = drawWrapped(ctx, chapter.toUpperCase(), { y: y + 40, size: 34, maxLines: 2, weight: "600", family: body, color: "#8fbf6a" });
+  ctx.save();
+  ctx.font = `600 26px ${body}`;
+  if ("letterSpacing" in ctx) ctx.letterSpacing = "4px";
+  center(t("poster.kicker", "I made it out as…").toUpperCase(), 172, ctx.font, "#8fbf6a");
+  ctx.restore();
 
-  // Your type, big and gold
-  y = drawWrapped(ctx, result.name, { y: y + 24, size: 104, minSize: 72, maxLines: 2, weight: "700", family: ko ? display : body, color: "#f2b84b", lineHeight: 1.12 });
-  y = drawWrapped(ctx, result.tagline, { y: y + 22, size: 42, minSize: 34, maxLines: 3, style: "italic", family: body, color: "#c9d3c3", lineHeight: 1.3 });
-
-  // The photo, big, with a soft frame. A long name or tagline makes it a bit
-  // smaller, so everything stays clear of Instagram's reply bar at the bottom.
-  const py = y + 50;
-  const ph = Math.round(Math.max(420, Math.min(600, 1450 - py)));
-  const pw = Math.round((ph * 4) / 3);
-  const px = (POSTER_W - pw) / 2;
-  if (photo) {
+  // The photo, with a soft frame
+  const px = (W - photoW) / 2;
+  const py = 232;
+  ctx.save();
+  ctx.shadowColor = "rgba(0, 0, 0, 0.45)";
+  ctx.shadowBlur = 40;
+  ctx.shadowOffsetY = 16;
+  roundRect(ctx, px, py, photoW, photoH, 40);
+  ctx.fillStyle = "#1f3a2b";
+  ctx.fill();
+  ctx.restore();
+  if (photos[type]) {
     ctx.save();
-    ctx.shadowColor = "rgba(0, 0, 0, 0.45)";
-    ctx.shadowBlur = 40;
-    ctx.shadowOffsetY = 14;
-    roundRect(ctx, px, py, pw, ph, 36);
-    ctx.fillStyle = "#1f3a2b";
-    ctx.fill();
-    ctx.restore();
-    ctx.save();
-    roundRect(ctx, px, py, pw, ph, 36);
+    roundRect(ctx, px, py, photoW, photoH, 40);
     ctx.clip();
-    // object-fit: cover, focused a bit above center (like the site)
-    const scale = Math.max(pw / photo.naturalWidth, ph / photo.naturalHeight);
-    const dw = photo.naturalWidth * scale;
-    const dh = photo.naturalHeight * scale;
-    ctx.drawImage(photo, px + (pw - dw) / 2, py + (ph - dh) * 0.4, dw, dh);
+    drawCover(ctx, photos[type], px, py, photoW, photoH);
     ctx.restore();
-    roundRect(ctx, px, py, pw, ph, 36);
-    ctx.lineWidth = 7;
-    ctx.strokeStyle = "rgba(143, 191, 106, 0.6)";
-    ctx.stroke();
-    // Sparkles hugging the photo's corners (outside it, not on any text)
-    drawSparkle(ctx, px - 26, py + 30, 20, "#ffe066");
-    drawSparkle(ctx, px + pw + 24, py + ph - 40, 24, "#ffe066");
-    drawSparkle(ctx, px + pw + 10, py - 18, 12, "#fff4c4");
-    y = py + ph;
   }
+  roundRect(ctx, px, py, photoW, photoH, 40);
+  ctx.lineWidth = 7;
+  ctx.strokeStyle = "rgba(143, 191, 106, 0.65)";
+  ctx.stroke();
 
-  // "with a streak of ..." and the trait words
-  const runnerUp = document.getElementById("result-runnerup").textContent.trim();
-  y = drawWrapped(ctx, runnerUp, { y: y + 40, size: 38, maxLines: 1, minSize: 30, family: body, color: "#8fbf6a" });
+  // Rarity sticker, sitting on the photo's bottom edge
+  const rarity = `🍂 ${posterRarity(type)}`;
+  ctx.font = `800 30px ${body}`;
+  const sw = ctx.measureText(rarity).width + 60;
+  const sh = 58;
+  const sx = (W - sw) / 2;
+  const sy = py + photoH - sh / 2;
+  ctx.save();
+  ctx.shadowColor = "rgba(0, 0, 0, 0.35)";
+  ctx.shadowBlur = 16;
+  ctx.shadowOffsetY = 6;
+  roundRect(ctx, sx, sy, sw, sh, sh / 2);
+  ctx.fillStyle = GOLD;
+  ctx.fill();
+  ctx.restore();
+  ctx.fillStyle = "#1f3a2b";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(rarity, W / 2, sy + sh / 2 + 1);
 
-  const traits = (result.core && result.core[0]) || [];
-  if (traits.length) {
-    ctx.font = `600 32px ${body}`;
-    const padX = 26;
-    const chipH = 60;
-    const gap = 16;
-    const chips = traits.slice(0, 4).map((word) => ({ word, w: ctx.measureText(word).width + padX * 2 }));
-    // Fit as many as possible on one centered row
-    let row = chips;
-    while (row.length > 1 && row.reduce((s, c) => s + c.w, 0) + gap * (row.length - 1) > 940) row = row.slice(0, -1);
-    const rowW = row.reduce((s, c) => s + c.w, 0) + gap * (row.length - 1);
-    let cx = (POSTER_W - rowW) / 2;
-    const cy = y + 30;
-    row.forEach(({ word, w }) => {
-      roundRect(ctx, cx, cy, w, chipH, chipH / 2);
-      ctx.fillStyle = "rgba(143, 191, 106, 0.18)";
+  // Name + one-line summary
+  let y = py + photoH + 56;
+  y = drawLines(nameFit, { y, color: GOLD, weight: "800", family: ko ? display : body, lineHeight: 1.1 });
+  y = drawLines(summaryFit, { y: y + 14, color: "#d9e1d3", style: "italic" });
+
+  // Pros / cons: two cards of chips
+  const cardGap = 26;
+  const cardW = (inner - cardGap) / 2;
+  const cardY = y + 32;
+  const chipH = 50;
+  const chipGap = 11;
+  const cardH = 20 + 34 + 12 + 4 * chipH + 3 * chipGap + 22;
+  [[t("poster.pros", "Pros"), "♥", poster.pros, GREEN, "rgba(143,191,106,0.35)", "rgba(143,191,106,0.2)"],
+   [t("poster.cons", "Cons"), "⚠", poster.cons, PINK, "rgba(255,158,158,0.35)", "rgba(255,158,158,0.16)"]]
+    .forEach(([label, icon, words, color, border, fill], i) => {
+      const cx = PAD + i * (cardW + cardGap);
+      const mid = cx + cardW / 2;
+      roundRect(ctx, cx, cardY, cardW, cardH, 30);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.06)";
       ctx.fill();
       ctx.lineWidth = 2;
-      ctx.strokeStyle = "rgba(143, 191, 106, 0.6)";
+      ctx.strokeStyle = border;
       ctx.stroke();
-      ctx.fillStyle = "#f4efe2";
+      ctx.save();
+      ctx.font = `700 28px ${body}`;
+      if ("letterSpacing" in ctx) ctx.letterSpacing = "3px";
+      ctx.fillStyle = color;
       ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(word, cx + w / 2, cy + chipH / 2 + 1);
-      cx += w + gap;
+      ctx.textBaseline = "top";
+      ctx.fillText(`${icon} ${label.toUpperCase()}`, mid, cardY + 20);
+      ctx.restore();
+      words.forEach((word, j) => {
+        const fit = fitText(ctx, word, { size: 28, minSize: 20, maxLines: 1, weight: "600", family: body, maxWidth: cardW - 70 });
+        ctx.font = `600 ${fit.size}px ${body}`;
+        const w = Math.min(cardW - 24, ctx.measureText(fit.lines[0]).width + 44);
+        const top = cardY + 66 + j * (chipH + chipGap);
+        roundRect(ctx, mid - w / 2, top, w, chipH, chipH / 2);
+        ctx.fillStyle = fill;
+        ctx.fill();
+        ctx.fillStyle = CREAM;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(fit.lines[0], mid, top + chipH / 2 + 1);
+      });
     });
-    y = cy + chipH;
-  }
+  y = cardY + cardH;
+
+  // "What you actually need": the result page's text, word for word
+  const needY = y + 24;
+  const needH = 64 + needFit.lines.length * needFit.size * 1.3 + 18;
+  roundRect(ctx, PAD, needY, inner, needH, 30);
+  ctx.fillStyle = "rgba(242, 184, 75, 0.13)";
+  ctx.fill();
+  ctx.save();
+  ctx.setLineDash([8, 7]);
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "rgba(242, 184, 75, 0.6)";
+  ctx.stroke();
+  ctx.font = `700 28px ${body}`;
+  if ("letterSpacing" in ctx) ctx.letterSpacing = "3px";
+  ctx.fillStyle = GOLD;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.fillText(t("poster.need", "What you actually need").toUpperCase(), W / 2, needY + 18);
+  ctx.restore();
+  drawLines(needFit, { y: needY + 64, color: CREAM });
+  y = needY + needH;
+
+  // Friends and foes: just the photos and names
+  const ffY = y + 30;
+  const faceR = 76;
+  // This row uses more of the poster's width than the cards above, so the
+  // bigger circles still have room between them
+  const groupGap = 20;
+  const groupW = (W - 60 - groupGap) / 2;
+  [[t("kinFriends", "Friends"), kin.friends, GREEN], [t("kinFoes", "Foes"), kin.foes, PINK]].forEach(([label, list, color], i) => {
+    const cx = 30 + i * (groupW + groupGap);
+    ctx.save();
+    ctx.font = `700 28px ${body}`;
+    if ("letterSpacing" in ctx) ctx.letterSpacing = "3px";
+    ctx.fillStyle = color;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.fillText(label.toUpperCase(), cx + groupW / 2, ffY);
+    ctx.restore();
+    const slot = groupW / 3;
+    list.forEach(([other], j) => {
+      const fx = cx + slot * j + slot / 2;
+      const fy = ffY + 46 + faceR;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(fx, fy, faceR, 0, Math.PI * 2);
+      ctx.fillStyle = "#1f3a2b";
+      ctx.fill();
+      ctx.clip();
+      if (photos[other]) drawCover(ctx, photos[other], fx - faceR, fy - faceR, faceR * 2, faceR * 2);
+      ctx.restore();
+      ctx.beginPath();
+      ctx.arc(fx, fy, faceR, 0, Math.PI * 2);
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = color;
+      ctx.stroke();
+      const nameFitSmall = fitText(ctx, RESULTS[other].name, { size: 22, minSize: 18, maxLines: 2, weight: "600", family: body, maxWidth: slot - 4 });
+      drawLines(nameFitSmall, { x: fx, y: fy + faceR + 10, color: CREAM, weight: "600", lineHeight: 1.15 });
+    });
+  });
+
+  // Footer, over the trees
+  ctx.save();
+  ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+  ctx.shadowBlur = 10;
+  center(t("poster.footer", "Which one are you? Take the quiz ↗"), POSTER_H - 72, `600 30px ${body}`, "#8fbf6a");
+  ctx.restore();
 
   return canvas;
 }
@@ -2782,11 +3003,16 @@ function loadPosterPhoto(type) {
 }
 
 async function makeStoryPoster() {
-  const photo = await loadPosterPhoto(calculateResult().ranking[0]);
+  // Your photo, plus the photos of your friends and foes
+  const type = calculateResult().ranking[0];
+  const kin = [...RELATIONS[type].friends, ...RELATIONS[type].foes].map(([other]) => other);
+  const types = [type, ...kin];
+  const loaded = await Promise.all(types.map(loadPosterPhoto));
+  const photos = Object.fromEntries(types.map((key, i) => [key, loaded[i]]));
   try {
-    return await canvasToBlob(await drawStoryPoster(photo));
+    return await canvasToBlob(await drawStoryPoster(photos));
   } catch {
-    return canvasToBlob(await drawStoryPoster(null)); // same poster, without the photo
+    return canvasToBlob(await drawStoryPoster({})); // same poster, without the photos
   }
 }
 
