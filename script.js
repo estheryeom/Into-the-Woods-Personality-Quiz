@@ -205,7 +205,7 @@ const ANSWERS = {
   small: {
     text: "Made yourself small, hoping the bear wouldn't see you",
     points: { wisp: 2 },
-    outcome: "You hold your breath behind a bush. The bear huffs and wanders off. So, apparently, did your friends.",
+    outcome: "You get low and crawl off the trail, into the bushes, holding your breath. The bear huffs and wanders off. So, apparently, did your friends. You crawl back out. Which way was the trail again?",
     next: "page3",
   },
   yell: {
@@ -270,7 +270,7 @@ const ANSWERS = {
   north: {
     text: "Sat down to think it through before moving",
     points: { lookout: 2, survivalist: 1 },
-    outcome: "You sit on a rock and breathe. The sun is setting over there, so that's west. Ten minutes later, you have a plan. A decent one.",
+    outcome: "You sit on a rock and breathe. The morning sun is still low over there, so that's east. Ten minutes later, you have a plan. A decent one.",
     next: "page-camp",
   },
 
@@ -620,7 +620,7 @@ const ANSWERS = {
     text: "Gave the ranger a sheepish smile, then didn't say a word the whole ride home",
     // Lone Wolf +1: going silent and leaving your friends on read.
     points: { wisp: 2, lonewolf: 1 },
-    outcome: "You give her a sheepish, slightly sad smile. Then hood up, not one word. Your friends text \"are you ok??\" You leave them on read. You get home and sleep for eleven hours.",
+    outcome: "You give her a sheepish, slightly sad smile. Then hood up, not one word. Plugged into the ranger's car charger, your phone buzzes back to life: \"are you ok??\" You leave them on read. You get home and sleep for eleven hours.",
     next: "result",
   },
   food: {
@@ -724,7 +724,15 @@ const RENAMED_CHOICES = {
 // ---------------------------------------------------------
 const STORY_EXTRAS = {
   page6: () => [
+    // The campsite food is already gone (so "I only have gum" still makes sense)
+    picked("sortpack") && t("extra.cookiesGone", "The cookies lasted about four minutes. The water, even less."),
+    picked("hellotent") && t("extra.granolaGone", "The tent's granola bar is a distant memory."),
     picked("film") && t("extra.film", "At least you got the bear video. It's mostly your thumb."),
+  ],
+
+  // A fire would lead you back to your shelter, so it has to be out
+  page9: () => [
+    picked("fire") && t("extra.fireOut", "Somewhere behind you, your little fire has burned out. Not even a glow."),
   ],
 
   page8: () => [
@@ -737,15 +745,16 @@ const STORY_EXTRAS = {
 
     const openedDoor = visited("page-fairy");
 
-    // Where was the ranger station?
+    // Where was the ranger station? (Page 9 players lost the fallen tree,
+    // so their line doesn't mention it.)
     if (openedDoor) {
-      lines.push(t("extra.station.door", "\"You were forty feet from our station all night,\" the ranger says. You don't mention the fairy."));
+      lines.push(t("extra.station.door", "\"You were about three hundred yards from our station all night,\" the ranger says. You don't mention the fairy."));
     } else if (picked("lightright")) {
-      lines.push(t("extra.station.light", "The ranger points at a porch light through the trees: the ranger station, forty feet away. \"You were headed right for it.\""));
+      lines.push(t("extra.station.light", "The ranger points at a porch light through the trees: the ranger station, about three hundred yards away. \"You were headed right for it.\""));
     } else if (visited("page9")) {
-      lines.push(t("extra.station.wandered", "Through the branches behind your fallen tree: the ranger station's porch light. Forty feet away. If only you'd gone right."));
+      lines.push(t("extra.station.wandered", "Off to the right, through the branches: the ranger station's porch light. About three hundred yards away. If only you'd gone right."));
     } else {
-      lines.push(t("extra.station.stayed", "Past your fallen tree, a porch light glows: the ranger station, forty feet away. \"Staying put was the right call,\" the ranger says."));
+      lines.push(t("extra.station.stayed", "Past your fallen tree, a porch light glows: the ranger station, about three hundred yards away. \"Staying put was the right call,\" the ranger says."));
     }
 
     // What were the shadows?
@@ -761,8 +770,15 @@ const STORY_EXTRAS = {
     if (openedDoor) {
       if (picked("pick")) {
         lines.push(t("extra.note.kicked", "In your pocket, where the key was, is a stamp-sized note: \"Thanks for the key. You owe me a door. — F.\""));
-      } else {
+      } else if (picked("spell")) {
+        // The joke: to the fairy, your three spins were dancing
         lines.push(t("extra.note.thanks", "In your pocket, where the key was, is a stamp-sized note: \"Thanks for the key. I haven't seen a human dance in a while. — F.\""));
+      } else if (picked("findfriends")) {
+        lines.push(t("extra.note.poem", "In your pocket, where the key was, is a stamp-sized note: \"Thanks for the key. And for listening to the whole poem. Nobody ever does. — F.\""));
+      } else if (picked("supplies")) {
+        lines.push(t("extra.note.sword", "In your pocket, where the key was, is a stamp-sized note: \"Thanks for the key. I want that sword back. — F.\""));
+      } else {
+        lines.push(t("extra.note.wayhome", "In your pocket, where the key was, is a stamp-sized note: \"Thanks for the key. Try not to get lost again. — F.\""));
       }
     } else {
       lines.push(t("extra.door.wave", "As you leave, the tiny door opens a crack. A fairy with a lantern gives you a small, disappointed wave. He could have walked you out hours ago."));
@@ -1869,6 +1885,10 @@ function dropLeaves(pageId) {
 // text from index.html.
 // ---------------------------------------------------------
 const QUESTION_VARIANTS = {
+  // Page 9 players lost their fallen tree, so the door is somewhere else
+  "page-door": () =>
+    visited("page9") &&
+    t("question.doorLost", "Between two roots of a huge old oak is a palm-sized, moss-green door with a snail-shell knocker and a star-shaped keyhole. Warm light glows through its round window. What do you do?"),
   "page-fairy": () =>
     picked("pick") &&
     t("question.fairyKicked", "A tiny fairy in an acorn cap and a maple-leaf cardigan stands in the splintered doorway, holding what's left of his hinge. \"That was my DOOR.\" Then he spots the star key in your pocket, and his glare wobbles. \"...You found my key. Thank you, I suppose. Rules are rules: I still owe you one favor. Don't be weird about it.\" What do you ask for?"),
