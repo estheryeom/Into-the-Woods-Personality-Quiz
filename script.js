@@ -503,13 +503,13 @@ const ANSWERS = {
   sing: {
     text: "Sang every song you know, loudly",
     points: { bard: 3 },
-    outcome: "Fourth chorus in, a tiny voice nearby says, \"Oh, come ON.\" Something glints by your foot that wasn't there before.",
+    outcome: "Fourth chorus in, a pebble bonks you on the head. Rude. Something glints by your foot that wasn't there before.",
     next: "page-key",
   },
   sleep: {
     text: "Curled up and went to sleep",
     points: { camper: 3 },
-    outcome: "You dream of tiny lights whispering about you. You wake to something small resting on your chest.",
+    outcome: "You dream of tiny lights circling over you. You wake to something small resting on your chest.",
     next: "page-key",
   },
   sos: {
