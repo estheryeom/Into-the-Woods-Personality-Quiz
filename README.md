@@ -109,7 +109,7 @@ Each result has 6 strengths and 6 watch-outs. The watch-outs are written to be b
 ### The result page
 
 - **Your personality mix:** your top 4 types, as a share of those 4 (they add up to 100%). The top type's bar is always full.
-- **Rarity:** "Rare find: only about 2.3% of campers end up here." The numbers live in `RARITY` in `script.js`. They're estimates from 12,000 simulated runs with random answers, not real visitor data. **Re-run the simulation and update them whenever answer points change.** Under 5% gets the gold "rare" style.
+- **Rarity:** "Rare find: only about 2.4% of campers end up here." The numbers live in `RARITY` in `script.js`. They're estimates from 12,000 simulated runs with random answers, not real visitor data. **Re-run the simulation and update them whenever answer points change.** Under 5% gets the gold "rare" style.
 - **Just for fun:** a small disclaimer at the bottom (also on the details and all-personalities pages).
 
 ### Around the quiz

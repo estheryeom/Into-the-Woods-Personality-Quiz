@@ -62,15 +62,17 @@
    (A Nov 2026 attempt hit every target by giving the Medic points for
    rationing, throwing up the mushrooms and the dollhouse key. None of
    those are Medic, so they were reverted.)
-   Last check (late Nov 2026): 12,000 random runs:
-     Counselor 15.3, Survivalist 15.1, Medic 10.3, Scout 8.9,
-     Camper 8.7, Bard 8.4, Glamper 8.1, Trailblazer 5.1, Mystic 4.7,
-     Lone Wolf 3.6, Schemer 3.4, Wisp 3.3, Wanderer 2.9, Lookout 2.3.
-   Known gap: the Medic is short (10 vs 18) and the Survivalist and
-   Trailblazer are high, because only a few pages have a true Medic
-   answer. Planned fix: rewrite a few answers into real Medic answers.
+   Then two Survivalist answers were rewritten as real Medic answers
+   (page 4: "Find my friends before I find the road. I'm the one with
+   the bear spray." and page 9: "Toward the crying. It sounds like
+   someone is hurt."). Last check (late Nov 2026): 12,000 random runs:
+     Medic 15.0, Counselor 15.0, Survivalist 11.1, Camper 9.1,
+     Scout 9.0, Glamper 8.3, Bard 7.7, Trailblazer 4.6, Mystic 4.6,
+     Lone Wolf 4.1, Schemer 3.5, Wisp 3.5, Lookout 2.4, Wanderer 2.2.
+   Known gap: the Trailblazer is high (4.6 vs 2), because the story has
+   lots of bold choices. Fix it with a rewritten answer, not points.
    Someone who picks their own type's answer 60% of the time gets it
-   back 28-48% of the time for the rarest types and 52-93% for the rest.
+   back 34-44% of the time for the rarest types and 51-92% for the rest.
    These numbers are also the RARITY table further down: update both.
    Earlier check: a "sensible extrovert" (picks the reasonable
    extroverted answer 75% of the time) got the Lookout 0.1% of the time.
@@ -799,10 +801,10 @@ const STORY_EXTRAS = {
 // Last run: Nov 2026.
 // ---------------------------------------------------------
 const RARITY = {
-  counselor: 15.3, survivalist: 15.1, medic: 10.3, scout: 8.9,
-  camper: 8.7, bard: 8.4, glamper: 8.1, trailblazer: 5.1,
-  mystic: 4.7, lonewolf: 3.6, schemer: 3.4, wisp: 3.3,
-  wanderer: 2.9, lookout: 2.3,
+  medic: 15.0, counselor: 15.0, survivalist: 11.1, camper: 9.1,
+  scout: 9.0, glamper: 8.3, bard: 7.7, trailblazer: 4.6,
+  mystic: 4.6, lonewolf: 4.1, schemer: 3.5, wisp: 3.5,
+  lookout: 2.4, wanderer: 2.2,
 };
 const RARE_BELOW = 5;    // under this %: "Rare find"
 const COMMON_ABOVE = 10; // over this %: "One of the most common"
