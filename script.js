@@ -149,6 +149,8 @@ const ANSWERS = {
   glowup: {
     text: "Woke up at 6:40, just in time to grab an iced coffee",
     points: { glamper: 2 },
+    // Replaces the start-button line on the fork page, since this person is late.
+    outcome: "7:12 a.m. You stroll up, iced coffee in hand. Of course everyone is already waiting. \"We said seven.\" You take a long sip and follow them into the pines.",
     next: "page-fork",
   },
   bandaids: {
@@ -1364,8 +1366,8 @@ function fillStory(pageId) {
   const storyBox = document.querySelector(`#${CSS.escape(pageId)} .story`);
   if (!storyBox) return;
 
-  // The latest answer that has a story line. (The wake-up question has none,
-  // so page 2 still opens with what happened after the start button.)
+  // The latest answer that has a story line. (On the wake-up question only the
+  // 6:40 answer has one; the others fall back to the start-button line.)
   let lastKey;
   for (let i = history.length - 1; i >= 0 && !lastKey; i--) {
     if (ANSWERS[history[i]].outcome) lastKey = history[i];
