@@ -162,9 +162,9 @@ const ANSWERS = {
   // ----- The fork in the trail (everyone sees it) -----
   // Gives the rarer types (Trailblazer, Lookout, Wanderer, Wisp) more chances.
   takemap: {
-    text: "Grabbed the unreadable soggy map and led the group left anyway",
+    text: "Took the unreadable map and led the group left anyway",
     points: { trailblazer: 2, schemer: 1 },
-    outcome: "You squint at the blue smear like it means something, and point left. Nobody argues. Respect or fear? Hard to say. The trees close in.",
+    outcome: "You squint at the faded map like it means something, and point left. Nobody argues. Respect or fear? Hard to say. The trees close in.",
     next: "page2",
   },
   trailreport: {
@@ -174,15 +174,15 @@ const ANSWERS = {
     next: "page2",
   },
   whytwo: {
-    text: "Sat on a rock and wondered why there were two trails at all",
+    text: "Leaned against a tree and wondered why there were two trails at all",
     points: { camper: 2, wanderer: 1 },
     outcome: "Was it deer? Settlers? A really indecisive hiker? When you look up, your friends have gone left without you. You jog to catch up.",
     next: "page2",
   },
   quietfriend: {
-    text: "Hung back with the friend who looked miserable",
+    text: "Stayed out of the argument, with snacks ready for after",
     points: { medic: 2, wisp: 1 },
-    outcome: "You don't ask what's wrong. You just walk next to them. Halfway up the hill, they say, \"Thanks.\" That's all. It's enough.",
+    outcome: "You lean on the trail post and wait. Five minutes later, they run out of steam. \"Fine. Left.\" You pass around granola bars. Nobody says sorry, but everyone takes one.",
     next: "page2",
   },
 
