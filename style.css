@@ -57,15 +57,28 @@ html * {
   transition: opacity 90ms linear;
   will-change: transform, opacity;
   touch-action: none;
+  /* Phones: no grey tap box, no long-press menu or text selection */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-/* A bigger, invisible hit area (28px) so a 12px fairy is catchable,
-   even with a finger. Small enough not to cover much of an answer. */
+/* A bigger, invisible hit area (28px) so a 12px fairy is catchable
+   with a mouse. Small enough not to cover much of an answer. */
 .fairy::before {
   content: "";
   position: absolute;
   inset: -8px;
   border-radius: 50%;
+}
+
+/* Fingers are much bigger than a mouse pointer: 44px on touch screens
+   (the usual minimum tap size), or a moving fairy is nearly uncatchable */
+@media (pointer: coarse) {
+  .fairy::before {
+    inset: -16px;
+  }
 }
 
 /* Where you caught it: a little dust splatter that pops in, then fades */
