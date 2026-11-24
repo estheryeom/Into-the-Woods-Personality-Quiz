@@ -180,9 +180,11 @@ const ANSWERS = {
     outcome: "\"Left. The right one washed out in March.\" Your friends stare at you. You shrug and lead the way into the trees.",
     next: "page2",
   },
+  // Wanderer: curious how things came to be, even mid-argument.
+  // Camper +1: unbothered, happy to lean on a tree while it plays out.
   whytwo: {
     text: "Leaned against a tree and wondered why there were two trails at all",
-    points: { camper: 2, wanderer: 1 },
+    points: { wanderer: 2, camper: 1 },
     outcome: "Was it deer? Settlers? A really indecisive hiker? When you look up, your friends have gone left without you. You jog to catch up.",
     next: "page2",
   },
@@ -521,10 +523,11 @@ const ANSWERS = {
 
   // ----- Chapter 9: the star key (everyone finds it) -----
   // (Keys still say "wand" so old share links keep working.)
-  toy: {
-    text: "Decided the star key was from a dollhouse",
-    points: { survivalist: 2, scout: 1 },
-    outcome: "You pocket it. The star gives off a tiny spark. Static. Obviously.",
+  // Schemer: sees an angle (and a profit) in everything, even a fairy's key.
+  goldkey: {
+    text: "Pocketed the star key to sell, since it looks like real gold",
+    points: { schemer: 2 },
+    outcome: "You bite it, like in the movies. Definitely metal. You're already pricing it out in your head when the star gives off a tiny, offended spark.",
     next: "page-door",
   },
   fairywand: {
@@ -591,18 +594,20 @@ const ANSWERS = {
     outcome: "He teaches you a spell for finding lost things. You spin three times, feeling ridiculous, and stop facing a porch light. \"HEY! We've got one!\"",
     next: "page11",
   },
-  stayhere: {
-    text: "Asked the fairy if you could stay",
-    points: { glamper: 2, camper: 1 },
-    outcome: "\"Absolutely not. You'd track mud everywhere.\" He gives you a thimble of tea that warms you to your toes, then points past you. \"Your ride's here.\"",
+  // Survivalist: trusts their own supplies, not someone else's shortcut
+  // (the opposite of the Scout's "show me the way out").
+  supplies: {
+    text: "Asked the fairy for supplies and found your own way out",
+    points: { survivalist: 2 },
+    outcome: "He sighs and hands over a thimble of water, a firefly in a jar and one very small sword. \"For the bears.\" You head off on your own. Ten minutes later, a flashlight hits your face. \"HEY! We've got one!\"",
     next: "page11",
   },
 
   // ----- Page 11: rescued -----
   technically: {
-    text: "Argued with the ranger that, technically, you were never lost",
+    text: "Negotiated the wording of the ranger's report",
     points: { schemer: 2 },
-    outcome: "\"I knew exactly where I was. I was here.\" The ranger opens her mouth, closes it, and writes \"not lost\" on her clipboard. You get a ride home and sleep for eleven hours.",
+    outcome: "\"Not 'lost.' Let's say 'extended solo exploration.'\" The ranger stares at you, sighs, and writes it down. You get a ride home and sleep for eleven hours.",
     next: "result",
   },
   askfriends: {
@@ -698,7 +703,13 @@ const RETIRED_CHOICES = [
 //   raid, flashmic, leavesnacks, tenttheory (and the older keys above):
 //     swapped (Nov 24, 2026) for sortpack, hellotent, campchair and
 //     breathe, to feed the types that were below target
+//   toy: the dollhouse key, swapped (Nov 24, 2026) for goldkey, a real
+//     Schemer answer (the Schemer was too rare)
+//   stayhere: "Can I just stay here?", swapped (Nov 24, 2026) for supplies,
+//     a real Survivalist answer (Survivalist too rare, Glamper and Camper
+//     too common)
 const RENAMED_CHOICES = {
+  toy: "goldkey", stayhere: "supplies",
   raid: "sortpack", flashmic: "campchair", leavesnacks: "hellotent", tenttheory: "breathe",
   tentnap: "breathe", lounge: "campchair", iou: "hellotent", backstory: "breathe",
   carve: "patterns", blame: "technically", omw: "bandaids", handled: "hush",
@@ -737,10 +748,6 @@ const STORY_EXTRAS = {
       lines.push(t("extra.station.stayed", "Past your fallen tree, a porch light glows: the ranger station, forty feet away. \"Staying put was the right call,\" the ranger says."));
     }
 
-    // How did they find you?
-    if (picked("sing")) lines.push(t("extra.sing", "\"We heard you singing from the parking lot. All of it.\""));
-    if (picked("sos")) lines.push(t("extra.sos", "\"Nice SOS. Who drew the smiley face?\""));
-
     // What were the shadows?
     if (ateMushrooms()) {
       lines.push(t("extra.shapes.mushrooms", "She eyes the purple stains on your fingers. \"Did you eat the mushrooms? Okay. Medic's coming.\" The shapes in the trees? \"Buddy, those are trees.\""));
@@ -750,28 +757,8 @@ const STORY_EXTRAS = {
       lines.push(t("extra.shapes.deer", "The tall shapes in the trees? \"Probably deer,\" the ranger says. She doesn't sound sure."));
     }
 
-    // The bear spray (everyone has it, so it never just vanishes)
-    if (picked("help") || picked("sprayfirst")) {
-      lines.push(t("extra.spray.used", "The ranger sniffs. \"Is that bear spray? On you?\" You hand her the half-empty can. \"Long story.\""));
-    } else if (picked("freeze")) {
-      lines.push(t("extra.spray.gripped", "Your hand is still locked around the bear spray. The ranger gently pries it loose. \"You can let go now.\""));
-    } else {
-      lines.push(t("extra.spray.unused", "The bear spray is still at the bottom of your bag, safety clip on. You never used it once."));
-    }
-
-    // Little callbacks
-    if (picked("fire")) lines.push(t("extra.fire", "\"Also, please never start a fire out here again.\""));
-    if (picked("hoard")) lines.push(t("extra.hoard", "Your friend's empty trail mix bag crinkles in your pocket. Technically, it was yours. You say nothing."));
-
-    // The empty campsite was the rangers' supply camp
-    if (picked("sortpack")) lines.push(t("extra.sortpack", "\"Also, someone raided our emergency kit up the trail. Sorted it into neat little piles first. Weird.\" You say nothing."));
-    if (picked("hellotent")) lines.push(t("extra.hellotent", "\"Someone yelled HELLO at our supply camp so loud, the crew on the next ridge radioed us.\" That was you."));
-    if (picked("campchair")) lines.push(t("extra.campchair", "\"And someone left our camp chair facing the sunset.\" She shrugs. \"Honestly? Respect.\""));
-    if (picked("breathe")) lines.push(t("extra.breathe", "The ranger squints at you. \"You look weirdly relaxed for someone who was lost all day.\""));
-
     // The tiny door: a little surprise, or a little regret
     if (openedDoor) {
-      if (ateMushrooms()) lines.push(t("extra.fairyTold", "You tell the ranger about the fairy. She looks at your purple fingers. \"Sure, bud.\""));
       if (picked("pick")) {
         lines.push(t("extra.note.kicked", "In your pocket, where the key was, is a stamp-sized note: \"Thanks for the key. You owe me a door. — F.\""));
       } else {
@@ -1312,6 +1299,11 @@ let playerName = ""; // typed on the name page, used when the voice calls you
 //   - Pressing "back" more than 3 times in total (same question or
 //     different ones) = picky perfectionist. That adds +0.5 to the Glamper
 //     (high standards, wants everything just right), once.
+//   - Catching the tiny flying fairy (fairy.js) = can't resist a little
+//     magic. That's childlike wonder: +0.5 to the Bard (imagination always
+//     on), and +0.25 each to the Mystic (chases whatever's shiny) and the
+//     Wanderer (easily, happily distracted). Once, however many times you
+//     catch it.
 // These are small nudges on top of your answers.
 // ---------------------------------------------------------
 const SLOW_MS = 2 * 60 * 1000;
@@ -1319,8 +1311,11 @@ const MAX_SLOW_COUNTED = 3;
 const SLOW_POINTS = { camper: 0.25 };
 const BACK_LIMIT = 3; // more than this many presses = perfectionist
 const BACK_POINTS = { glamper: 0.5 };
+const FAIRY_MIN_CATCHES = 1;
+const FAIRY_POINTS = { bard: 0.5, mystic: 0.25, wanderer: 0.25 };
 
-let habits = { slow: new Set(), back: 0 }; // slow: page ids, back: number of presses
+// slow: page ids, back: number of presses, fairy: times you caught it
+let habits = { slow: new Set(), back: 0, fairy: 0 };
 let pageShownAt = 0;
 let hiddenAt = null;
 
@@ -1341,6 +1336,15 @@ function slowCount() {
 function isSecondGuesser() {
   return habits.back > BACK_LIMIT;
 }
+
+function caughtFairy(how = habits) {
+  return (how.fairy || 0) >= FAIRY_MIN_CATCHES;
+}
+
+// fairy.js sends this every time you catch the fairy
+document.addEventListener("fairy-caught", () => {
+  habits.fairy += 1;
+});
 
 // Small helpers for the story
 function picked(choiceKey) {
@@ -2259,6 +2263,9 @@ function calculateResult(path = history, how = habits) {
   if (how.back > BACK_LIMIT) {
     for (const type in BACK_POINTS) scores[type] += BACK_POINTS[type];
   }
+  if (caughtFairy(how)) {
+    for (const type in FAIRY_POINTS) scores[type] += FAIRY_POINTS[type];
+  }
 
   // Sort types from highest to lowest score
   const ranking = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
@@ -2393,15 +2400,16 @@ function resultQuery() {
   let query = `path=${pathParam()}`;
   if (habits.slow.size) query += `&slow=${habits.slow.size}`;
   if (habits.back) query += `&back=${habits.back}`;
+  if (habits.fairy) query += `&fairy=${habits.fairy}`;
   return query;
 }
 
-// Read &slow=N&back=N from a shared link (or a saved one, see LAST_RESULT_KEY)
+// Read &slow=N&back=N&fairy=N from a shared link (or a saved one, see LAST_RESULT_KEY)
 function habitsFromUrl(search = window.location.search) {
   const params = new URLSearchParams(search);
   const count = (name) => Math.min(Math.max(parseInt(params.get(name), 10) || 0, 0), 50);
   const fake = (n) => new Set(Array.from({ length: n }, (_, i) => `shared-${i}`));
-  return { slow: fake(count("slow")), back: count("back") };
+  return { slow: fake(count("slow")), back: count("back"), fairy: count("fairy") };
 }
 
 // "How you took the quiz": explain the timing / back-button nudges
@@ -2430,6 +2438,16 @@ function fillHabits() {
           ? `${note} Not quite right? Do it again. You want every answer to be just so. That nudged your Glamper (high standards, picky about the details) score up a little.`
           : `${note} Changing your mind a few times is just being thoughtful, so it didn't affect your result.`;
       }, back, isSecondGuesser())
+    );
+  }
+  const fairy = habits.fairy || 0;
+  if (fairy) {
+    notes.push(
+      t("habitsFairy", (n) =>
+        `You caught the fairy${n === 1 ? "" : ` ${n} times`}! Most people never even notice it. ` +
+        "That nudged your Campfire Bard (imagination always on) score up a little, " +
+        "and your Mushroom Mystic and Wanderer scores a tiny bit.",
+      fairy)
     );
   }
 
@@ -3433,7 +3451,7 @@ if (allPersonalities) {
 
   document.getElementById("restart-btn").addEventListener("click", () => {
     history = [];
-    habits = { slow: new Set(), back: 0 };
+    habits = { slow: new Set(), back: 0, fairy: 0 };
     // Drop ?path=... so a refresh doesn't bring the old result back
     window.history.replaceState(null, "", window.location.pathname);
     document.getElementById("result-shared-note").hidden = true;

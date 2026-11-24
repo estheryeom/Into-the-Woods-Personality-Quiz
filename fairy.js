@@ -11,6 +11,10 @@
    just turns invisible while it's inside the word/bubble's box.
    From outside it looks like it slipped behind the edge.
 
+   You can catch it: click or tap it (only while it's out in the open).
+   It leaves a little splatter of fairy dust that fades away, and a
+   "fairy-caught" event goes to script.js (see FAIRY_POINTS there).
+
    script.js calls window.fairyOnPage(pageId) every time a page shows.
    ========================================================= */
 (function () {
@@ -56,6 +60,28 @@
       }
     });
     return words;
+  }
+
+  // A small splatter of fairy dust where it was caught: a blob plus a few
+  // droplets flung out at random. Pops in, then fades (see .fairy-splat).
+  function splat(x, y) {
+    const colors = ["#ffe066", "#ffd6f0", "#d8fff0", "#fffbe0"];
+    let dots = `<circle cx="0" cy="0" r="${rand(3.2, 4.2).toFixed(1)}" fill="${colors[0]}"/>`;
+    for (let i = 0, n = 6 + Math.floor(Math.random() * 3); i < n; i++) {
+      const angle = (i / n) * Math.PI * 2 + rand(-0.4, 0.4);
+      const dist = rand(5, 11);
+      dots += `<circle cx="${(Math.cos(angle) * dist).toFixed(1)}" cy="${(Math.sin(angle) * dist).toFixed(1)}" ` +
+        `r="${rand(0.8, 2).toFixed(1)}" fill="${pick(colors)}"/>`;
+    }
+    const mark = document.createElement("div");
+    mark.className = "fairy-splat";
+    mark.setAttribute("aria-hidden", "true");
+    mark.style.left = `${x}px`;
+    mark.style.top = `${y}px`;
+    mark.style.setProperty("--spin", `${Math.floor(rand(0, 360))}deg`);
+    mark.innerHTML = `<svg viewBox="-13 -13 26 26">${dots}</svg>`;
+    mark.addEventListener("animationend", () => mark.remove());
+    document.body.appendChild(mark);
   }
 
   function inside(p, r, pad) {
@@ -110,7 +136,10 @@
 
     // Speeds are tuned for a laptop screen. On a small phone screen the
     // same speed would cross it in a blink, so it flies slower there.
-    const S = () => Math.max(0.5, Math.min(1, Math.min(W(), H()) / 700));
+    // PACE slows everything down (flying, wobbling and darting) so it's
+    // catchable. 1 = the original speed.
+    const PACE = 0.7;
+    const S = () => PACE * Math.max(0.5, Math.min(1, Math.min(W(), H()) / 700));
     const edge = Math.floor(Math.random() * 4);
     const pos = {
       x: edge === 0 ? -12 : edge === 1 ? W() + 12 : rand(0, W()),
@@ -272,6 +301,8 @@
       if (show !== visible) {
         visible = show;
         el.style.opacity = show ? "" : "0";
+        // Can't catch it while it's hiding (and it mustn't block the bubble)
+        el.style.pointerEvents = show ? "" : "none";
       }
 
       // Fairy dust, only while it's out in the open and moving
@@ -288,6 +319,21 @@
       el.style.transform = `translate(${pos.x - 6}px, ${pos.y - 6 + bob}px) scaleX(${facing})`;
       raf = requestAnimationFrame(frame);
     }
+
+    // Caught! pointerdown (not click): it moves too fast for a full click.
+    el.addEventListener("pointerdown", (event) => {
+      if (gone || !visible) return;
+      event.preventDefault();
+      event.stopPropagation();
+      // The fairy is gone before the finger lifts, so the click that
+      // follows would land on whatever was under it (maybe an answer).
+      const swallow = (e) => { e.preventDefault(); e.stopPropagation(); };
+      document.addEventListener("click", swallow, { capture: true, once: true });
+      setTimeout(() => document.removeEventListener("click", swallow, true), 600);
+      splat(pos.x, pos.y);
+      stop();
+      document.dispatchEvent(new CustomEvent("fairy-caught"));
+    });
 
     function stop() {
       if (gone) return;

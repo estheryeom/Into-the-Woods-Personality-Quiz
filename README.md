@@ -49,7 +49,7 @@ Page 7: shadows at the edge of the trees
 Page 9: out in the dark (light to the right / toward the crying / listen for a road / run)
 Page 10: the longest night (keep watch / sing / sleep / spell SOS)
                                                 │
-Chapter 9: everyone finds a thumbnail-sized key with a star that shines in the moonlight (dollhouse key / fairy key / evidence / cheeseburger wish)
+Chapter 9: everyone finds a thumbnail-sized key with a star that shines in the moonlight (gold to sell / fairy key / evidence / cheeseburger wish)
                                                 │
 Chapter 10: a tiny door under the tree trunk (the star key fits it)
    ├── Try the key / Kick it open ─► Chapter 10½: the fairy's favor
